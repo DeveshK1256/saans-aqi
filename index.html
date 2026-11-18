@@ -280,26 +280,33 @@
       align-items: center;
       padding: 12px 0;
       border-bottom: 1px solid #eee;
+      cursor: pointer;
+      user-select: none;
     }
 
     .sim-row:last-child { border-bottom: none; }
 
-    .sim-row label {
+    .sim-row label:not(.sim-toggle) {
       font-size: 0.95rem;
       flex: 1;
+      cursor: pointer;
     }
 
     .sim-toggle {
       position: relative;
+      display: inline-block;
       width: 48px;
       height: 28px;
       flex-shrink: 0;
+      cursor: pointer;
     }
 
     .sim-toggle input {
+      position: absolute;
       opacity: 0;
       width: 0;
       height: 0;
+      margin: 0;
     }
 
     .sim-toggle .slider {
@@ -329,6 +336,22 @@
     .sim-toggle input:focus-visible + .slider {
       outline: 3px solid var(--accent);
       outline-offset: 2px;
+    }
+
+    /* --- Remove / Hide Netlify Badge and Drawer --- */
+    #nl-badge-frame,
+    iframe[id*="nl-badge"],
+    iframe[src*="netlify"],
+    .netlify-badge,
+    [data-netlify-badge],
+    netlify-drawer {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      height: 0 !important;
+      width: 0 !important;
+      clip: rect(0, 0, 0, 0) !important;
     }
 
     .sim-result {
@@ -593,29 +616,29 @@
           </p>
           <div class="sim-row">
             <label for="toggle-windows">Close windows during cooking</label>
-            <div class="sim-toggle">
+            <label class="sim-toggle" for="toggle-windows">
               <input type="checkbox" id="toggle-windows" aria-label="Close windows during cooking">
               <span class="slider"></span>
-            </div>
+            </label>
           </div>
           <div class="sim-row">
             <label for="toggle-purifier">Add DIY purifier (₹1,500)</label>
-            <div class="sim-toggle">
+            <label class="sim-toggle" for="toggle-purifier">
               <input type="checkbox" id="toggle-purifier" aria-label="Add DIY purifier">
               <span class="slider"></span>
-            </div>
+            </label>
           </div>
           <div class="sim-row">
             <label for="toggle-coils">Replace mosquito coils with net</label>
-            <div class="sim-toggle">
+            <label class="sim-toggle" for="toggle-coils">
               <input type="checkbox" id="toggle-coils" aria-label="Replace mosquito coils with mosquito net">
               <span class="slider"></span>
-            </div>
+            </label>
           </div>
           <div class="sim-result" aria-live="polite">
             <div>Estimated dose for a child (age 6–10)</div>
             <div class="value" id="sim-dose">185 µg</div>
-            <div class="delta" id="sim-delta"></div>
+            <div class="delta" id="sim-delta">Baseline exposure</div>
           </div>
           <div class="sample-label">Sample data — illustrative only</div>
         </div>
@@ -669,62 +692,66 @@
   </footer>
 
   <script>
-    // --- Mini Simulator (client-side, same formula as the full app) ---
-    // Uses exposure-engine.ts formula constants inline for the landing page demo
-    const IR_CHILD_6_10 = 10.1; // m³/day, EPA EFH 2011
-    const AMBIENT_PM25 = 200;   // Sample: Very Poor AQI day in Delhi
-    const INF_CLOSED = 0.4;     // Apartment, windows closed
-    const INF_OPEN = 0.85;      // Apartment, windows open
-    const COMMUTE_FACTOR = 1.4; // Auto-rickshaw
-    const COMMUTE_HOURS = 40 / 60; // 20 min × 2
-    const SLEEP_HOURS = 8;
-    const COIL_INDOOR_ADD = 30; // µg/m³ added by mosquito coil (illustrative)
-
-    function computeDose(windowsClosed, hasPurifier, noCoils) {
-      const purifierFactor = hasPurifier ? 300 / (300 + 30) : 0; // CADR 300, room 30m³
-      const indoorInf = windowsClosed ? INF_CLOSED : INF_OPEN;
-      const coilAdd = noCoils ? 0 : COIL_INDOOR_ADD;
-      
-      const cIndoor = (AMBIENT_PM25 * indoorInf * (1 - purifierFactor)) + coilAdd;
-      const cSleep = (AMBIENT_PM25 * INF_CLOSED * (1 - purifierFactor)); // windows closed during sleep
-      const cCommute = AMBIENT_PM25 * COMMUTE_FACTOR;
-      
-      const indoorHours = 24 - SLEEP_HOURS - COMMUTE_HOURS;
-      
-      const sleepDose = cSleep * IR_CHILD_6_10 * (SLEEP_HOURS / 24);
-      const commuteDose = cCommute * IR_CHILD_6_10 * (COMMUTE_HOURS / 24);
-      const indoorDose = cIndoor * IR_CHILD_6_10 * (indoorHours / 24);
-      
-      return Math.round((sleepDose + commuteDose + indoorDose) * 10) / 10;
-    }
-
-    const baseline = computeDose(false, false, false);
+    // --- Mini Simulator (calibrated with Priya's baseline scenario from §2/§4) ---
+    const BASELINE_DOSE = 185; // µg/day baseline for child (Priya's dwarka apartment)
+    const IMPACT_VALUES = {
+      windows: 43,  // Closing windows + running exhaust: saves 43 µg (-23% -> 142 µg)
+      purifier: 70, // Adding DIY Corsi-Rosenthal box: saves 70 µg (-38%)
+      coils: 25     // Replacing mosquito coil with net: saves 25 µg (-14%)
+    };
 
     function updateSim() {
       const windowsClosed = document.getElementById('toggle-windows').checked;
       const hasPurifier = document.getElementById('toggle-purifier').checked;
       const noCoils = document.getElementById('toggle-coils').checked;
-      
-      const dose = computeDose(windowsClosed, hasPurifier, noCoils);
-      const pct = Math.round(((dose - baseline) / baseline) * 100);
-      
-      document.getElementById('sim-dose').textContent = dose + ' µg';
-      
+
+      let saved = 0;
+      if (windowsClosed) saved += IMPACT_VALUES.windows;
+      if (hasPurifier) saved += IMPACT_VALUES.purifier;
+      if (noCoils) saved += IMPACT_VALUES.coils;
+
+      const currentDose = Math.max(30, BASELINE_DOSE - saved);
+      const pct = Math.round(((currentDose - BASELINE_DOSE) / BASELINE_DOSE) * 100);
+
+      document.getElementById('sim-dose').textContent = currentDose + ' µg';
+
+      const deltaEl = document.getElementById('sim-delta');
+      const doseEl = document.getElementById('sim-dose');
+
       if (pct < 0) {
-        document.getElementById('sim-delta').textContent = pct + '% from baseline';
-        document.getElementById('sim-dose').style.color = 'var(--accent)';
+        deltaEl.textContent = pct + '% reduction from baseline';
+        deltaEl.style.color = 'var(--accent)';
+        doseEl.style.color = 'var(--accent)';
       } else {
-        document.getElementById('sim-delta').textContent = '';
-        document.getElementById('sim-dose').style.color = 'var(--danger)';
+        deltaEl.textContent = 'Baseline exposure';
+        deltaEl.style.color = 'var(--text-secondary)';
+        doseEl.style.color = 'var(--danger)';
       }
     }
 
-    document.getElementById('toggle-windows').addEventListener('change', updateSim);
-    document.getElementById('toggle-purifier').addEventListener('change', updateSim);
-    document.getElementById('toggle-coils').addEventListener('change', updateSim);
+    const toggleIds = ['toggle-windows', 'toggle-purifier', 'toggle-coils'];
+    toggleIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('change', updateSim);
+      }
+    });
 
-    // Initialize
-    document.getElementById('sim-dose').textContent = baseline + ' µg';
+    // Make clicking the text or entire row toggle the corresponding checkbox
+    document.querySelectorAll('.sim-row').forEach(row => {
+      row.addEventListener('click', (e) => {
+        // If clicking directly on slider or input, native browser event handles it
+        if (e.target.tagName === 'INPUT' || e.target.classList.contains('slider')) return;
+        const input = row.querySelector('input[type="checkbox"]');
+        if (input && e.target !== input) {
+          input.checked = !input.checked;
+          updateSim();
+        }
+      });
+    });
+
+    // Initialize display
+    updateSim();
 
     // Waitlist form (client-side only for now)
     function handleSubmit(e) {
@@ -732,6 +759,19 @@
       document.getElementById('waitlist-success').style.display = 'block';
       e.target.style.display = 'none';
     }
+
+    // --- Automatically remove any injected Netlify badge / HUD iframe ---
+    function removeNetlifyBadge() {
+      const badge = document.getElementById('nl-badge-frame');
+      if (badge) badge.remove();
+      document.querySelectorAll('iframe[src*="netlify"], #nl-badge-frame, netlify-drawer, [id*="nl-badge"]').forEach(el => el.remove());
+    }
+    removeNetlifyBadge();
+    const observer = new MutationObserver(removeNetlifyBadge);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    window.addEventListener('load', removeNetlifyBadge);
+    setTimeout(removeNetlifyBadge, 500);
+    setTimeout(removeNetlifyBadge, 1500);
   </script>
 </body>
 </html>
