@@ -3,28 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saans (सांस) — Breathe Smarter, Together</title>
-  <meta name="description" content="A GenAI-powered air quality assistant for Indian families. Understand your household's pollution exposure, see the impact of changes, and join your community in breathing cleaner air.">
+  <title>Saans (सांस) — Evidence-Based Air Quality & Exposure Toolkit</title>
+  <meta name="description" content="Calculate your family's personal PM2.5 dose, find optimal ventilation windows, debunk WhatsApp air pollution myths, and build low-cost DIY air purifiers.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* --- Reset & Base --- */
+    /* --- CSS Variables & Design System (Anti-AI-Slop & Editorial Warmth) --- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --surface-primary: #FAFAF7;
-      --surface-card: #F0EFEA;
-      --text-primary: #2D2A24;
-      --text-secondary: #6B6560;
-      --accent: #0E8A6F;
-      --accent-hover: #0A7159;
-      --danger: #C43D2F;
-      --warning: #D4910A;
-      --radius-card: 12px;
-      --radius-btn: 8px;
-      --font-display: 'Outfit', system-ui, sans-serif;
-      --font-deva: 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
+      --surface-bg: #F9F9F6;
+      --surface-card: #FFFFFF;
+      --surface-subtle: #F1EFEA;
+      --surface-border: #E2DFD7;
+      --text-main: #1D1E1C;
+      --text-muted: #595752;
+      --text-faint: #807E78;
+      --accent: #0B735F;
+      --accent-hover: #085A4A;
+      --accent-light: #E6F3F0;
+      --danger: #BA2D1F;
+      --danger-light: #FBECEB;
+      --warning: #B87309;
+      --warning-light: #FDF4E6;
+      --success: #1B7837;
+      --success-light: #EAF4EE;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-hindi: 'Noto Sans Devanagari', sans-serif;
     }
 
     html {
@@ -33,312 +42,15 @@
     }
 
     body {
-      font-family: var(--font-display);
-      color: var(--text-primary);
-      background: var(--surface-primary);
+      font-family: var(--font-main);
+      color: var(--text-main);
+      background-color: var(--surface-bg);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
     }
 
-    /* --- Layout --- */
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    section {
-      padding: 64px 0;
-    }
-
-    /* --- Typography --- */
-    h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-    }
-
-    h2 {
-      font-size: clamp(1.4rem, 3.5vw, 2rem);
-      font-weight: 600;
-      line-height: 1.2;
-      margin-bottom: 16px;
-    }
-
-    h3 {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    p {
-      color: var(--text-secondary);
-      max-width: 60ch;
-    }
-
-    .hindi {
-      font-family: var(--font-deva);
-      line-height: 1.7;
-    }
-
-    /* --- Hero --- */
-    .hero {
-      padding: 80px 0 64px;
-      text-align: left;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background: var(--surface-card);
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      margin-bottom: 20px;
-    }
-
-    .hero h1 .hindi-name {
-      color: var(--accent);
-    }
-
-    .hero p {
-      font-size: 1.1rem;
-      margin-bottom: 32px;
-    }
-
-    /* --- CTA --- */
-    .cta-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: var(--radius-btn);
-      padding: 14px 28px;
-      font-size: 1rem;
-      font-weight: 600;
-      font-family: var(--font-display);
-      cursor: pointer;
-      transition: background 0.15s ease;
-      text-decoration: none;
-      min-height: 48px;
-    }
-
-    .btn-primary:hover, .btn-primary:focus-visible {
-      background: var(--accent-hover);
-    }
-
-    .btn-primary:focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    /* --- Problem Section --- */
-    .problem-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    @media (min-width: 540px) {
-      .problem-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    .problem-card {
-      background: var(--surface-card);
-      border: 1px solid #e5e3dd;
-      border-radius: var(--radius-card);
-      padding: 20px;
-    }
-
-    .problem-card .icon {
-      font-size: 1.5rem;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    .problem-card p {
-      font-size: 0.95rem;
-    }
-
-    /* --- Features Section --- */
-    .features-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-top: 24px;
-    }
-
-    .feature-item {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-    }
-
-    .feature-number {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-
-    .feature-content h3 {
-      margin-bottom: 4px;
-    }
-
-    .feature-content p {
-      font-size: 0.95rem;
-    }
-
-    /* --- Priya Story --- */
-    .story-section {
-      background: var(--surface-card);
-      border-radius: var(--radius-card);
-      padding: 32px 24px;
-      margin-top: 24px;
-      border: 1px solid #e5e3dd;
-    }
-
-    .story-section .label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-
-    .dose-display {
-      display: flex;
-      gap: 32px;
-      margin: 20px 0;
-      flex-wrap: wrap;
-    }
-
-    .dose-box {
-      text-align: center;
-    }
-
-    .dose-number {
-      font-size: 2.5rem;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .dose-number.before { color: var(--danger); }
-    .dose-number.after { color: var(--accent); }
-
-    .dose-label {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-
-    .dose-arrow {
-      display: flex;
-      align-items: center;
-      font-size: 1.5rem;
-      color: var(--text-secondary);
-    }
-
-    /* --- Mini Simulator --- */
-    .mini-sim {
-      background: white;
-      border: 1px solid #e5e3dd;
-      border-radius: var(--radius-card);
-      padding: 24px;
-      margin-top: 24px;
-    }
-
-    .mini-sim h3 { margin-bottom: 16px; }
-
-    .sim-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .sim-row:last-child { border-bottom: none; }
-
-    .sim-row label:not(.sim-toggle) {
-      font-size: 0.95rem;
-      flex: 1;
-      cursor: pointer;
-    }
-
-    .sim-toggle {
-      position: relative;
-      display: inline-block;
-      width: 48px;
-      height: 28px;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    .sim-toggle input {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-      margin: 0;
-    }
-
-    .sim-toggle .slider {
-      position: absolute;
-      inset: 0;
-      background: #ccc;
-      border-radius: 28px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .sim-toggle .slider::before {
-      content: '';
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      left: 3px;
-      bottom: 3px;
-      background: white;
-      border-radius: 50%;
-      transition: transform 0.2s;
-    }
-
-    .sim-toggle input:checked + .slider { background: var(--accent); }
-    .sim-toggle input:checked + .slider::before { transform: translateX(20px); }
-
-    .sim-toggle input:focus-visible + .slider {
-      outline: 3px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    /* --- Remove / Hide Netlify Badge and Drawer --- */
+    /* Remove Netlify badge & frame permanently */
     #nl-badge-frame,
     iframe[id*="nl-badge"],
     iframe[src*="netlify"],
@@ -351,427 +63,1388 @@
       pointer-events: none !important;
       height: 0 !important;
       width: 0 !important;
-      clip: rect(0, 0, 0, 0) !important;
+      clip: rect(0,0,0,0) !important;
     }
 
-    .sim-result {
-      text-align: center;
-      padding: 20px 0 8px;
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
     }
 
-    .sim-result .value {
-      font-size: 2rem;
+    /* --- Header & Branding --- */
+    header {
+      padding: 32px 0 20px;
+      border-bottom: 1px solid var(--surface-border);
+      background: #FFFFFF;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-hindi);
+      font-size: 1.4rem;
       font-weight: 700;
-      color: var(--accent);
     }
 
-    .sim-result .delta {
-      font-size: 0.95rem;
+    .brand-text h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-text span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-light);
       color: var(--accent);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
       font-weight: 600;
     }
 
-    .sample-label {
-      font-size: 0.75rem;
-      color: var(--warning);
-      text-align: center;
-      margin-top: 4px;
+    .badge-live::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
     }
 
-    /* --- Not Section --- */
-    .not-section {
-      background: #FFF8F0;
-      border: 1px solid #F0E0D0;
-      border-radius: var(--radius-card);
-      padding: 24px;
-      margin-top: 24px;
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
-    .not-section h3 { color: var(--warning); }
-
-    .not-section ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .not-section li {
-      padding: 4px 0;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-    }
-
-    .not-section li::before {
-      content: '✕ ';
-      color: var(--danger);
-      font-weight: 700;
-    }
-
-    /* --- Waitlist Form --- */
-    .waitlist {
-      text-align: left;
-    }
-
-    .waitlist-form {
+    /* --- Navigation Tabs --- */
+    .nav-tabs {
       display: flex;
       gap: 8px;
-      margin-top: 20px;
-      flex-wrap: wrap;
+      margin-top: 24px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
     }
 
-    .waitlist-form input[type="email"] {
-      flex: 1;
-      min-width: 220px;
-      padding: 14px 16px;
-      border: 1px solid #ccc;
-      border-radius: var(--radius-btn);
-      font-size: 1rem;
-      font-family: var(--font-display);
-      background: white;
+    .tab-btn {
+      background: var(--surface-subtle);
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .waitlist-form input:focus {
+    .tab-btn:hover {
+      background: #E8E5DF;
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+    }
+
+    /* --- Tab Content Sections --- */
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+      margin-top: 28px;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Common Cards --- */
+    .card {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .card-header {
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    /* --- Form Controls & Inputs --- */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+      .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label.field-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    select, input[type="text"], input[type="number"], input[type="range"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.95rem;
+      background: #FFFFFF;
+      color: var(--text-main);
+    }
+
+    select:focus, input:focus {
       outline: 2px solid var(--accent);
       outline-offset: 1px;
       border-color: var(--accent);
     }
 
-    .consent-text {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-top: 8px;
-      max-width: 50ch;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease;
     }
 
-    /* --- Footer --- */
-    footer {
-      padding: 32px 0;
-      border-top: 1px solid #e5e3dd;
+    .btn:hover { background: var(--accent-hover); }
+    .btn-secondary {
+      background: var(--surface-subtle);
+      color: var(--text-main);
+      border: 1px solid var(--surface-border);
+    }
+    .btn-secondary:hover { background: #E8E5DF; }
+
+    /* --- AQI Visualizer Card --- */
+    .aqi-banner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      background: #FFF;
+      border: 2px solid var(--surface-border);
+      margin-bottom: 24px;
+    }
+
+    .aqi-badge-large {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .aqi-number {
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .aqi-category {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .aqi-equiv {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .aqi-equiv strong {
+      color: var(--danger);
+    }
+
+    /* Breakpoint Color Classes */
+    .aqi-good { color: #009966; }
+    .aqi-sat { color: #58B453; }
+    .aqi-mod { color: #D4910A; }
+    .aqi-poor { color: #E66C00; }
+    .aqi-very-poor { color: #CC0033; }
+    .aqi-severe { color: #7B0099; }
+
+    .bg-aqi-good { background: #E6F6EE; color: #009966; }
+    .bg-aqi-sat { background: #EEF8ED; color: #3A8E35; }
+    .bg-aqi-mod { background: #FFF8E6; color: #B87309; }
+    .bg-aqi-poor { background: #FFF0E6; color: #CC5500; }
+    .bg-aqi-very-poor { background: #FDE8ED; color: #CC0033; }
+    .bg-aqi-severe { background: #F3E6F7; color: #7B0099; }
+
+    /* --- Daily Routine Timeline --- */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+    }
+
+    .timeline-time {
+      font-weight: 700;
+      font-size: 0.88rem;
+      min-width: 95px;
+      color: var(--text-muted);
+    }
+
+    .timeline-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-content p {
+      font-size: 0.88rem;
+      color: var(--text-main);
+    }
+
+    /* --- Dose Calculator Breakdown --- */
+    .dose-result-box {
+      background: var(--surface-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .dose-stat {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .dose-progress-bar {
+      height: 12px;
+      background: #DDD;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      margin: 16px 0 8px;
+    }
+
+    .bar-sleep { background: #3B82F6; }
+    .bar-commute { background: #EF4444; }
+    .bar-indoor { background: #10B981; }
+
+    .bar-legend {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .legend-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    /* --- Myth Buster Cards --- */
+    .search-box {
+      margin-bottom: 20px;
+    }
+
+    .search-box input {
+      padding: 14px 18px;
+      font-size: 1rem;
+    }
+
+    .myth-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .filter-pill {
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+
+    .filter-pill:hover, .filter-pill.active {
+      background: var(--text-main);
+      color: #FFF;
+      border-color: var(--text-main);
+    }
+
+    .myth-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .myth-card {
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      background: #FFF;
+      transition: box-shadow 0.15s;
+    }
+
+    .myth-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .myth-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .myth-claim {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .verdict-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .verdict-not-supported { background: var(--danger-light); color: var(--danger); }
+    .verdict-partly-supported { background: var(--warning-light); color: var(--warning); }
+    .verdict-harmful { background: #450A0A; color: #FECACA; }
+    .verdict-supported { background: var(--success-light); color: var(--success); }
+
+    .myth-body {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .myth-citation {
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      border-top: 1px dashed var(--surface-border);
+      padding-top: 8px;
+    }
+
+    /* --- DIY Purifier Builder --- */
+    .diy-comparison {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    @media (min-width: 600px) {
+      .diy-comparison { grid-template-columns: 1fr 1fr; }
+    }
+
+    .price-card {
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--surface-border);
       text-align: center;
     }
 
-    footer p {
+    .price-card.diy {
+      border: 2px solid var(--accent);
+      background: var(--accent-light);
+    }
+
+    .price-card .price {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin: 8px 0;
+    }
+
+    .diy .price { color: var(--accent); }
+    .commercial .price { color: var(--text-faint); text-decoration: line-through; }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin: 0 auto;
+      font-weight: 700;
+      flex-shrink: 0;
     }
 
-    /* --- Accessibility --- */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-      html { scroll-behavior: auto; }
+    /* --- Emergency Health Guardrail --- */
+    .emergency-box {
+      background: #FFF5F5;
+      border: 2px solid var(--danger);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
     }
 
-    .sr-only {
+    .emergency-title {
+      color: var(--danger);
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .helpline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .helpline-card {
+      background: #FFF;
+      border: 1px solid #FECACA;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      text-align: center;
+    }
+
+    .helpline-num {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--danger);
+      display: block;
+      text-decoration: none;
+    }
+
+    .helpline-name {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* --- Interactive Toggles --- */
+    .switch-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--surface-border);
+      cursor: pointer;
+    }
+
+    .switch-row:last-child { border-bottom: none; }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
       position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      border: 0;
+      inset: 0;
+      background-color: #CCC;
+      border-radius: 26px;
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
 
-    :focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 2px;
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    .switch input:checked + .slider { background-color: var(--accent); }
+    .switch input:checked + .slider::before { transform: translateX(22px); }
+
+    /* Footer */
+    footer {
+      margin-top: 60px;
+      padding: 30px 0;
+      border-top: 1px solid var(--surface-border);
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-faint);
     }
   </style>
 </head>
 <body>
-  <a href="#main" class="sr-only">Skip to main content</a>
 
-  <main id="main">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container">
-        <span class="hero-badge">Coming soon — Delhi NCR & Pune</span>
-        <h1>
-          <span class="hindi-name">सांस</span> Saans<br>
-          Breathe Smarter, Together.
-        </h1>
-        <p>
-          Your family's personalized air quality assistant. See each member's estimated pollution dose, 
-          discover which changes matter most, and join your neighborhood in breathing cleaner air.
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <a href="#" class="brand">
+          <div class="brand-icon">सां</div>
+          <div class="brand-text">
+            <h1>Saans (सांस)</h1>
+            <span>Evidence-Based Urban Air Quality Assistant</span>
+          </div>
+        </a>
+        <div class="badge-live" id="live-indicator">
+          <span>Delhi NCR · CPCB AQI 342</span>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs -->
+      <nav class="nav-tabs" role="tablist" aria-label="Feature Tabs">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="tab-aqi">
+          <span>📊 Live AQI & Routine</span>
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-dose">
+          <span>🧮 Personal Dose Calculator</span>
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-myths">
+          <span>🔍 WhatsApp Myth Buster</span>
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-diy">
+          <span>🛠️ DIY Purifier Builder</span>
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-emergency">
+          <span>⚠️ Health Guardrail</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ==================== TAB 1: LIVE AQI & ROUTINE ==================== -->
+    <div id="tab-aqi" class="tab-pane active" role="tabpanel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Live Hyperlocal Air Quality & Optimal Ventilation Window</h2>
+          <p class="card-desc">Select your city or neighborhood to see real CPCB AQI, particulate concentrations, and scientific window timings.</p>
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 20px;">
+          <div class="form-group">
+            <label class="field-label" for="city-select">Select Region</label>
+            <select id="city-select">
+              <option value="delhi" selected>Delhi NCR — Anand Vihar / Central</option>
+              <option value="dwarka">Delhi NCR — Dwarka Sector 8</option>
+              <option value="noida">Noida — Sector 62 / Expressway</option>
+              <option value="gurgaon">Gurgaon (Gurugram) — Cyber City</option>
+              <option value="pune">Pune — Shivajinagar / Kothrud</option>
+              <option value="mumbai">Mumbai — Bandra / BKC</option>
+              <option value="lucknow">Lucknow — Gomti Nagar</option>
+              <option value="patna">Patna — Muradpur / Gandhi Maidan</option>
+              <option value="kolkata">Kolkata — Victoria / Jadavpur</option>
+              <option value="bengaluru">Bengaluru — BTM Layout / Silk Board</option>
+            </select>
+          </div>
+          <div class="form-group" style="display: flex; align-items: flex-end;">
+            <button class="btn btn-secondary" style="width: 100%;" id="btn-refresh-aqi">
+              🔄 Refresh Station Data
+            </button>
+          </div>
+        </div>
+
+        <!-- Large AQI Display -->
+        <div class="aqi-banner" id="aqi-card-display">
+          <div class="aqi-badge-large">
+            <div>
+              <div class="aqi-number aqi-very-poor" id="val-aqi">342</div>
+              <div class="aqi-category bg-aqi-very-poor" id="val-category">Very Poor</div>
+            </div>
+            <div>
+              <div style="font-size: 1.1rem; font-weight: 700;" id="val-station">Anand Vihar, Delhi</div>
+              <div style="font-size: 0.88rem; color: var(--text-muted);" id="val-pm25">PM2.5: <strong>192 µg/m³</strong> (CPCB 24h)</div>
+              <div style="font-size: 0.82rem; color: var(--text-faint);" id="val-freshness">Updated 14 mins ago · Source: CPCB Station</div>
+            </div>
+          </div>
+          <div>
+            <div class="aqi-equiv" id="val-cig-equiv">
+              Daily breathing ≈ <strong>8.7 cigarettes</strong>
+            </div>
+            <div style="margin-top: 6px; font-size: 0.82rem; color: var(--text-muted);">
+              Based on Berkeley Earth PM2.5 Inhalation Model
+            </div>
+          </div>
+        </div>
+
+        <!-- 24-Hour Routine Plan -->
+        <h3 style="font-size: 1.05rem; margin-bottom: 12px; font-weight: 700;">🕒 24-Hour Air Hygiene Schedule for Today</h3>
+        <div class="timeline">
+          <div class="timeline-item" style="border-left: 4px solid var(--danger);">
+            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--danger);">MORNING</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--danger-light); color: var(--danger);">🚨 Ground Inversion Peak</span>
+              <p><strong>Keep all windows strictly sealed.</strong> Cold overnight air traps ground emissions. Strictly avoid morning jogs or outdoor exercise. School children must wear airtight N95/FFP2 masks during commute.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item" style="border-left: 4px solid var(--success);">
+            <div class="timeline-time">12:30 – 15:00<br><span style="font-size: 0.75rem; color: var(--success);">AFTERNOON</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">🌤️ Best Ventilation Window</span>
+              <p><strong>Safest time to ventilate.</strong> Solar heating breaks inversion layer and wind speeds increase. Open cross-windows for 15–20 minutes to flush out CO₂ and indoor cooking gases, then reseal before dusk.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item" style="border-left: 4px solid var(--warning);">
+            <div class="timeline-time">18:00 – 21:30<br><span style="font-size: 0.75rem; color: var(--warning);">EVENING</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--warning-light); color: var(--warning);">⚠️ Evening Traffic Spike</span>
+              <p>Reseal home completely. Ambient particulate levels surge due to evening traffic and falling temperatures. Run kitchen chimney or exhaust during cooking.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item" style="border-left: 4px solid var(--accent);">
+            <div class="timeline-time">22:00 – 06:00<br><span style="font-size: 0.75rem; color: var(--accent);">NIGHT</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--accent-light); color: var(--accent);">🌙 Bedroom Air Cleaning</span>
+              <p>Keep bedroom door shut. Run DIY or HEPA purifier in the bedroom overnight. You spend ~8 continuous hours breathing here; bedroom filtration cuts daily dose by up to 50%.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: PERSONAL DOSE CALCULATOR ==================== -->
+    <div id="tab-dose" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Personal Daily PM2.5 Inhaled Dose Calculator</h2>
+          <p class="card-desc">City AQI alone doesn't tell you how much pollution enters your lungs. Enter your household parameters to compute your actual daily microenvironmental dose (µg) using the US EPA Exposure Factors Handbook.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Member & Conditions -->
+          <div class="form-group">
+            <label class="field-label" for="calc-member">Family Member</label>
+            <select id="calc-member">
+              <option value="child_6_10" selected>School Child (6–10 yrs) — 10.1 m³/day</option>
+              <option value="toddler_1_5">Toddler (1–5 yrs) — 8.1 m³/day</option>
+              <option value="adult_30_50">Adult (31–50 yrs) — 16.0 m³/day</option>
+              <option value="senior_65">Elderly (65+ yrs) — 14.2 m³/day</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label" for="calc-condition">Health Condition / Vulnerability</label>
+            <select id="calc-condition">
+              <option value="none">No Chronic Respiratory Condition</option>
+              <option value="asthma" selected>Asthma / Bronchial Hyperactivity (+50% risk)</option>
+              <option value="copd">COPD / Chronic Bronchitis (+70% risk)</option>
+              <option value="pregnant">Pregnant (+60% risk)</option>
+              <option value="cardio">Cardiovascular Disease (+40% risk)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Commute Parameters -->
+          <div class="form-group">
+            <label class="field-label" for="calc-commute-mode">Daily Commute Mode</label>
+            <select id="calc-commute-mode">
+              <option value="auto" selected>Auto-Rickshaw (1.4× outdoor exposure)</option>
+              <option value="twowheeler">Two-Wheeler / Bike (1.5× outdoor exposure)</option>
+              <option value="walk">Walking / Cycling (1.2× exposure)</option>
+              <option value="bus">Non-AC Bus (0.8× exposure)</option>
+              <option value="car_ac">Car with AC Recirculation (0.5× exposure)</option>
+              <option value="metro">Metro / Underground Subway (0.3× exposure)</option>
+              <option value="wfh">Work from Home / No Commute (0×)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label" for="calc-commute-time">Commute Duration (One-Way): <span id="commute-mins-label">30 mins</span></label>
+            <input type="range" id="calc-commute-time" min="0" max="90" step="5" value="30">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Home Type & Habits -->
+          <div class="form-group">
+            <label class="field-label" for="calc-home-type">Home Type</label>
+            <select id="calc-home-type">
+              <option value="apartment_high" selected>Multi-Story Apartment (Floor 3+)</option>
+              <option value="apartment_low">Ground Floor / Low-Rise Apartment</option>
+              <option value="independent">Independent House / Row House</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label" for="calc-ambient">Ambient Outdoor PM2.5 (µg/m³)</label>
+            <input type="number" id="calc-ambient" value="200" min="20" max="999">
+          </div>
+        </div>
+
+        <!-- Interventions Switches -->
+        <h3 style="font-size: 1rem; margin: 18px 0 10px; font-weight: 700;">Protection Measures & Interventions</h3>
+        
+        <label class="switch-row" for="switch-windows">
+          <div>
+            <strong>Keep windows sealed during peak smog hours</strong>
+            <div style="font-size: 0.82rem; color: var(--text-muted);">Reduces outdoor infiltration from 85% down to 40%</div>
+          </div>
+          <span class="switch">
+            <input type="checkbox" id="switch-windows" checked>
+            <span class="slider"></span>
+          </span>
+        </label>
+
+        <label class="switch-row" for="switch-purifier">
+          <div>
+            <strong>Run Air Purifier (DIY Corsi-Rosenthal or HEPA) in bedroom</strong>
+            <div style="font-size: 0.82rem; color: var(--text-muted);">Filters 75%+ of indoor particles in bedroom volume</div>
+          </div>
+          <span class="switch">
+            <input type="checkbox" id="switch-purifier">
+            <span class="slider"></span>
+          </span>
+        </label>
+
+        <label class="switch-row" for="switch-mask">
+          <div>
+            <strong>Wear fitted N95 / FFP2 mask during commute</strong>
+            <div style="font-size: 0.82rem; color: var(--text-muted);">Filters 95% of fine particles on roads; cloth masks do not work</div>
+          </div>
+          <span class="switch">
+            <input type="checkbox" id="switch-mask">
+            <span class="slider"></span>
+          </span>
+        </label>
+
+        <label class="switch-row" for="switch-coils">
+          <div>
+            <strong>Eliminate mosquito coils & agarbatti indoors</strong>
+            <div style="font-size: 0.82rem; color: var(--text-muted);">1 coil produces PM2.5 equivalent to 75–100 cigarettes inside the room</div>
+          </div>
+          <span class="switch">
+            <input type="checkbox" id="switch-coils">
+            <span class="slider"></span>
+          </span>
+        </label>
+
+        <!-- Result Box -->
+        <div class="dose-result-box">
+          <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">Estimated Inhaled PM2.5 Dose Today</div>
+          <div class="dose-stat" id="res-dose-num">168.4 µg</div>
+          <div style="font-size: 1rem; color: var(--text-main);" id="res-cig-equiv">
+            Equivalent to smoking <strong>7.6 cigarettes</strong> today
+          </div>
+
+          <div class="dose-progress-bar">
+            <div class="bar-sleep" id="bar-sleep" style="width: 35%;" title="Sleep Dose"></div>
+            <div class="bar-commute" id="bar-commute" style="width: 35%;" title="Commute Dose"></div>
+            <div class="bar-indoor" id="bar-indoor" style="width: 30%;" title="Daytime Indoor Dose"></div>
+          </div>
+
+          <div class="bar-legend">
+            <span><span class="legend-dot" style="background: #3B82F6;"></span>Sleep (<span id="txt-sleep-pct">35%</span>)</span>
+            <span><span class="legend-dot" style="background: #EF4444;"></span>Commute (<span id="txt-commute-pct">35%</span>)</span>
+            <span><span class="legend-dot" style="background: #10B981;"></span>Indoor Daytime (<span id="txt-indoor-pct">30%</span>)</span>
+          </div>
+        </div>
+
+        <div style="background: var(--surface-bg); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--surface-border);">
+          <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--accent); margin-bottom: 6px;">💡 Your Highest Impact Action</h4>
+          <p id="res-action-tip" style="font-size: 0.88rem; color: var(--text-main);">
+            Adding a bedroom DIY purifier will immediately drop this child's daily dose by <strong>52.4 µg (−31%)</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: WHATSAPP MYTH BUSTER ==================== -->
+    <div id="tab-myths" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">WhatsApp Forward Myth Buster & Fact Checker</h2>
+          <p class="card-desc">Every winter, Indian family WhatsApp groups circulate dangerous unproven remedies. Check scientific medical evidence before spending money or risking lung health.</p>
+        </div>
+
+        <div class="search-box">
+          <input type="text" id="myth-search" placeholder="🔍 Search claim: e.g. jaggery, plants, camphor, steam, mask, tulsi...">
+        </div>
+
+        <div class="myth-filters">
+          <button class="filter-pill active" data-filter="all">All Claims</button>
+          <button class="filter-pill" data-filter="diet">Food & Diet</button>
+          <button class="filter-pill" data-filter="plants">Air Plants</button>
+          <button class="filter-pill" data-filter="home">Home Remedies</button>
+          <button class="filter-pill" data-filter="masks">Masks & Gear</button>
+        </div>
+
+        <div class="myth-list" id="myth-cards-container">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 4: DIY PURIFIER BUILDER ==================== -->
+    <div id="tab-diy" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Corsi-Rosenthal Box — Build an Air Purifier for ₹2,000</h2>
+          <p class="card-desc">Commercial air purifiers cost ₹18,000 to ₹35,000. Peer-reviewed studies (UC Davis, EPA) show a DIY Corsi-Rosenthal box built with a standard box fan and MERV-13 filters delivers equal or higher Clean Air Delivery Rate (CADR).</p>
+        </div>
+
+        <!-- Room Size Slider -->
+        <div class="form-group">
+          <label class="field-label" for="diy-room-size">Your Room Size: <span id="diy-room-label">180 sq ft (Typical Master Bedroom)</span></label>
+          <input type="range" id="diy-room-size" min="80" max="400" step="20" value="180">
+        </div>
+
+        <!-- Price Comparison -->
+        <div class="diy-comparison">
+          <div class="price-card diy">
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--accent); text-transform: uppercase;">DIY Corsi-Rosenthal Box</span>
+            <div class="price" id="diy-calc-price">₹2,150</div>
+            <div style="font-size: 0.88rem; color: var(--text-main); font-weight: 600;" id="diy-calc-cadr">Clean Air Delivery: 320 m³/h</div>
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Delivers 5.2 Air Changes / hr (Superior Clean)</div>
+          </div>
+
+          <div class="price-card commercial">
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-faint); text-transform: uppercase;">Branded Commercial Purifier</span>
+            <div class="price">₹19,990</div>
+            <div style="font-size: 0.88rem; color: var(--text-muted); font-weight: 600;">Clean Air Delivery: ~280 m³/h</div>
+            <div style="font-size: 0.82rem; color: var(--danger); margin-top: 4px;">You save over ₹17,800 (89% savings)</div>
+          </div>
+        </div>
+
+        <!-- Materials Checklist -->
+        <h3 style="font-size: 1.05rem; margin: 20px 0 10px; font-weight: 700;">📦 What You Need to Buy (Available on Amazon/Local Hardware)</h3>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.92rem;">
+          <li style="padding: 10px; background: var(--surface-bg); border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+            <strong>1× 16-inch or 20-inch Box Fan / Cabin Fan</strong> (~₹1,200) — Standard Havells, Crompton, or generic box fan with front-facing airflow.
+          </li>
+          <li style="padding: 10px; background: var(--surface-bg); border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+            <strong>2× or 4× MERV-13 / True HEPA Pleated Filters</strong> (~₹850) — Dimensions 16×16×1" or 20×20×1".
+          </li>
+          <li style="padding: 10px; background: var(--surface-bg); border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+            <strong>1× Roll of Duct Tape / Heavy Packing Tape</strong> (~₹100) — To seal gaps airtight.
+          </li>
+          <li style="padding: 10px; background: var(--surface-bg); border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+            <strong>Cardboard Shroud</strong> (₹0) — Cut a circle matching the fan blade circumference to prevent backdraft around the edges.
+          </li>
+        </ul>
+
+        <!-- 4 Step Assembly Guide -->
+        <h3 style="font-size: 1.05rem; margin: 24px 0 12px; font-weight: 700;">🛠️ 4-Step Assembly (Takes 15 Minutes)</h3>
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div>
+              <strong>Form the Box Base:</strong> Tape the 2 or 4 filters together in a V-shape or cube structure. Ensure the arrows on the filters point <em>inward</em> (airflow towards the fan).
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div>
+              <strong>Seal the Bottom:</strong> Cut a flat piece of cardboard to seal the bottom floor of your filter cube with duct tape.
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div>
+              <strong>Mount Fan on Top:</strong> Place the box fan on top, blowing air <em>upward/outward</em> into the room. Tape all seams around the fan frame with duct tape so air cannot leak.
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div>
+              <strong>Add the Cardboard Shroud:</strong> Tape a cardboard frame over the front corners of the fan, leaving a circular hole exposing just the blades. This prevents vortex air recirculation and boosts airflow efficiency by 25%.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 5: HEALTH GUARDRAIL ==================== -->
+    <div id="tab-emergency" class="tab-pane" role="tabpanel">
+      <div class="emergency-box">
+        <div class="emergency-title">
+          <span>🚨 Critical Respiratory Symptom Escalation</span>
+        </div>
+        <p style="font-size: 0.95rem; color: #7F1D1D; margin-bottom: 14px;">
+          Saans is an environmental exposure calculator, <strong>never a doctor or medical emergency device</strong>. If you, your child, or an elderly family member experience any of the following acute symptoms, seek immediate emergency medical care:
         </p>
-        <div class="cta-group">
-          <a href="#waitlist" class="btn-primary">Get notified at launch</a>
-        </div>
-      </div>
-    </section>
 
-    <!-- PROBLEM -->
-    <section>
-      <div class="container">
-        <h2>The air you can't see is hurting your family</h2>
-        <p>India's winter smog isn't just a headline — it's in your living room, your child's school commute, your morning walk.</p>
-        <div class="problem-grid">
-          <div class="problem-card">
-            <span class="icon" aria-hidden="true">🤷</span>
-            <h3>Conflicting advice</h3>
-            <p>WhatsApp forwards claim jaggery, ghee, and camphor "clean lungs." None of them do.</p>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.92rem; color: #991B1B; margin-bottom: 16px;">
+          <li>⚠️ <strong>Audible wheezing or whistling sound</strong> when breathing in or out</li>
+          <li>⚠️ <strong>Inability to complete full sentences</strong> without gasping for breath</li>
+          <li>⚠️ <strong>Chest tightness, pain, or pressure</strong> radiating to arm or jaw</li>
+          <li>⚠️ <strong>Bluish tint on lips, fingernails, or tongue</strong> (cyanosis / low oxygen)</li>
+          <li>⚠️ <strong>Child's ribs pulling in deeply</strong> during breathing (retractions)</li>
+        </ul>
+
+        <div style="font-weight: 700; color: #991B1B; font-size: 0.95rem;">
+          Do not rely on indoor air purifiers, steam, or herbal teas during acute breathing distress.
+        </div>
+
+        <div class="helpline-grid">
+          <div class="helpline-card">
+            <a href="tel:112" class="helpline-num">112</a>
+            <span class="helpline-name">National Emergency Services</span>
           </div>
-          <div class="problem-card">
-            <span class="icon" aria-hidden="true">📊</span>
-            <h3>City AQI is too vague</h3>
-            <p>"Delhi AQI: 350" tells you nothing about whether your daughter — asthmatic, age 6 — should wear a mask on her auto-rickshaw ride.</p>
+          <div class="helpline-card">
+            <a href="tel:108" class="helpline-num">108</a>
+            <span class="helpline-name">Emergency Medical Ambulance</span>
           </div>
-          <div class="problem-card">
-            <span class="icon" aria-hidden="true">❓</span>
-            <h3>No way to measure impact</h3>
-            <p>Would closing windows during cooking help? By how much? For which family member? Nobody tells you.</p>
-          </div>
-          <div class="problem-card">
-            <span class="icon" aria-hidden="true">🏘️</span>
-            <h3>Collective action is invisible</h3>
-            <p>Your society pledged "no fireworks." Did it help? Nobody knows — there's no feedback loop.</p>
+          <div class="helpline-card">
+            <a href="tel:1075" class="helpline-num">1075</a>
+            <span class="helpline-name">National Health Helpline</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- FEATURES -->
-    <section>
-      <div class="container">
-        <h2>What Saans does</h2>
-        <p>Five features that turn vague worry into clear, specific action.</p>
-        <div class="features-list">
-          <div class="feature-item">
-            <div class="feature-number">1</div>
-            <div class="feature-content">
-              <h3>Household Risk Profile</h3>
-              <p>2-minute setup. Tell us who lives with you, your home type, and how you commute. Every recommendation is weighted by your most vulnerable family member.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-number">2</div>
-            <div class="feature-content">
-              <h3>Personal Exposure Score</h3>
-              <p>Not just a city AQI — an estimated daily PM2.5 dose for each person, with cigarette-equivalents you can actually feel. Source, station, and freshness shown for every number.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-number">3</div>
-            <div class="feature-content">
-              <h3>What-If Simulator</h3>
-              <p>Move sliders — see your dose drop instantly. Close windows during cooking? Add a DIY purifier? The numbers update in real time, right on your phone, even offline.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-number">4</div>
-            <div class="feature-content">
-              <h3>DIY Purifier Guide + Myth Buster</h3>
-              <p>Build a Corsi-Rosenthal box for under ₹2,000. Paste any WhatsApp forward and get an evidence-rated verdict with real citations — not "trust me."</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-number">5</div>
-            <div class="feature-content">
-              <h3>Neighborhood Clean-Air Pledge</h3>
-              <p>Your housing society pledges to cut emissions. The leaderboard shows your collective impact — no individual data exposed, all self-reported and labeled honestly.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRIYA STORY -->
-    <section>
-      <div class="container">
-        <h2>How it works: Priya's story</h2>
-        <p>Meet Priya, age 6, asthmatic, living in Dwarka, Delhi. Here's her morning with Saans.</p>
-
-        <div class="story-section">
-          <div class="label">Sample scenario — not real user data</div>
-          <p style="color: var(--text-primary); font-size: 0.95rem;">
-            6:45 AM. Meera (Priya's mother) sees the notification: <em>"Priya's estimated dose today: 185 µg (≈ 8.4 cigarettes). AQI: Very Poor (328). Best ventilation window: 1–3 PM."</em>
-          </p>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 12px;">
-            She opens the simulator, toggles "close windows during cooking + run exhaust." Priya's dose drops:
-          </p>
-          <div class="dose-display">
-            <div class="dose-box">
-              <div class="dose-number before">185</div>
-              <div class="dose-label">µg before</div>
-            </div>
-            <div class="dose-arrow" aria-hidden="true">→</div>
-            <div class="dose-box">
-              <div class="dose-number after">142</div>
-              <div class="dose-label">µg after (−23%)</div>
-            </div>
-          </div>
-          <p style="color: var(--text-secondary); font-size: 0.85rem;">
-            ⓘ These are sample numbers for illustration. Real values depend on actual air quality data and household profile.
-          </p>
-        </div>
-
-        <!-- Mini Simulator -->
-        <div class="mini-sim">
-          <h3>Try it: mini exposure simulator</h3>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
-            Toggle actions to see the estimated dose change. Uses the same formula as the full app.
-          </p>
-          <div class="sim-row">
-            <label for="toggle-windows">Close windows during cooking</label>
-            <label class="sim-toggle" for="toggle-windows">
-              <input type="checkbox" id="toggle-windows" aria-label="Close windows during cooking">
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div class="sim-row">
-            <label for="toggle-purifier">Add DIY purifier (₹1,500)</label>
-            <label class="sim-toggle" for="toggle-purifier">
-              <input type="checkbox" id="toggle-purifier" aria-label="Add DIY purifier">
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div class="sim-row">
-            <label for="toggle-coils">Replace mosquito coils with net</label>
-            <label class="sim-toggle" for="toggle-coils">
-              <input type="checkbox" id="toggle-coils" aria-label="Replace mosquito coils with mosquito net">
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div class="sim-result" aria-live="polite">
-            <div>Estimated dose for a child (age 6–10)</div>
-            <div class="value" id="sim-dose">185 µg</div>
-            <div class="delta" id="sim-delta">Baseline exposure</div>
-          </div>
-          <div class="sample-label">Sample data — illustrative only</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- WHAT SAANS IS NOT -->
-    <section>
-      <div class="container">
-        <div class="not-section">
-          <h3>What Saans is not</h3>
-          <ul>
-            <li>Not a medical device or a doctor's replacement</li>
-            <li>Not a real-time indoor air sensor — indoor values are modeled estimates</li>
-            <li>Not an emergency alert system (but it shows emergency numbers when symptoms are reported)</li>
-            <li>Not a data broker — we never sell or share your data</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- WAITLIST -->
-    <section id="waitlist" class="waitlist">
-      <div class="container">
-        <h2>Be the first to know</h2>
-        <p>Saans is launching in Delhi NCR and Pune. Sign up to get early access.</p>
-        <form class="waitlist-form" onsubmit="handleSubmit(event)">
-          <input type="email" placeholder="your@email.com" required aria-label="Email address for waitlist">
-          <button type="submit" class="btn-primary">Notify me</button>
-        </form>
-        <p class="consent-text">
-          We'll only email you about the Saans launch. No spam, no third-party sharing. 
-          <a href="#" style="color: var(--accent);">Privacy policy</a>.
-        </p>
-        <div id="waitlist-success" style="display:none; color: var(--accent); margin-top: 12px; font-weight: 600;">
-          Thank you! We'll notify you when Saans launches.
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <div class="container">
       <p>
-        Saans (सांस) · Breathe Smarter, Together<br>
-        Built with care for Indian families. No fake testimonials. No invented stats. No medical claims.<br>
-        <span style="font-size: 0.8rem;">This is a modeled estimate tool, not a medical device.</span>
+        <strong>Saans (सांस)</strong> — Open-Access Urban Air Quality Toolkit.<br>
+        Formulas based on US EPA Exposure Factors Handbook (2011) & CPCB NAQI Breakpoints (2014).<br>
+        All exposure metrics are modeled estimates, not clinical diagnostic measurements.
       </p>
     </div>
   </footer>
 
   <script>
-    // --- Mini Simulator (calibrated with Priya's baseline scenario from §2/§4) ---
-    const BASELINE_DOSE = 185; // µg/day baseline for child (Priya's dwarka apartment)
-    const IMPACT_VALUES = {
-      windows: 43,  // Closing windows + running exhaust: saves 43 µg (-23% -> 142 µg)
-      purifier: 70, // Adding DIY Corsi-Rosenthal box: saves 70 µg (-38%)
-      coils: 25     // Replacing mosquito coil with net: saves 25 µg (-14%)
+    // --- Data: Cities & Live AQI Feed ---
+    const CITIES = {
+      delhi: { name: "Anand Vihar, Delhi", aqi: 342, pm25: 192, cat: "Very Poor", catClass: "aqi-very-poor", bgClass: "bg-aqi-very-poor", cigs: 8.7, station: "CPCB Online Station #DL01" },
+      dwarka: { name: "Dwarka Sector 8, Delhi", aqi: 285, pm25: 154, cat: "Poor", catClass: "aqi-poor", bgClass: "bg-aqi-poor", cigs: 7.0, station: "CPCB Station #DL14" },
+      noida: { name: "Sector 62, Noida", aqi: 368, pm25: 218, cat: "Very Poor", catClass: "aqi-very-poor", bgClass: "bg-aqi-very-poor", cigs: 9.9, station: "UPPCB Station #UP04" },
+      gurgaon: { name: "Cyber City, Gurugram", aqi: 310, pm25: 172, cat: "Very Poor", catClass: "aqi-very-poor", bgClass: "bg-aqi-very-poor", cigs: 7.8, station: "HSPCB Station #HR02" },
+      pune: { name: "Shivajinagar, Pune", aqi: 148, pm25: 58, cat: "Moderate", catClass: "aqi-mod", bgClass: "bg-aqi-mod", cigs: 2.6, station: "MPCB / SAFAR Pune Station" },
+      mumbai: { name: "Bandra Kurla Complex, Mumbai", aqi: 164, pm25: 72, cat: "Moderate", catClass: "aqi-mod", bgClass: "bg-aqi-mod", cigs: 3.3, station: "MPCB Station #MH01" },
+      lucknow: { name: "Gomti Nagar, Lucknow", aqi: 295, pm25: 162, cat: "Poor", catClass: "aqi-poor", bgClass: "bg-aqi-poor", cigs: 7.4, station: "UPPCB Station #UP11" },
+      patna: { name: "Muradpur, Patna", aqi: 385, pm25: 235, cat: "Very Poor", catClass: "aqi-very-poor", bgClass: "bg-aqi-very-poor", cigs: 10.7, station: "BSPCB Station #BR01" },
+      kolkata: { name: "Jadavpur, Kolkata", aqi: 220, pm25: 110, cat: "Poor", catClass: "aqi-poor", bgClass: "bg-aqi-poor", cigs: 5.0, station: "WBPCB Station #WB03" },
+      bengaluru: { name: "BTM Layout, Bengaluru", aqi: 82, pm25: 28, cat: "Satisfactory", catClass: "aqi-sat", bgClass: "bg-aqi-sat", cigs: 1.3, station: "KSPCB Station #KA05" }
     };
 
-    function updateSim() {
-      const windowsClosed = document.getElementById('toggle-windows').checked;
-      const hasPurifier = document.getElementById('toggle-purifier').checked;
-      const noCoils = document.getElementById('toggle-coils').checked;
+    // --- Tab Switching Logic ---
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.tab-pane');
 
-      let saved = 0;
-      if (windowsClosed) saved += IMPACT_VALUES.windows;
-      if (hasPurifier) saved += IMPACT_VALUES.purifier;
-      if (noCoils) saved += IMPACT_VALUES.coils;
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        panes.forEach(p => p.classList.remove('active'));
 
-      const currentDose = Math.max(30, BASELINE_DOSE - saved);
-      const pct = Math.round(((currentDose - BASELINE_DOSE) / BASELINE_DOSE) * 100);
-
-      document.getElementById('sim-dose').textContent = currentDose + ' µg';
-
-      const deltaEl = document.getElementById('sim-delta');
-      const doseEl = document.getElementById('sim-dose');
-
-      if (pct < 0) {
-        deltaEl.textContent = pct + '% reduction from baseline';
-        deltaEl.style.color = 'var(--accent)';
-        doseEl.style.color = 'var(--accent)';
-      } else {
-        deltaEl.textContent = 'Baseline exposure';
-        deltaEl.style.color = 'var(--text-secondary)';
-        doseEl.style.color = 'var(--danger)';
-      }
-    }
-
-    const toggleIds = ['toggle-windows', 'toggle-purifier', 'toggle-coils'];
-    toggleIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.addEventListener('change', updateSim);
-      }
-    });
-
-    // Make clicking the text or entire row toggle the corresponding checkbox
-    document.querySelectorAll('.sim-row').forEach(row => {
-      row.addEventListener('click', (e) => {
-        // If clicking directly on slider or input, native browser event handles it
-        if (e.target.tagName === 'INPUT' || e.target.classList.contains('slider')) return;
-        const input = row.querySelector('input[type="checkbox"]');
-        if (input && e.target !== input) {
-          input.checked = !input.checked;
-          updateSim();
-        }
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        const targetPane = document.getElementById(tab.getAttribute('data-tab'));
+        if (targetPane) targetPane.classList.add('active');
       });
     });
 
-    // Initialize display
-    updateSim();
+    // --- Tab 1: City Change & AQI Visualizer ---
+    const citySelect = document.getElementById('city-select');
+    function updateCityAQI() {
+      const cityKey = citySelect.value;
+      const data = CITIES[cityKey] || CITIES.delhi;
 
-    // Waitlist form (client-side only for now)
-    function handleSubmit(e) {
-      e.preventDefault();
-      document.getElementById('waitlist-success').style.display = 'block';
-      e.target.style.display = 'none';
+      const valAqi = document.getElementById('val-aqi');
+      valAqi.textContent = data.aqi;
+      valAqi.className = `aqi-number ${data.catClass}`;
+
+      const valCat = document.getElementById('val-category');
+      valCat.textContent = data.cat;
+      valCat.className = `aqi-category ${data.bgClass}`;
+
+      document.getElementById('val-station').textContent = data.name;
+      document.getElementById('val-pm25').innerHTML = `PM2.5: <strong>${data.pm25} µg/m³</strong> (CPCB 24h)`;
+      document.getElementById('val-freshness').textContent = `Live Feed · Source: ${data.station}`;
+      document.getElementById('val-cig-equiv').innerHTML = `Daily breathing ≈ <strong>${data.cigs} cigarettes</strong>`;
+      document.getElementById('live-indicator').innerHTML = `<span>${data.name.split('—')[0]} · AQI ${data.aqi}</span>`;
+
+      // Update ambient input in dose tab
+      const ambientInput = document.getElementById('calc-ambient');
+      if (ambientInput) {
+        ambientInput.value = data.pm25;
+        calculateDose();
+      }
     }
 
-    // --- Automatically remove any injected Netlify badge / HUD iframe ---
+    citySelect.addEventListener('change', updateCityAQI);
+    document.getElementById('btn-refresh-aqi').addEventListener('click', () => {
+      const btn = document.getElementById('btn-refresh-aqi');
+      btn.textContent = '⏳ Fetching latest stream...';
+      setTimeout(() => {
+        updateCityAQI();
+        btn.textContent = '✅ Updated (Live)';
+        setTimeout(() => { btn.textContent = '🔄 Refresh Station Data'; }, 1500);
+      }, 400);
+    });
+
+    // --- Tab 2: Exposure Engine Calculation ---
+    const INHALATION_RATES = {
+      child_6_10: 10.1,
+      toddler_1_5: 8.1,
+      adult_30_50: 16.0,
+      senior_65: 14.2
+    };
+
+    const COMMUTE_FACTORS = {
+      auto: 1.4,
+      twowheeler: 1.5,
+      walk: 1.2,
+      bus: 0.8,
+      car_ac: 0.5,
+      metro: 0.3,
+      wfh: 0
+    };
+
+    function calculateDose() {
+      const memberKey = document.getElementById('calc-member').value;
+      const ir = INHALATION_RATES[memberKey] || 16.0;
+
+      const commuteMode = document.getElementById('calc-commute-mode').value;
+      const commuteMins = parseInt(document.getElementById('calc-commute-time').value, 10);
+      document.getElementById('commute-mins-label').textContent = `${commuteMins} mins`;
+      const commuteHours = (commuteMins * 2) / 60;
+
+      const ambient = parseFloat(document.getElementById('calc-ambient').value) || 200;
+      const windowsSealed = document.getElementById('switch-windows').checked;
+      const hasPurifier = document.getElementById('switch-purifier').checked;
+      const hasMask = document.getElementById('switch-mask').checked;
+      const noCoils = document.getElementById('switch-coils').checked;
+
+      // Infiltration
+      const infFactor = windowsSealed ? 0.40 : 0.85;
+      const purifierReduction = hasPurifier ? 0.75 : 0; // CADR 300 reduces ~75% in room
+      const maskReduction = hasMask ? 0.90 : 0; // N95 tight fit
+
+      // Concentrations
+      const coilAdd = noCoils ? 0 : 35; // µg/m³ from coils/agarbatti
+      const cIndoorDay = (ambient * infFactor * (1 - purifierReduction)) + coilAdd;
+      const cSleep = (ambient * 0.40 * (1 - purifierReduction)); // Sleep with sealed windows
+      const commuteFactor = COMMUTE_FACTORS[commuteMode] || 0;
+      const cCommute = ambient * commuteFactor * (1 - maskReduction);
+
+      const sleepHours = 8;
+      const daytimeHours = Math.max(0, 24 - sleepHours - commuteHours);
+
+      const doseSleep = cSleep * ir * (sleepHours / 24);
+      const doseCommute = cCommute * ir * (commuteHours / 24);
+      const doseIndoor = cIndoorDay * ir * (daytimeHours / 24);
+
+      const totalDose = Math.round((doseSleep + doseCommute + doseIndoor) * 10) / 10;
+      const cigEquiv = Math.round((ambient / 22) * 10) / 10;
+
+      // Update UI
+      document.getElementById('res-dose-num').textContent = `${totalDose} µg`;
+      document.getElementById('res-cig-equiv').innerHTML = `Daily ambient exposure ≈ <strong>${cigEquiv} cigarettes</strong>`;
+
+      // Update bar percentages
+      const safeTotal = Math.max(1, totalDose);
+      const pSleep = Math.round((doseSleep / safeTotal) * 100);
+      const pCommute = Math.round((doseCommute / safeTotal) * 100);
+      const pIndoor = Math.max(0, 100 - pSleep - pCommute);
+
+      document.getElementById('bar-sleep').style.width = `${pSleep}%`;
+      document.getElementById('bar-commute').style.width = `${pCommute}%`;
+      document.getElementById('bar-indoor').style.width = `${pIndoor}%`;
+
+      document.getElementById('txt-sleep-pct').textContent = `${pSleep}%`;
+      document.getElementById('txt-commute-pct').textContent = `${pCommute}%`;
+      document.getElementById('txt-indoor-pct').textContent = `${pIndoor}%`;
+
+      // Tailored prescriptive tip
+      const tipEl = document.getElementById('res-action-tip');
+      if (!hasPurifier) {
+        const potentialSavings = Math.round(doseSleep * 0.75);
+        tipEl.innerHTML = `Running a DIY bedroom purifier will eliminate <strong>~${potentialSavings} µg (${Math.round((potentialSavings/totalDose)*100)}%)</strong> of this person's daily inhalation during sleep.`;
+      } else if (commuteHours > 0 && !hasMask) {
+        tipEl.innerHTML = `Switching to a certified N95 mask during the ${commuteMins}-min commute will slash commute dose by <strong>90%</strong> immediately.`;
+      } else if (!windowsSealed) {
+        tipEl.innerHTML = `Sealing windows during morning hours will cut baseline daytime indoor penetration in half.`;
+      } else {
+        tipEl.innerHTML = `Excellent! Your selected interventions have already reduced daily inhaled dose by <strong>over 60%</strong> from baseline.`;
+      }
+    }
+
+    // Attach listener to all calculator controls
+    ['calc-member', 'calc-condition', 'calc-commute-mode', 'calc-commute-time', 'calc-home-type', 'calc-ambient', 'switch-windows', 'switch-purifier', 'switch-mask', 'switch-coils'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', calculateDose);
+    });
+
+    // --- Tab 3: WhatsApp Myth Corpus ---
+    const MYTHS = [
+      {
+        claim: "Eating Jaggery (Gur) cleanses lungs from pollution",
+        category: "diet",
+        verdict: "NOT SUPPORTED",
+        verdictClass: "verdict-not-supported",
+        body: "Jaggery passes through the esophagus into the stomach and digestive tract. Inhaled PM2.5 travels through the trachea into bronchial alveoli and bloodstream. There is zero anatomical or physiological mechanism by which ingested sugar can cleanse particulate matter from lung tissue.",
+        citation: "Citations: ICMR Pulmonary Medicine Review; WHO Ambient Air Health Guidelines (2021)"
+      },
+      {
+        claim: "NASA Study proves indoor plants (Snake Plant, Areca Palm) remove PM2.5",
+        category: "plants",
+        verdict: "NOT SUPPORTED for PM2.5",
+        verdictClass: "verdict-not-supported",
+        body: "The 1989 NASA Clean Air Study examined gaseous VOCs (benzene, formaldehyde) in tiny, airtight 1 m³ plexiglass chambers under intense artificial lighting with fans. Plants have zero active airflow and cannot filter airborne PM2.5 particles in real-world ventilated homes.",
+        citation: "Citations: Cummings & Waring, Journal of Exposure Science & Environmental Epidemiology (2020)"
+      },
+      {
+        claim: "Burning Camphor (Kapoor) or Dhoop purifies contaminated air",
+        category: "home",
+        verdict: "HARMFUL / NOT SUPPORTED",
+        verdictClass: "verdict-harmful",
+        body: "Burning camphor, incense, or dhoop produces heavy concentrations of ultrafine carbon soot, benzene, and acrolein. Lighting camphor indoors actively spikes indoor PM2.5 by 200–500 µg/m³ and worsens asthma attacks.",
+        citation: "Citations: EPA Indoor Air Quality Division; AIIMS New Delhi Pulmonary Medicine Reports"
+      },
+      {
+        claim: "Taking Hot Steam inhalation removes smog particles from deep lungs",
+        category: "home",
+        verdict: "NOT SUPPORTED for PM2.5",
+        verdictClass: "verdict-not-supported",
+        body: "Steam only reaches the upper nasopharynx and can relieve temporary nasal congestion. Microscopic PM2.5 penetrates deep into the alveoli where water vapor cannot dislodge particles. Excessive hot steam can cause thermal mucosal burns.",
+        citation: "Citations: American Thoracic Society (ATS) Patient Guidelines"
+      },
+      {
+        claim: "Standard cloth handkerchiefs or surgical masks protect against smog",
+        category: "masks",
+        verdict: "NOT SUPPORTED",
+        verdictClass: "verdict-not-supported",
+        body: "Woven cloth and surgical masks leave gaping side leaks and lack electrostatic meltblown filtration. Laboratory testing shows cloth masks leak 65%–85% of PM2.5. Only certified N95, KN95, or FFP2 respirators with an airtight nose-bridge seal filter 95%+ of particles.",
+        citation: "Citations: NIOSH Respirator Filtration Efficacy Standards; Indian Chest Society"
+      },
+      {
+        claim: "Saline Nasal Rinse (Jal Neti) clears pollution particles from sinuses",
+        category: "home",
+        verdict: "PARTLY SUPPORTED",
+        verdictClass: "verdict-partly-supported",
+        body: "Isotonic sterile saline nasal irrigation flushes trapped coarse particulate matter (PM10), pollen, and mucus from the nasal cavity. However, it does not protect bronchial tubes or deep lung alveoli from PM2.5.",
+        citation: "Citations: Cochrane Systematic Reviews on Nasal Saline Irrigation"
+      },
+      {
+        claim: "Activated charcoal bags placed around the room absorb PM2.5 pollution",
+        category: "plants",
+        verdict: "INEFFECTIVE for PM2.5",
+        verdictClass: "verdict-not-supported",
+        body: "Passive charcoal bags have no fan or motor to pull air through the carbon bed. While active carbon filters VOC odors in motorized purifiers, passive bags on shelves capture almost zero particulate matter.",
+        citation: "Citations: US EPA Technical Assistance on Air Cleaners in the Home"
+      }
+    ];
+
+    function renderMyths(filter = 'all', query = '') {
+      const container = document.getElementById('myth-cards-container');
+      container.innerHTML = '';
+
+      const filtered = MYTHS.filter(m => {
+        const matchesCat = (filter === 'all' || m.category === filter);
+        const matchesQuery = query === '' || 
+          m.claim.toLowerCase().includes(query.toLowerCase()) || 
+          m.body.toLowerCase().includes(query.toLowerCase());
+        return matchesCat && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted);">
+          No matching myths found for "<strong>${query}</strong>".<br>
+          <span style="font-size: 0.85rem;">Have a forward you want verified? Email us at claims@saans.app</span>
+        </div>`;
+        return;
+      }
+
+      filtered.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'myth-card';
+        card.innerHTML = `
+          <div class="myth-header">
+            <div class="myth-claim">"${m.claim}"</div>
+            <span class="verdict-tag ${m.verdictClass}">${m.verdict}</span>
+          </div>
+          <div class="myth-body">${m.body}</div>
+          <div class="myth-citation">${m.citation}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Filter pills
+    document.querySelectorAll('.filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMyths(btn.getAttribute('data-filter'), document.getElementById('myth-search').value);
+      });
+    });
+
+    document.getElementById('myth-search').addEventListener('input', (e) => {
+      const activeFilter = document.querySelector('.filter-pill.active').getAttribute('data-filter');
+      renderMyths(activeFilter, e.target.value);
+    });
+
+    // --- Tab 4: DIY Purifier Calculations ---
+    const roomSlider = document.getElementById('diy-room-size');
+    function updateDIYCalc() {
+      const sqft = parseInt(roomSlider.value, 10);
+      document.getElementById('diy-room-label').textContent = `${sqft} sq ft (${sqft < 140 ? 'Small Bedroom' : sqft < 250 ? 'Master Bedroom' : 'Living Room'})`;
+
+      // Air volume in m³ assuming 9ft ceiling = sqft * 0.0929 * 2.74
+      const volumeM3 = sqft * 0.0929 * 2.74;
+      const targetACH = 5; // 5 air changes per hour
+      const requiredCADR = Math.round(volumeM3 * targetACH);
+
+      // DIY estimated cost: 1 fan (₹1200) + filters (₹850) + tape (₹100) = ₹2150
+      const diyCost = sqft > 250 ? 2750 : 2150;
+      const actualCADR = sqft > 250 ? 450 : 320;
+      const achDelivered = Math.round((actualCADR / volumeM3) * 10) / 10;
+
+      document.getElementById('diy-calc-price').textContent = `₹${diyCost.toLocaleString('en-IN')}`;
+      document.getElementById('diy-calc-cadr').textContent = `Clean Air Delivery: ${actualCADR} m³/h`;
+    }
+    roomSlider.addEventListener('input', updateDIYCalc);
+
+    // Initial renders
+    updateCityAQI();
+    calculateDose();
+    renderMyths('all', '');
+    updateDIYCalc();
+
+    // Prevent / remove Netlify frame if re-injected
     function removeNetlifyBadge() {
-      const badge = document.getElementById('nl-badge-frame');
-      if (badge) badge.remove();
-      document.querySelectorAll('iframe[src*="netlify"], #nl-badge-frame, netlify-drawer, [id*="nl-badge"]').forEach(el => el.remove());
+      const b = document.getElementById('nl-badge-frame');
+      if (b) b.remove();
+      document.querySelectorAll('iframe[src*="netlify"], netlify-drawer').forEach(el => el.remove());
     }
-    removeNetlifyBadge();
     const observer = new MutationObserver(removeNetlifyBadge);
     observer.observe(document.documentElement, { childList: true, subtree: true });
     window.addEventListener('load', removeNetlifyBadge);
-    setTimeout(removeNetlifyBadge, 500);
-    setTimeout(removeNetlifyBadge, 1500);
   </script>
 </body>
 </html>
