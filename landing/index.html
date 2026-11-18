@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saans (सांस) — Breathe Smarter, Together</title>
+  <meta name="description" content="A GenAI-powered air quality assistant for Indian families. Understand your household's pollution exposure, see the impact of changes, and join your community in breathing cleaner air.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- Reset & Base --- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --surface-primary: #FAFAF7;
+      --surface-card: #F0EFEA;
+      --text-primary: #2D2A24;
+      --text-secondary: #6B6560;
+      --accent: #0E8A6F;
+      --accent-hover: #0A7159;
+      --danger: #C43D2F;
+      --warning: #D4910A;
+      --radius-card: 12px;
+      --radius-btn: 8px;
+      --font-display: 'Outfit', system-ui, sans-serif;
+      --font-deva: 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      background: var(--surface-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Layout --- */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 64px 0;
+    }
+
+    /* --- Typography --- */
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: var(--text-secondary);
+      max-width: 60ch;
+    }
+
+    .hindi {
+      font-family: var(--font-deva);
+      line-height: 1.7;
+    }
+
+    /* --- Hero --- */
+    .hero {
+      padding: 80px 0 64px;
+      text-align: left;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--surface-card);
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .hindi-name {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 32px;
+    }
+
+    /* --- CTA --- */
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-btn);
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: var(--font-display);
+      cursor: pointer;
+      transition: background 0.15s ease;
+      text-decoration: none;
+      min-height: 48px;
+    }
+
+    .btn-primary:hover, .btn-primary:focus-visible {
+      background: var(--accent-hover);
+    }
+
+    .btn-primary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* --- Problem Section --- */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    @media (min-width: 540px) {
+      .problem-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .problem-card {
+      background: var(--surface-card);
+      border: 1px solid #e5e3dd;
+      border-radius: var(--radius-card);
+      padding: 20px;
+    }
+
+    .problem-card .icon {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .problem-card p {
+      font-size: 0.95rem;
+    }
+
+    /* --- Features Section --- */
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .feature-number {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .feature-content h3 {
+      margin-bottom: 4px;
+    }
+
+    .feature-content p {
+      font-size: 0.95rem;
+    }
+
+    /* --- Priya Story --- */
+    .story-section {
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      padding: 32px 24px;
+      margin-top: 24px;
+      border: 1px solid #e5e3dd;
+    }
+
+    .story-section .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .dose-display {
+      display: flex;
+      gap: 32px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .dose-box {
+      text-align: center;
+    }
+
+    .dose-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .dose-number.before { color: var(--danger); }
+    .dose-number.after { color: var(--accent); }
+
+    .dose-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .dose-arrow {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      color: var(--text-secondary);
+    }
+
+    /* --- Mini Simulator --- */
+    .mini-sim {
+      background: white;
+      border: 1px solid #e5e3dd;
+      border-radius: var(--radius-card);
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .mini-sim h3 { margin-bottom: 16px; }
+
+    .sim-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .sim-row:last-child { border-bottom: none; }
+
+    .sim-row label {
+      font-size: 0.95rem;
+      flex: 1;
+    }
+
+    .sim-toggle {
+      position: relative;
+      width: 48px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .sim-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .sim-toggle .slider {
+      position: absolute;
+      inset: 0;
+      background: #ccc;
+      border-radius: 28px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .sim-toggle .slider::before {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    .sim-toggle input:checked + .slider { background: var(--accent); }
+    .sim-toggle input:checked + .slider::before { transform: translateX(20px); }
+
+    .sim-toggle input:focus-visible + .slider {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .sim-result {
+      text-align: center;
+      padding: 20px 0 8px;
+    }
+
+    .sim-result .value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .sim-result .delta {
+      font-size: 0.95rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sample-label {
+      font-size: 0.75rem;
+      color: var(--warning);
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* --- Not Section --- */
+    .not-section {
+      background: #FFF8F0;
+      border: 1px solid #F0E0D0;
+      border-radius: var(--radius-card);
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .not-section h3 { color: var(--warning); }
+
+    .not-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .not-section li {
+      padding: 4px 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .not-section li::before {
+      content: '✕ ';
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    /* --- Waitlist Form --- */
+    .waitlist {
+      text-align: left;
+    }
+
+    .waitlist-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .waitlist-form input[type="email"] {
+      flex: 1;
+      min-width: 220px;
+      padding: 14px 16px;
+      border: 1px solid #ccc;
+      border-radius: var(--radius-btn);
+      font-size: 1rem;
+      font-family: var(--font-display);
+      background: white;
+    }
+
+    .waitlist-form input:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+      border-color: var(--accent);
+    }
+
+    .consent-text {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      max-width: 50ch;
+    }
+
+    /* --- Footer --- */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid #e5e3dd;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin: 0 auto;
+    }
+
+    /* --- Accessibility --- */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="sr-only">Skip to main content</a>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge">Coming soon — Delhi NCR & Pune</span>
+        <h1>
+          <span class="hindi-name">सांस</span> Saans<br>
+          Breathe Smarter, Together.
+        </h1>
+        <p>
+          Your family's personalized air quality assistant. See each member's estimated pollution dose, 
+          discover which changes matter most, and join your neighborhood in breathing cleaner air.
+        </p>
+        <div class="cta-group">
+          <a href="#waitlist" class="btn-primary">Get notified at launch</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section>
+      <div class="container">
+        <h2>The air you can't see is hurting your family</h2>
+        <p>India's winter smog isn't just a headline — it's in your living room, your child's school commute, your morning walk.</p>
+        <div class="problem-grid">
+          <div class="problem-card">
+            <span class="icon" aria-hidden="true">🤷</span>
+            <h3>Conflicting advice</h3>
+            <p>WhatsApp forwards claim jaggery, ghee, and camphor "clean lungs." None of them do.</p>
+          </div>
+          <div class="problem-card">
+            <span class="icon" aria-hidden="true">📊</span>
+            <h3>City AQI is too vague</h3>
+            <p>"Delhi AQI: 350" tells you nothing about whether your daughter — asthmatic, age 6 — should wear a mask on her auto-rickshaw ride.</p>
+          </div>
+          <div class="problem-card">
+            <span class="icon" aria-hidden="true">❓</span>
+            <h3>No way to measure impact</h3>
+            <p>Would closing windows during cooking help? By how much? For which family member? Nobody tells you.</p>
+          </div>
+          <div class="problem-card">
+            <span class="icon" aria-hidden="true">🏘️</span>
+            <h3>Collective action is invisible</h3>
+            <p>Your society pledged "no fireworks." Did it help? Nobody knows — there's no feedback loop.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section>
+      <div class="container">
+        <h2>What Saans does</h2>
+        <p>Five features that turn vague worry into clear, specific action.</p>
+        <div class="features-list">
+          <div class="feature-item">
+            <div class="feature-number">1</div>
+            <div class="feature-content">
+              <h3>Household Risk Profile</h3>
+              <p>2-minute setup. Tell us who lives with you, your home type, and how you commute. Every recommendation is weighted by your most vulnerable family member.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-number">2</div>
+            <div class="feature-content">
+              <h3>Personal Exposure Score</h3>
+              <p>Not just a city AQI — an estimated daily PM2.5 dose for each person, with cigarette-equivalents you can actually feel. Source, station, and freshness shown for every number.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-number">3</div>
+            <div class="feature-content">
+              <h3>What-If Simulator</h3>
+              <p>Move sliders — see your dose drop instantly. Close windows during cooking? Add a DIY purifier? The numbers update in real time, right on your phone, even offline.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-number">4</div>
+            <div class="feature-content">
+              <h3>DIY Purifier Guide + Myth Buster</h3>
+              <p>Build a Corsi-Rosenthal box for under ₹2,000. Paste any WhatsApp forward and get an evidence-rated verdict with real citations — not "trust me."</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-number">5</div>
+            <div class="feature-content">
+              <h3>Neighborhood Clean-Air Pledge</h3>
+              <p>Your housing society pledges to cut emissions. The leaderboard shows your collective impact — no individual data exposed, all self-reported and labeled honestly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIYA STORY -->
+    <section>
+      <div class="container">
+        <h2>How it works: Priya's story</h2>
+        <p>Meet Priya, age 6, asthmatic, living in Dwarka, Delhi. Here's her morning with Saans.</p>
+
+        <div class="story-section">
+          <div class="label">Sample scenario — not real user data</div>
+          <p style="color: var(--text-primary); font-size: 0.95rem;">
+            6:45 AM. Meera (Priya's mother) sees the notification: <em>"Priya's estimated dose today: 185 µg (≈ 8.4 cigarettes). AQI: Very Poor (328). Best ventilation window: 1–3 PM."</em>
+          </p>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 12px;">
+            She opens the simulator, toggles "close windows during cooking + run exhaust." Priya's dose drops:
+          </p>
+          <div class="dose-display">
+            <div class="dose-box">
+              <div class="dose-number before">185</div>
+              <div class="dose-label">µg before</div>
+            </div>
+            <div class="dose-arrow" aria-hidden="true">→</div>
+            <div class="dose-box">
+              <div class="dose-number after">142</div>
+              <div class="dose-label">µg after (−23%)</div>
+            </div>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.85rem;">
+            ⓘ These are sample numbers for illustration. Real values depend on actual air quality data and household profile.
+          </p>
+        </div>
+
+        <!-- Mini Simulator -->
+        <div class="mini-sim">
+          <h3>Try it: mini exposure simulator</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+            Toggle actions to see the estimated dose change. Uses the same formula as the full app.
+          </p>
+          <div class="sim-row">
+            <label for="toggle-windows">Close windows during cooking</label>
+            <div class="sim-toggle">
+              <input type="checkbox" id="toggle-windows" aria-label="Close windows during cooking">
+              <span class="slider"></span>
+            </div>
+          </div>
+          <div class="sim-row">
+            <label for="toggle-purifier">Add DIY purifier (₹1,500)</label>
+            <div class="sim-toggle">
+              <input type="checkbox" id="toggle-purifier" aria-label="Add DIY purifier">
+              <span class="slider"></span>
+            </div>
+          </div>
+          <div class="sim-row">
+            <label for="toggle-coils">Replace mosquito coils with net</label>
+            <div class="sim-toggle">
+              <input type="checkbox" id="toggle-coils" aria-label="Replace mosquito coils with mosquito net">
+              <span class="slider"></span>
+            </div>
+          </div>
+          <div class="sim-result" aria-live="polite">
+            <div>Estimated dose for a child (age 6–10)</div>
+            <div class="value" id="sim-dose">185 µg</div>
+            <div class="delta" id="sim-delta"></div>
+          </div>
+          <div class="sample-label">Sample data — illustrative only</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT SAANS IS NOT -->
+    <section>
+      <div class="container">
+        <div class="not-section">
+          <h3>What Saans is not</h3>
+          <ul>
+            <li>Not a medical device or a doctor's replacement</li>
+            <li>Not a real-time indoor air sensor — indoor values are modeled estimates</li>
+            <li>Not an emergency alert system (but it shows emergency numbers when symptoms are reported)</li>
+            <li>Not a data broker — we never sell or share your data</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- WAITLIST -->
+    <section id="waitlist" class="waitlist">
+      <div class="container">
+        <h2>Be the first to know</h2>
+        <p>Saans is launching in Delhi NCR and Pune. Sign up to get early access.</p>
+        <form class="waitlist-form" onsubmit="handleSubmit(event)">
+          <input type="email" placeholder="your@email.com" required aria-label="Email address for waitlist">
+          <button type="submit" class="btn-primary">Notify me</button>
+        </form>
+        <p class="consent-text">
+          We'll only email you about the Saans launch. No spam, no third-party sharing. 
+          <a href="#" style="color: var(--accent);">Privacy policy</a>.
+        </p>
+        <div id="waitlist-success" style="display:none; color: var(--accent); margin-top: 12px; font-weight: 600;">
+          Thank you! We'll notify you when Saans launches.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>
+        Saans (सांस) · Breathe Smarter, Together<br>
+        Built with care for Indian families. No fake testimonials. No invented stats. No medical claims.<br>
+        <span style="font-size: 0.8rem;">This is a modeled estimate tool, not a medical device.</span>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // --- Mini Simulator (client-side, same formula as the full app) ---
+    // Uses exposure-engine.ts formula constants inline for the landing page demo
+    const IR_CHILD_6_10 = 10.1; // m³/day, EPA EFH 2011
+    const AMBIENT_PM25 = 200;   // Sample: Very Poor AQI day in Delhi
+    const INF_CLOSED = 0.4;     // Apartment, windows closed
+    const INF_OPEN = 0.85;      // Apartment, windows open
+    const COMMUTE_FACTOR = 1.4; // Auto-rickshaw
+    const COMMUTE_HOURS = 40 / 60; // 20 min × 2
+    const SLEEP_HOURS = 8;
+    const COIL_INDOOR_ADD = 30; // µg/m³ added by mosquito coil (illustrative)
+
+    function computeDose(windowsClosed, hasPurifier, noCoils) {
+      const purifierFactor = hasPurifier ? 300 / (300 + 30) : 0; // CADR 300, room 30m³
+      const indoorInf = windowsClosed ? INF_CLOSED : INF_OPEN;
+      const coilAdd = noCoils ? 0 : COIL_INDOOR_ADD;
+      
+      const cIndoor = (AMBIENT_PM25 * indoorInf * (1 - purifierFactor)) + coilAdd;
+      const cSleep = (AMBIENT_PM25 * INF_CLOSED * (1 - purifierFactor)); // windows closed during sleep
+      const cCommute = AMBIENT_PM25 * COMMUTE_FACTOR;
+      
+      const indoorHours = 24 - SLEEP_HOURS - COMMUTE_HOURS;
+      
+      const sleepDose = cSleep * IR_CHILD_6_10 * (SLEEP_HOURS / 24);
+      const commuteDose = cCommute * IR_CHILD_6_10 * (COMMUTE_HOURS / 24);
+      const indoorDose = cIndoor * IR_CHILD_6_10 * (indoorHours / 24);
+      
+      return Math.round((sleepDose + commuteDose + indoorDose) * 10) / 10;
+    }
+
+    const baseline = computeDose(false, false, false);
+
+    function updateSim() {
+      const windowsClosed = document.getElementById('toggle-windows').checked;
+      const hasPurifier = document.getElementById('toggle-purifier').checked;
+      const noCoils = document.getElementById('toggle-coils').checked;
+      
+      const dose = computeDose(windowsClosed, hasPurifier, noCoils);
+      const pct = Math.round(((dose - baseline) / baseline) * 100);
+      
+      document.getElementById('sim-dose').textContent = dose + ' µg';
+      
+      if (pct < 0) {
+        document.getElementById('sim-delta').textContent = pct + '% from baseline';
+        document.getElementById('sim-dose').style.color = 'var(--accent)';
+      } else {
+        document.getElementById('sim-delta').textContent = '';
+        document.getElementById('sim-dose').style.color = 'var(--danger)';
+      }
+    }
+
+    document.getElementById('toggle-windows').addEventListener('change', updateSim);
+    document.getElementById('toggle-purifier').addEventListener('change', updateSim);
+    document.getElementById('toggle-coils').addEventListener('change', updateSim);
+
+    // Initialize
+    document.getElementById('sim-dose').textContent = baseline + ' µg';
+
+    // Waitlist form (client-side only for now)
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('waitlist-success').style.display = 'block';
+      e.target.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

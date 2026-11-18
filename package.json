@@ -1,0 +1,31 @@
+{
+  "name": "saans-aqi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Saans — GenAI Urban Air Quality Assistant. Breathe Smarter, Together.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:unit": "vitest run tests/unit/",
+    "test:schema": "vitest run tests/schema/",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.0",
+    "ajv": "^8.17.0",
+    "ajv-formats": "^3.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}
