@@ -25,6 +25,34 @@ let manualVerified = 0;
 
 const results = [];
 
+// Cache vitest run so we don't spin up 15 separate Node test runners
+let fullVitestPassed = null;
+let vitestOutput = '';
+function getVitestResult(targetTestFile) {
+  if (fullVitestPassed === null) {
+    process.stdout.write('Running full Vitest test suite once for all test checks... ');
+    try {
+      vitestOutput = execSync('npx vitest run', { stdio: 'pipe', encoding: 'utf-8' });
+      fullVitestPassed = true;
+      console.log('Done (All tests passed).');
+    } catch (e) {
+      vitestOutput = (e.stdout || '') + (e.stderr || '') + e.message;
+      fullVitestPassed = false;
+      console.log('Done with failures.');
+    }
+  }
+
+  if (fullVitestPassed) return { pass: true, msg: 'Automated test suite passed' };
+  
+  if (targetTestFile) {
+    const baseName = path.basename(targetTestFile);
+    if (vitestOutput.includes(baseName) && vitestOutput.includes(`✓ ${baseName}`)) {
+      return { pass: true, msg: `${baseName} passed` };
+    }
+  }
+  return { pass: false, msg: 'Vitest assertion failed' };
+}
+
 // Parse checks from criteria.config.ts
 const regex = /{\s*id:\s*'([^']+)',\s*criterion:\s*'([^']+)',\s*title:\s*'([^']+)',\s*since:\s*'([^']+)'(?:,\s*(command|isManual):\s*(?:'([^']+)'|true))?/g;
 
@@ -41,13 +69,26 @@ while ((match = regex.exec(configFile)) !== null) {
   }
 
   if (type === 'command' && cmd) {
-    try {
-      execSync(cmd, { stdio: 'pipe', encoding: 'utf-8' });
-      passed++;
-      results.push({ id, criterion, title, since, status: 'PASS', notes: 'Automated check clean' });
-    } catch (e) {
-      failed++;
-      results.push({ id, criterion, title, since, status: 'FAIL', notes: e.message.slice(0, 80) });
+    if (cmd.includes('vitest')) {
+      const targetMatch = cmd.match(/tests\/[\w\-\.\/]+/);
+      const targetFile = targetMatch ? targetMatch[0] : null;
+      const res = getVitestResult(targetFile);
+      if (res.pass) {
+        passed++;
+        results.push({ id, criterion, title, since, status: 'PASS', notes: 'Automated check clean' });
+      } else {
+        failed++;
+        results.push({ id, criterion, title, since, status: 'FAIL', notes: res.msg });
+      }
+    } else {
+      try {
+        execSync(cmd, { stdio: 'pipe', encoding: 'utf-8' });
+        passed++;
+        results.push({ id, criterion, title, since, status: 'PASS', notes: 'Automated check clean' });
+      } catch (e) {
+        failed++;
+        results.push({ id, criterion, title, since, status: 'FAIL', notes: e.message.slice(0, 80) });
+      }
     }
   } else {
     // Manual or documented control

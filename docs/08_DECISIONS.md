@@ -70,3 +70,48 @@
   3. **Community Emissions Avoided**: Calculate passenger-kilometer emission factors from ARAI/CPCB data (72 g CO2/km for petrol bike vs 16 g CO2/km for electric metro).
   4. **Relatable Unit Caveat**: Any cigarette-equivalent conversion (Berkeley Earth 22 µg/m³ = 1 cigarette) must accompany an explicit epidemiological disclaimer noting differing chemical composition and exposure pathways.
 - **Consequences:** Provides transparent, scientifically rigorous, and empowering insights for families and communities without pseudo-scientific claims. Runs in <2 ms in-browser or on server.
+
+
+## ADR-010: Curated Action Library with Physical Effect Models & Vulnerability-Weighted Ranker
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Feature F6 requires a curated action library with physical effect models rather than generic generative advice. Advice must prioritize the household member facing the highest physiological vulnerability (e.g. asthmatic child like Priya's child) while accounting for action difficulty, effort level, and two-way community co-benefits.
+- **Decision:** Implement `ActionDefinition` library in `data/params/actions.json` with categories (`indoor_filtration`, `transit`, `source_control`, `envelope_sealing`, `behavioral`) and physical effect parameters. Implement `rankActions` in `src/domain/recommendations/action-ranker.ts`:
+  1. Identify most vulnerable member with priority hierarchy: `hasAsthma && isChild/infant` > `isPregnant` > `isElderly && condition` > `hasAsthma` > `isChild` > `isElderly` > general.
+  2. Compute physical dose reduction ($\mu\text{g/day}$) using the mass-balance and transit models for that specific vulnerable individual.
+  3. Apply an effort-weighting factor: `score = deltaDose / (effortWeight * 0.8) + communityBonus`.
+  4. Top 3 recommendations are generated with physical rule provenance, citations, and verified bounds.
+- **Consequences:** Eliminates generic AI platitudes. Every action is quantitatively grounded in physical dose reduction for the person who needs it most.
+
+## ADR-011: Numeric-Placeholder AI Architecture & Mathematical Consistency Verifier (GS-01)
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Large Language Models (LLMs) frequently hallucinate or alter numerical quantities, which directly violates Saans's core tenet: "The LLM explains, code calculates." If an LLM changes an exposure reduction from $352.5\,\mu\text{g}$ to $400\,\mu\text{g}$, scientific credibility is lost.
+- **Decision:** Implement a two-phase Numeric Placeholder Architecture:
+  1. Pure domain code calculates all numbers and constructs a structured payload with exact calculated values and placeholder tokens: `{{delta_dose_ug}}`, `{{range_low}}`, `{{range_high}}`, `{{pct_saved}}`, `{{co2_avoided_g}}`.
+  2. The Google Gemini API (`GS-01`) or fallback phraser is prompted strictly to weave natural Hindi/Marathi/English narrative *around* the placeholders without ever emitting raw numbers directly.
+  3. `PlaceholderSubstitutor.substituteAndVerify()` populates the tokens and runs `verifyNumericConsistency()` to guarantee that every rendered numeric string exactly matches the physical engine output.
+  4. If any discrepancy or missing placeholder is detected, the pipeline automatically falls back to deterministic template phrasing with zero user disruption.
+- **Consequences:** 100% mathematical consistency guaranteed by unit tests. LLM fluency is achieved with zero risk of numerical hallucination.
+
+## ADR-012: Diurnal Boundary-Layer Inversion Ventilation Planning & Stagnation Detection (F7, F22)
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Features F7 and F22 require actionable micro-routines for natural ventilation and early warnings for atmospheric inversion events. In North Indian and Deccan plateau winters, nocturnal radiative cooling creates a sharp ground-level temperature inversion that traps vehicular and biomass exhaust below 350 meters, while afternoon solar heating breaks the inversion.
+- **Decision:** Implement `generate24HourVentilationPlan()` and `planSmogForecast()` in `src/domain/routines/` and `src/domain/forecast/`:
+  1. Flag Morning Peak (06:00–10:00) as Ground Inversion: strictly seal windows and avoid outdoor exertion.
+  2. Flag Solar Mixing Window (12:00–16:00) as Optimal Ventilation: solar insolation elevates boundary layer height and wind speeds, making it safe to flush indoor CO₂ for 20 minutes.
+  3. Detect Atmospheric Stagnation (`F22`): if surface wind speed drops below $1.5\,\text{m/s}$ and nocturnal boundary layer drops below $350\,\text{m}$, issue a Stagnation Alert ("Trapped Air Tonight").
+  4. Produce 72-Hour Smog Prep Checklist with tangible items (N95 respirators, window sealing foam tape, HEPA replacement filters).
+- **Consequences:** Replaces static advice with physically synchronized micro-routines based on meteorological boundary layer dynamics.
+
+## ADR-013: Multimodal Route Air Quality & Inhaled Dose Comparison via Google Routes (F21, GS-08)
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Feature F21 requires cleaner-route commute comparisons. A commuter often faces a choice between a direct surface road (e.g. on a motorbike or auto-rickshaw directly behind heavy diesel trucks) versus a slightly longer transit route (e.g. electric metro rail corridor or separated arterial). Commuters need to see the difference in inhaled dose ($\mu\text{g}$) and tailpipe emissions eliminated ($\text{g CO}_2$).
+- **Decision:** Implement `compareCommuteRoutes()` in `src/domain/routes/cleaner-route.ts`:
+  1. Ingest route distance, travel duration, and mode for Route A (Standard Surface Arterial) and Route B (Cleaner Metro Transit Corridor).
+  2. Compute microenvironment exposure factor ($1.8\times$ ambient for open two-wheeler traffic vs $0.35\times$ for air-conditioned metro train).
+  3. Inhalation rate scaled by activity level (light physical driving vs seated passenger).
+  4. Calculate inhaled PM2.5 dose ($\mu\text{g}$) and community tailpipe $\text{CO}_2$ mitigation (e.g., $1,120\,\text{g CO}_2$ saved for a 20 km round-trip commute).
+- **Consequences:** Empowers commuters with tangible quantitative proof of both personal health protection and environmental impact.

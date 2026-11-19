@@ -1,0 +1,100 @@
+[
+  {
+    "id": "bedroom_purifier",
+    "title": "Operate Air Purifier in Child's Bedroom",
+    "description": "Run a true HEPA or DIY Corsi-Rosenthal purifier in the bedroom for 8+ hours during sleep.",
+    "category": "indoor_filtration",
+    "effort": "low",
+    "estimatedCostInr": 2150,
+    "targetMicroenvironment": "sleep_bedroom",
+    "exposureReductionPct": { "low": 65, "central": 78, "high": 88 },
+    "citation": "Nazaroff, W. W. (2004) Indoor particle dynamics; UC Davis Corsi-Rosenthal Box Validation",
+    "verified": true
+  },
+  {
+    "id": "commute_metro_shift",
+    "title": "Shift Commute from Two-Wheeler to Metro / AC Train",
+    "description": "Replace petrol two-wheeler or auto-rickshaw commute with electric mass transit.",
+    "category": "transit_substitution",
+    "effort": "medium",
+    "estimatedCostInr": 60,
+    "targetMicroenvironment": "transit",
+    "exposureReductionPct": { "low": 55, "central": 68, "high": 75 },
+    "co2AvoidedGramsPerKm": 56,
+    "pmAvoidedGramsPerKm": 0.048,
+    "citation": "Apte et al. (2011) In-vehicle exposure in New Delhi; ARAI Vehicular Emission Factors",
+    "verified": true
+  },
+  {
+    "id": "seal_windows_inversion",
+    "title": "Seal Windows During Morning Smog Inversion (06:00–10:00)",
+    "description": "Keep all exterior windows latched during thermal boundary layer trapping hours.",
+    "category": "ventilation_control",
+    "effort": "low",
+    "estimatedCostInr": 0,
+    "targetMicroenvironment": "home_awake",
+    "exposureReductionPct": { "low": 35, "central": 52, "high": 65 },
+    "citation": "CPCB Winter Stagnation Studies; Nazaroff (2004)",
+    "verified": true
+  },
+  {
+    "id": "kitchen_chimney_exhaust",
+    "title": "Activate Kitchen Chimney / Exhaust During Cooking",
+    "description": "Operate range hood on high speed while preparing meals with LPG or oil frying.",
+    "category": "source_reduction",
+    "effort": "low",
+    "estimatedCostInr": 0,
+    "targetMicroenvironment": "kitchen_home",
+    "exposureReductionPct": { "low": 60, "central": 75, "high": 85 },
+    "citation": "Huboyo et al. (2014) Indoor air pollution from cooking in urban households",
+    "verified": true
+  },
+  {
+    "id": "n95_commute_mask",
+    "title": "Wear Certified N95 / FFP2 Respirator During Commute",
+    "description": "Wear a snug-fitting NIOSH N95 or ISI-certified FFP2 mask on two-wheeler or walking routes.",
+    "category": "personal_protection",
+    "effort": "medium",
+    "estimatedCostInr": 45,
+    "targetMicroenvironment": "transit",
+    "exposureReductionPct": { "low": 85, "central": 92, "high": 98 },
+    "citation": "US CDC NIOSH Particulate Filter Standards; 3M Technical Bulletin on Roadway PM",
+    "verified": true
+  },
+  {
+    "id": "postpone_outdoor_exercise",
+    "title": "Shift Outdoor Play and Exercise to Afternoon (13:00–16:00)",
+    "description": "Reschedule outdoor physical activities to when the atmospheric boundary layer is highest and dispersion is optimal.",
+    "category": "behavioral_timing",
+    "effort": "medium",
+    "estimatedCostInr": 0,
+    "targetMicroenvironment": "outdoor",
+    "exposureReductionPct": { "low": 40, "central": 55, "high": 70 },
+    "citation": "SAFAR Diurnal Pollution Dynamics & Boundary Layer Profiling",
+    "verified": true
+  },
+  {
+    "id": "eliminate_incense_coils",
+    "title": "Eliminate Mosquito Coils & Agarbatti Indoors",
+    "description": "Switch to electric vaporizers, window netting, or essential oil traps instead of smoldering coils.",
+    "category": "source_elimination",
+    "effort": "low",
+    "estimatedCostInr": 0,
+    "targetMicroenvironment": "home_awake",
+    "exposureReductionPct": { "low": 20, "central": 30, "high": 40 },
+    "citation": "Liu et al. (2003) Mosquito coil smoke and lung health; ICMR Indoor Air Guidelines",
+    "verified": true
+  },
+  {
+    "id": "wet_mopping_hepa_vacuum",
+    "title": "Wet Mop Floors Daily; Avoid Dry Broom Sweeping",
+    "description": "Dry sweeping with a broom resuspends settled PM10 and PM2.5 back into breathable air.",
+    "category": "hygiene",
+    "effort": "low",
+    "estimatedCostInr": 0,
+    "targetMicroenvironment": "home_awake",
+    "exposureReductionPct": { "low": 10, "central": 18, "high": 25 },
+    "citation": "US EPA Indoor Air Quality Guidelines for Dust & Allergens",
+    "verified": true
+  }
+]

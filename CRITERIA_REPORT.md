@@ -1,6 +1,6 @@
-# Saans — Criteria Scorecard Report (Slice A3)
+# Saans — Criteria Scorecard Report (Slice A4)
 
-Generated: 2026-11-19T12:13:33.036Z
+Generated: 2026-11-19T12:49:51.725Z
 
 | ID | Category | Title | Since | Status | Notes |
 |---|---|---|---|---|---|
@@ -69,7 +69,7 @@ Generated: 2026-11-19T12:13:33.036Z
 | A11Y-11 | A11Y | ARIA live regions for slider & dynamic calculations | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | A11Y-12 | A11Y | AQI risk levels never communicated by color alone | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | A11Y-13 | A11Y | Lighthouse Accessibility score = 100 | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| GS-01 | GS | Gemini API integration with provider adapter | A4 | N/A (A4) | Future slice |
+| GS-01 | GS | Gemini API integration with provider adapter | A4 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-02 | GS | Google Sign-In (Auth.js / OpenID) | A2 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-03 | GS | Google Cloud Run deployment container | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-04 | GS | Cloud Storage with signed URLs & 24h retention | A5 | N/A (A5) | Future slice |
@@ -92,6 +92,6 @@ Generated: 2026-11-19T12:13:33.036Z
 | SCI-07 | SCI | CPCB NAQI breakpoints table matches official spec | A1 | PASS | Automated check clean |
 
 **Summary:**
-- Applicable Passed: 72
+- Applicable Passed: 73
 - Applicable Failed: 0
-- Future (N/A): 14
+- Future (N/A): 13
