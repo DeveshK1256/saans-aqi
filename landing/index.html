@@ -747,7 +747,7 @@
           <p class="card-desc">Select your city or neighborhood to see real CPCB AQI, particulate concentrations, and scientific window timings.</p>
         </div>
 
-        <div class="grid-2" style="margin-bottom: 20px;">
+        <div class="grid-2" style="margin-bottom: 16px;">
           <div class="form-group">
             <label class="field-label" for="city-select">Select Region</label>
             <select id="city-select">
@@ -763,11 +763,29 @@
               <option value="bengaluru">Bengaluru — BTM Layout / Silk Board</option>
             </select>
           </div>
-          <div class="form-group" style="display: flex; align-items: flex-end;">
-            <button class="btn btn-secondary" style="width: 100%;" id="btn-refresh-aqi">
-              🔄 Refresh Station Data
+          <div class="form-group" style="display: flex; gap: 10px; align-items: flex-end;">
+            <button class="btn btn-secondary" style="flex: 1;" id="btn-use-location" title="Detect your coordinates via browser geolocation">
+              📍 Use My Location
+            </button>
+            <button class="btn btn-secondary" style="flex: 1;" id="btn-refresh-aqi">
+              🔄 Refresh Data
             </button>
           </div>
+        </div>
+
+        <!-- Ingestion Provider & Dev Outage Switch (Slice A1) -->
+        <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Air Ingestion Pipeline</div>
+            <div style="font-size: 0.92rem; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-top: 2px;" id="val-provider-name">
+              <span id="provider-dot" style="display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #1B7837;"></span>
+              <span id="provider-label">Google Air View+ Primary (Hyperlocal 1 km Grid)</span>
+            </div>
+          </div>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 0.84rem; font-weight: 600; cursor: pointer; color: var(--danger); background: var(--surface-card); padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid var(--surface-border); box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+            <input type="checkbox" id="dev-switch-outage" style="width: auto; cursor: pointer;">
+            <span>⚡ Dev Switch: Kill Primary Provider</span>
+          </label>
         </div>
 
         <!-- Large AQI Display -->
@@ -778,9 +796,9 @@
               <div class="aqi-category bg-aqi-very-poor" id="val-category">Very Poor</div>
             </div>
             <div>
-              <div style="font-size: 1.1rem; font-weight: 700;" id="val-station">Anand Vihar, Delhi</div>
-              <div style="font-size: 0.88rem; color: var(--text-muted);" id="val-pm25">PM2.5: <strong>192 µg/m³</strong> (CPCB 24h)</div>
-              <div style="font-size: 0.82rem; color: var(--text-faint);" id="val-freshness">Updated 14 mins ago · Source: CPCB Station</div>
+              <div style="font-size: 1.15rem; font-weight: 700;" id="val-station">Anand Vihar, Delhi</div>
+              <div style="font-size: 0.9rem; color: var(--text-muted);" id="val-pm25">PM2.5: <strong>192 µg/m³</strong> (CPCB 24h)</div>
+              <div style="font-size: 0.82rem; color: var(--text-faint);" id="val-freshness">Updated 14 mins ago · Station distance: 1.8 km</div>
             </div>
           </div>
           <div>
@@ -791,6 +809,39 @@
               Based on Berkeley Earth PM2.5 Inhalation Model
             </div>
           </div>
+        </div>
+
+        <!-- Confidence Badge & Diagnostic Row (Part 3.10) -->
+        <div style="margin-top: 14px; padding: 12px 16px; background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: var(--radius-md);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="val-conf-badge" style="font-size: 0.82rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: #EAF4EE; color: #1B7837; border: 1px solid #C4E2CF;">
+                High Confidence (0.88)
+              </span>
+              <span style="font-size: 0.84rem; font-weight: 600;" id="val-conf-tier">Verified Monitor Data</span>
+            </div>
+            <span style="font-size: 0.78rem; color: var(--text-muted);" id="val-grid-cell">Grid Cell: 28.65, 77.30 (~1 km)</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;" id="val-conf-explanation">
+            High confidence: Fresh local monitor reading (14m ago) with 6 criteria pollutants measured within 1.8 km.
+          </p>
+        </div>
+
+        <!-- Criteria Pollutants Sub-Index Grid -->
+        <div style="margin-top: 16px;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; justify-content: space-between;">
+            <span>6 Criteria Pollutants & CPCB Sub-Indices</span>
+            <span style="color: var(--accent); font-weight: 600;" id="val-dominant-pollutant">Dominant: PM2.5 (342)</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px;" id="pollutants-grid">
+            <!-- Dynamic pollutant cards injected by JS -->
+          </div>
+        </div>
+
+        <!-- CPCB / Sameer Official Comparison -->
+        <div style="margin-top: 14px; margin-bottom: 24px; padding: 10px 14px; background: var(--surface-subtle); border-radius: var(--radius-sm); font-size: 0.82rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <span>🏛️ <strong>Official CPCB / Sameer App Baseline:</strong> <span id="val-sameer-comparison">AQI 335 (±7 variance from 24h rolling avg vs 1h hyperlocal update)</span></span>
+          <span style="font-size: 0.78rem; color: var(--text-faint);">Method: CPCB 2014 Standard Linear Interpolation</span>
         </div>
 
         <!-- 24-Hour Routine Plan -->
@@ -1135,19 +1186,185 @@
   </footer>
 
   <script>
-    // --- Data: Cities & Live AQI Feed ---
+    // --- Data: Cities & Hyperlocal Air Quality Feed (Slice A1) ---
     const CITIES = {
-      delhi: { name: "Anand Vihar, Delhi", aqi: 342, pm25: 192, cat: "Very Poor", catClass: "aqi-very-poor", bgClass: "bg-aqi-very-poor", cigs: 8.7, station: "CPCB Online Station #DL01" },
-      dwarka: { name: "Dwarka Sector 8, Delhi", aqi: 285, pm25: 154, cat: "Poor", catClass: "aqi-poor", bgClass: "bg-aqi-poor", cigs: 7.0, station: "CPCB Station #DL14" },
-      noida: { name: "Sector 62, Noida", aqi: 368, pm25: 218, cat: "Very Poor", catClass: "aqi-very-poor", bgClass: "bg-aqi-very-poor", cigs: 9.9, station: "UPPCB Station #UP04" },
-      gurgaon: { name: "Cyber City, Gurugram", aqi: 310, pm25: 172, cat: "Very Poor", catClass: "aqi-very-poor", bgClass: "bg-aqi-very-poor", cigs: 7.8, station: "HSPCB Station #HR02" },
-      pune: { name: "Shivajinagar, Pune", aqi: 148, pm25: 58, cat: "Moderate", catClass: "aqi-mod", bgClass: "bg-aqi-mod", cigs: 2.6, station: "MPCB / SAFAR Pune Station" },
-      mumbai: { name: "Bandra Kurla Complex, Mumbai", aqi: 164, pm25: 72, cat: "Moderate", catClass: "aqi-mod", bgClass: "bg-aqi-mod", cigs: 3.3, station: "MPCB Station #MH01" },
-      lucknow: { name: "Gomti Nagar, Lucknow", aqi: 295, pm25: 162, cat: "Poor", catClass: "aqi-poor", bgClass: "bg-aqi-poor", cigs: 7.4, station: "UPPCB Station #UP11" },
-      patna: { name: "Muradpur, Patna", aqi: 385, pm25: 235, cat: "Very Poor", catClass: "aqi-very-poor", bgClass: "bg-aqi-very-poor", cigs: 10.7, station: "BSPCB Station #BR01" },
-      kolkata: { name: "Jadavpur, Kolkata", aqi: 220, pm25: 110, cat: "Poor", catClass: "aqi-poor", bgClass: "bg-aqi-poor", cigs: 5.0, station: "WBPCB Station #WB03" },
-      bengaluru: { name: "BTM Layout, Bengaluru", aqi: 82, pm25: 28, cat: "Satisfactory", catClass: "aqi-sat", bgClass: "bg-aqi-sat", cigs: 1.3, station: "KSPCB Station #KA05" }
+      delhi: {
+        name: "Anand Vihar, Delhi",
+        lat: 28.65, lon: 77.30,
+        sameerAqi: 335,
+        primaryStation: "Google Air View+ Hyperlocal Grid #DL-AV01",
+        fallbackStation: "CPCB Mandir Marg Regional Station (16.4 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis (~11 km grid)",
+        pollutants: { pm25: 192, pm10: 310, no2: 58, so2: 19, co: 1.6, o3: 44 },
+        fallbackPollutants: { pm25: 185, pm10: 295, no2: 52 },
+        cigs: 8.7
+      },
+      dwarka: {
+        name: "Dwarka Sector 8, Delhi",
+        lat: 28.57, lon: 77.07,
+        sameerAqi: 280,
+        primaryStation: "Google Air View+ Hyperlocal Grid #DL-DW08",
+        fallbackStation: "CPCB IGI Airport Station (9.8 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 154, pm10: 245, no2: 48, so2: 14, co: 1.3, o3: 38 },
+        fallbackPollutants: { pm25: 148, pm10: 230 },
+        cigs: 7.0
+      },
+      noida: {
+        name: "Sector 62, Noida",
+        lat: 28.63, lon: 77.36,
+        sameerAqi: 360,
+        primaryStation: "Google Air View+ Hyperlocal Grid #UP-NO62",
+        fallbackStation: "UPPCB Vasundhara Station (12.2 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 218, pm10: 345, no2: 64, so2: 22, co: 1.9, o3: 46 },
+        fallbackPollutants: { pm25: 210, pm10: 330, no2: 55 },
+        cigs: 9.9
+      },
+      gurgaon: {
+        name: "Cyber City, Gurugram",
+        lat: 28.49, lon: 77.09,
+        sameerAqi: 305,
+        primaryStation: "Google Air View+ Hyperlocal Grid #HR-GG01",
+        fallbackStation: "HSPCB Vikas Sadan Station (11.5 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 172, pm10: 268, no2: 52, so2: 16, co: 1.4, o3: 40 },
+        fallbackPollutants: { pm25: 165, pm10: 250 },
+        cigs: 7.8
+      },
+      pune: {
+        name: "Shivajinagar, Pune",
+        lat: 18.53, lon: 73.85,
+        sameerAqi: 145,
+        primaryStation: "Google Air View+ Hyperlocal Grid #MH-PU03",
+        fallbackStation: "MPCB Katraj Regional Station (13.8 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 58, pm10: 105, no2: 36, so2: 12, co: 0.9, o3: 34 },
+        fallbackPollutants: { pm25: 55, pm10: 98 },
+        cigs: 2.6
+      },
+      mumbai: {
+        name: "Bandra Kurla Complex, Mumbai",
+        lat: 19.06, lon: 72.87,
+        sameerAqi: 160,
+        primaryStation: "Google Air View+ Hyperlocal Grid #MH-MU01",
+        fallbackStation: "MPCB Sion Regional Station (8.4 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 72, pm10: 128, no2: 44, so2: 15, co: 1.1, o3: 38 },
+        fallbackPollutants: { pm25: 70, pm10: 120 },
+        cigs: 3.3
+      },
+      lucknow: {
+        name: "Gomti Nagar, Lucknow",
+        lat: 26.85, lon: 81.00,
+        sameerAqi: 290,
+        primaryStation: "Google Air View+ Hyperlocal Grid #UP-LK04",
+        fallbackStation: "UPPCB Talkatora Station (15.1 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 162, pm10: 255, no2: 50, so2: 18, co: 1.5, o3: 42 },
+        fallbackPollutants: { pm25: 155, pm10: 240 },
+        cigs: 7.4
+      },
+      patna: {
+        name: "Muradpur, Patna",
+        lat: 25.62, lon: 85.16,
+        sameerAqi: 380,
+        primaryStation: "Google Air View+ Hyperlocal Grid #BR-PT01",
+        fallbackStation: "BSPCB DRDA Danapur Station (18.6 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 235, pm10: 365, no2: 68, so2: 24, co: 2.1, o3: 48 },
+        fallbackPollutants: { pm25: 220, pm10: 340 },
+        cigs: 10.7
+      },
+      kolkata: {
+        name: "Jadavpur, Kolkata",
+        lat: 22.50, lon: 88.37,
+        sameerAqi: 215,
+        primaryStation: "Google Air View+ Hyperlocal Grid #WB-KO02",
+        fallbackStation: "WBPCB Fort William Station (10.9 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 110, pm10: 175, no2: 46, so2: 16, co: 1.2, o3: 36 },
+        fallbackPollutants: { pm25: 105, pm10: 165 },
+        cigs: 5.0
+      },
+      bengaluru: {
+        name: "BTM Layout, Bengaluru",
+        lat: 12.92, lon: 77.61,
+        sameerAqi: 80,
+        primaryStation: "Google Air View+ Hyperlocal Grid #KA-BL05",
+        fallbackStation: "KSPCB Saneguruvanahalli Station (17.2 km away)",
+        camsStation: "Open-Meteo / ECMWF CAMS Reanalysis",
+        pollutants: { pm25: 28, pm10: 55, no2: 24, so2: 9, co: 0.6, o3: 28 },
+        fallbackPollutants: { pm25: 26, pm10: 50 },
+        cigs: 1.3
+      }
     };
+
+    // --- CPCB NAQI Breakpoint Calculation in Client ---
+    const NAQI_BREAKPOINTS_TABLE = {
+      pm25: [
+        { bLow: 0, bHigh: 30, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
+        { bLow: 31, bHigh: 60, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
+        { bLow: 61, bHigh: 90, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
+        { bLow: 91, bHigh: 120, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
+        { bLow: 121, bHigh: 250, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
+        { bLow: 251, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+      ],
+      pm10: [
+        { bLow: 0, bHigh: 50, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
+        { bLow: 51, bHigh: 100, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
+        { bLow: 101, bHigh: 250, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
+        { bLow: 251, bHigh: 350, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
+        { bLow: 351, bHigh: 430, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
+        { bLow: 431, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+      ],
+      no2: [
+        { bLow: 0, bHigh: 40, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
+        { bLow: 41, bHigh: 80, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
+        { bLow: 81, bHigh: 180, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
+        { bLow: 181, bHigh: 280, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
+        { bLow: 281, bHigh: 400, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
+        { bLow: 401, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+      ],
+      so2: [
+        { bLow: 0, bHigh: 40, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
+        { bLow: 41, bHigh: 80, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
+        { bLow: 81, bHigh: 380, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
+        { bLow: 381, bHigh: 800, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
+        { bLow: 801, bHigh: 1600, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
+        { bLow: 1601, bHigh: 2000, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+      ],
+      co: [
+        { bLow: 0.0, bHigh: 1.0, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
+        { bLow: 1.1, bHigh: 2.0, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
+        { bLow: 2.1, bHigh: 10.0, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
+        { bLow: 10.1, bHigh: 17.0, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
+        { bLow: 17.1, bHigh: 34.0, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
+        { bLow: 34.1, bHigh: 50.0, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+      ],
+      o3: [
+        { bLow: 0, bHigh: 50, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
+        { bLow: 51, bHigh: 100, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
+        { bLow: 101, bHigh: 168, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
+        { bLow: 169, bHigh: 208, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
+        { bLow: 209, bHigh: 748, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
+        { bLow: 749, bHigh: 1000, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+      ]
+    };
+
+    function calculateSubIndexClient(pollutant, conc) {
+      const table = NAQI_BREAKPOINTS_TABLE[pollutant];
+      if (!table || conc < 0) return { subIndex: 0, cat: 'Good', color: '#009966' };
+      const maxBp = table[table.length - 1];
+      if (conc >= maxBp.bHigh) return { subIndex: 500, cat: 'Severe', color: '#660099' };
+      for (const bp of table) {
+        if (conc >= bp.bLow && conc <= bp.bHigh) {
+          const idx = Math.round(((bp.iHigh - bp.iLow) / (bp.bHigh - bp.bLow)) * (conc - bp.bLow) + bp.iLow);
+          return { subIndex: Math.min(500, Math.max(0, idx)), cat: bp.cat, color: bp.color };
+        }
+      }
+      return { subIndex: 500, cat: 'Severe', color: '#660099' };
+    }
 
     // --- Tab Switching Logic ---
     const tabs = document.querySelectorAll('.tab-btn');
@@ -1170,41 +1387,178 @@
 
     // --- Tab 1: City Change & AQI Visualizer ---
     const citySelect = document.getElementById('city-select');
+    const devSwitch = document.getElementById('dev-switch-outage');
+
     function updateCityAQI() {
       const cityKey = citySelect.value;
       const data = CITIES[cityKey] || CITIES.delhi;
+      const isOutage = devSwitch ? devSwitch.checked : false;
 
+      // Select active provider & pollutants based on dev switch
+      const activePollutants = isOutage ? data.fallbackPollutants : data.pollutants;
+      const providerName = isOutage ? data.fallbackStation : data.primaryStation;
+      const stationDist = isOutage ? 16.4 : 1.8;
+      const dataAgeMins = isOutage ? 115 : 14;
+
+      // Calculate Sub-indices and Overall NAQI
+      const subIndices = [];
+      for (const [p, val] of Object.entries(activePollutants)) {
+        if (typeof val === 'number') {
+          const res = calculateSubIndexClient(p, val);
+          subIndices.push({ pollutant: p, val, ...res });
+        }
+      }
+      subIndices.sort((a, b) => b.subIndex - a.subIndex);
+      const dominant = subIndices[0] || { pollutant: 'pm25', subIndex: 100, cat: 'Satisfactory', color: '#58B453' };
+      const overallAqi = dominant.subIndex;
+      const category = dominant.cat;
+
+      // Confidence score calculation (Part 3.10)
+      const dataAgeScore = dataAgeMins <= 60 ? 1.0 : (dataAgeMins >= 360 ? 0 : (360 - dataAgeMins) / 300);
+      const distanceScore = stationDist <= 2.0 ? 1.0 : (stationDist >= 25.0 ? 0 : (25.0 - stationDist) / 23.0);
+      const completenessScore = Math.min(1.0, subIndices.length / 5.0);
+      const agreementScore = isOutage ? 0.70 : 0.98;
+
+      const rawScore = dataAgeScore * 0.40 + distanceScore * 0.30 + completenessScore * 0.20 + agreementScore * 0.10;
+      const confScore = Math.round(rawScore * 100) / 100;
+      const isUnsure = confScore < 0.45 || dataAgeMins > 180 || isOutage;
+
+      // Update Ingestion Pipeline Indicator
+      const provDot = document.getElementById('provider-dot');
+      const provLabel = document.getElementById('provider-label');
+      if (isOutage) {
+        provDot.style.background = '#BA2D1F';
+        provLabel.innerHTML = `<span style="color: var(--danger);">⚠️ Fallback: ${data.fallbackStation}</span>`;
+      } else {
+        provDot.style.background = '#1B7837';
+        provLabel.innerHTML = `${data.primaryStation}`;
+      }
+
+      // Update Main AQI Banner
       const valAqi = document.getElementById('val-aqi');
-      valAqi.textContent = data.aqi;
-      valAqi.className = `aqi-number ${data.catClass}`;
+      valAqi.textContent = overallAqi;
+      valAqi.style.color = dominant.color;
 
+      const catClassMap = {
+        'Good': 'bg-aqi-good',
+        'Satisfactory': 'bg-aqi-sat',
+        'Moderate': 'bg-aqi-mod',
+        'Poor': 'bg-aqi-poor',
+        'Very Poor': 'bg-aqi-very-poor',
+        'Severe': 'bg-aqi-severe'
+      };
       const valCat = document.getElementById('val-category');
-      valCat.textContent = data.cat;
-      valCat.className = `aqi-category ${data.bgClass}`;
+      valCat.textContent = category;
+      valCat.className = `aqi-category ${catClassMap[category] || 'bg-aqi-mod'}`;
 
       document.getElementById('val-station').textContent = data.name;
-      document.getElementById('val-pm25').innerHTML = `PM2.5: <strong>${data.pm25} µg/m³</strong> (CPCB 24h)`;
-      document.getElementById('val-freshness').textContent = `Live Feed · Source: ${data.station}`;
+      document.getElementById('val-pm25').innerHTML = `PM2.5: <strong>${activePollutants.pm25} µg/m³</strong> (CPCB NAQI Standard)`;
+      document.getElementById('val-freshness').textContent = `Updated ${dataAgeMins} mins ago · Station distance: ${stationDist} km · Grid: ${data.lat.toFixed(2)}, ${data.lon.toFixed(2)}`;
       document.getElementById('val-cig-equiv').innerHTML = `Daily breathing ≈ <strong>${data.cigs} cigarettes</strong>`;
-      document.getElementById('live-indicator').innerHTML = `<span>${data.name.split('—')[0]} · AQI ${data.aqi}</span>`;
+      document.getElementById('live-indicator').innerHTML = `<span>${data.name.split('—')[0]} · AQI ${overallAqi}</span>`;
+
+      // Update Confidence Box
+      const confBadge = document.getElementById('val-conf-badge');
+      const confTier = document.getElementById('val-conf-tier');
+      const confExpl = document.getElementById('val-conf-explanation');
+      document.getElementById('val-grid-cell').textContent = `Grid Cell: ${data.lat.toFixed(2)}, ${data.lon.toFixed(2)} (~1 km)`;
+
+      if (isUnsure) {
+        confBadge.textContent = `I'm unsure (Score: ${confScore})`;
+        confBadge.style.background = '#FBECEB';
+        confBadge.style.color = '#BA2D1F';
+        confBadge.style.borderColor = '#F5C6CB';
+        confTier.textContent = 'Degraded Regional Fallback';
+        confExpl.textContent = `I'm unsure: ${isOutage ? 'Primary provider offline via dev switch. ' : ''}Data from distant regional monitor (${stationDist} km away). Applying conservative protective guidance.`;
+      } else if (confScore >= 0.75) {
+        confBadge.textContent = `High Confidence (${confScore})`;
+        confBadge.style.background = '#EAF4EE';
+        confBadge.style.color = '#1B7837';
+        confBadge.style.borderColor = '#C4E2CF';
+        confTier.textContent = 'Verified Hyperlocal Monitor';
+        confExpl.textContent = `High confidence: Fresh local reading (${dataAgeMins}m ago) with ${subIndices.length} criteria pollutants measured within ${stationDist} km.`;
+      } else {
+        confBadge.textContent = `Medium Confidence (${confScore})`;
+        confBadge.style.background = '#FDF4E6';
+        confBadge.style.color = '#B87309';
+        confBadge.style.borderColor = '#FEEAA8';
+        confTier.textContent = 'Moderate Proximity Monitor';
+        confExpl.textContent = `Medium confidence: Station data is ${stationDist} km distant or missing secondary gaseous pollutants.`;
+      }
+
+      // Update Pollutant Sub-Index Grid
+      document.getElementById('val-dominant-pollutant').textContent = `Dominant: ${dominant.pollutant.toUpperCase()} (${dominant.subIndex})`;
+      const grid = document.getElementById('pollutants-grid');
+      grid.innerHTML = subIndices.map(item => `
+        <div style="background: var(--surface-subtle); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid ${item.color};">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">${item.pollutant}</div>
+          <div style="font-size: 1rem; font-weight: 700; color: ${item.color};">${item.val} <span style="font-size: 0.7rem; color: var(--text-muted);">${item.pollutant === 'co' ? 'mg/m³' : 'µg/m³'}</span></div>
+          <div style="font-size: 0.75rem; color: var(--text-faint);">Sub-index: ${item.subIndex}</div>
+        </div>
+      `).join('');
+
+      // Update Official Sameer Baseline comparison
+      const sameerDiff = overallAqi - data.sameerAqi;
+      const diffSign = sameerDiff >= 0 ? `+${sameerDiff}` : `${sameerDiff}`;
+      document.getElementById('val-sameer-comparison').textContent = `AQI ${data.sameerAqi} (${diffSign} variance from 24h rolling avg vs 1h hyperlocal update)`;
 
       // Update ambient input in dose tab
       const ambientInput = document.getElementById('calc-ambient');
       if (ambientInput) {
-        ambientInput.value = data.pm25;
+        ambientInput.value = activePollutants.pm25;
         calculateDose();
       }
     }
 
     citySelect.addEventListener('change', updateCityAQI);
+    if (devSwitch) devSwitch.addEventListener('change', updateCityAQI);
+
+    // Geolocation "Use My Location" Handler
+    const btnLocation = document.getElementById('btn-use-location');
+    if (btnLocation) {
+      btnLocation.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+          alert('Geolocation is not supported by your browser.');
+          return;
+        }
+        btnLocation.textContent = '📍 Locating...';
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const userLat = pos.coords.latitude;
+            const userLon = pos.coords.longitude;
+            btnLocation.textContent = `📍 Found (${userLat.toFixed(2)}, ${userLon.toFixed(2)})`;
+
+            // Find closest city in registry
+            let closestKey = 'delhi';
+            let minDist = Infinity;
+            for (const [key, c] of Object.entries(CITIES)) {
+              const d = Math.hypot(c.lat - userLat, c.lon - userLon);
+              if (d < minDist) {
+                minDist = d;
+                closestKey = key;
+              }
+            }
+            citySelect.value = closestKey;
+            updateCityAQI();
+            setTimeout(() => { btnLocation.textContent = '📍 Use My Location'; }, 2000);
+          },
+          (err) => {
+            btnLocation.textContent = '📍 Location Denied';
+            setTimeout(() => { btnLocation.textContent = '📍 Use My Location'; }, 2000);
+          },
+          { timeout: 8000 }
+        );
+      });
+    }
+
     document.getElementById('btn-refresh-aqi').addEventListener('click', () => {
       const btn = document.getElementById('btn-refresh-aqi');
-      btn.textContent = '⏳ Fetching latest stream...';
+      btn.textContent = '⏳ Fetching stream...';
       setTimeout(() => {
         updateCityAQI();
         btn.textContent = '✅ Updated (Live)';
-        setTimeout(() => { btn.textContent = '🔄 Refresh Station Data'; }, 1500);
-      }, 400);
+        setTimeout(() => { btn.textContent = '🔄 Refresh Data'; }, 1500);
+      }, 350);
     });
 
     // --- Tab 2: Exposure Engine Calculation ---

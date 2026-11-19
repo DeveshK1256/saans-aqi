@@ -20,3 +20,17 @@
 - **Context:** Core principle: "The LLM explains, code calculates." All exposure, AQI, and dose numbers must be deterministic and testable without network or database dependencies.
 - **Decision:** Pure calculation engines in `src/lib` (`exposure-engine.ts`, `aqi-breakpoints.ts`) have zero external runtime dependencies and execute in <10ms.
 - **Consequences:** Enables property-based testing (fast-check), high mutation test coverage, and offline client execution.
+
+## ADR-004: Priority Air Quality Ingestion with Multi-Tier Fallback and Grid Caching
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Slice A1 requires ingesting air quality data with high availability and resilience across Indian localities. Data must prioritize high-resolution hyperlocal feeds while gracefully falling back to official monitors or CAMS reanalysis during outages.
+- **Decision:** Implement a multi-tier provider chain with `GoogleAirQualityProvider` (priority 1), `CpcbStationProvider` (priority 2), and `OpenMeteoProvider` (priority 4, CAMS reanalysis). A deterministic `GridCellCache` keys locations to ~1 km grid cells (`toFixed(2)`), applies 30-minute TTL for current readings and 3-hour for forecasts, and implements request coalescing to eliminate duplicate in-flight calls (`EFF-05`).
+- **Consequences:** Ensures zero single points of failure. Primary provider failure degrades to CPCB or Open-Meteo seamlessly with provenance annotations.
+
+## ADR-005: Deterministic Confidence & Staleness Meter ("I'm unsure" Behavior)
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Raw AQI values without confidence context mislead users, especially when stations are distant, offline, or missing gaseous pollutants.
+- **Decision:** Implement a 4-factor confidence scoring algorithm (data age weight 0.40, station distance weight 0.30, pollutant completeness weight 0.20, provider agreement weight 0.10). Readings older than 180 minutes or scoring below 0.45 automatically trigger `isUnsure: true` and switch UI to conservative protective guidance with transparent explanations.
+- **Consequences:** Prevents false precision and builds user trust during sensor blackouts or regional inversions.

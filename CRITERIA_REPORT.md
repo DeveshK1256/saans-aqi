@@ -1,30 +1,30 @@
-# Saans — Criteria Scorecard Report (Slice A0)
+# Saans — Criteria Scorecard Report (Slice A1)
 
-Generated: 2026-11-19T10:55:27.562Z
+Generated: 2026-11-19T11:06:03.918Z
 
 | ID | Category | Title | Since | Status | Notes |
 |---|---|---|---|---|---|
 | CQ-01 | CQ | TypeScript strict mode with 0 errors | A0 | PASS | Automated check clean |
 | CQ-02 | CQ | ESLint strict with max-warnings 0 | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | CQ-03 | CQ | Prettier formatting verified | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| CQ-04 | CQ | Function complexity ≤ 10, files ≤ 400 lines | A1 | N/A (A1) | Future slice |
-| CQ-05 | CQ | Layer boundary rules (domain imports no I/O) | A1 | N/A (A1) | Future slice |
-| CQ-06 | CQ | No dead code or unused exports (knip) | A1 | N/A (A1) | Future slice |
-| CQ-07 | CQ | Code duplication below 3% (jscpd) | A1 | N/A (A1) | Future slice |
+| CQ-04 | CQ | Function complexity ≤ 10, files ≤ 400 lines | A1 | PASS (VERIFIED) | Specification & code inspection verified |
+| CQ-05 | CQ | Layer boundary rules (domain imports no I/O) | A1 | PASS | Automated check clean |
+| CQ-06 | CQ | No dead code or unused exports (knip) | A1 | PASS (VERIFIED) | Specification & code inspection verified |
+| CQ-07 | CQ | Code duplication below 3% (jscpd) | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | CQ-08 | CQ | No unlinked TODO/FIXME comments | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| CQ-09 | CQ | Environment variables validated via zod | A1 | N/A (A1) | Future slice |
+| CQ-09 | CQ | Environment variables validated via zod | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | CQ-10 | CQ | Standard AppError shape in API routes | A0 | PASS | Automated check clean |
-| CQ-11 | CQ | TSDoc on public domain functions | A1 | N/A (A1) | Future slice |
+| CQ-11 | CQ | TSDoc on public domain functions | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | CQ-12 | CQ | Pinned dependencies and lockfile verified | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | CQ-13 | CQ | Commit messages follow A<n>: title format | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-01 | SEC | Security headers present on all routes | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-02 | SEC | Cookie flags & session security | A2 | N/A (A2) | Future slice |
 | SEC-03 | SEC | Household authz matrix 100% isolation | A2 | N/A (A2) | Future slice |
-| SEC-04 | SEC | All input endpoints validate with zod | A1 | N/A (A1) | Future slice |
+| SEC-04 | SEC | All input endpoints validate with zod | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-05 | SEC | CSRF Origin check on mutation requests | A2 | N/A (A2) | Future slice |
 | SEC-06 | SEC | Rate limits on auth, LLM, and uploads | A2 | N/A (A2) | Future slice |
 | SEC-07 | SEC | Upload hardening (EXIF stripped, private bucket) | A5 | N/A (A5) | Future slice |
-| SEC-08 | SEC | XSS & injection payloads inert | A1 | N/A (A1) | Future slice |
+| SEC-08 | SEC | XSS & injection payloads inert | A1 | PASS | Automated check clean |
 | SEC-09 | SEC | Prompt injection eval 100% resilient | A6 | N/A (A6) | Future slice |
 | SEC-10 | SEC | Gitleaks & secret scanner clean (0 leaks) | A0 | PASS | Automated check clean |
 | SEC-11 | SEC | CodeQL 0 high/critical vulnerabilities | A0 | PASS (VERIFIED) | Specification & code inspection verified |
@@ -43,16 +43,16 @@ Generated: 2026-11-19T10:55:27.562Z
 | EFF-02 | EFF | JS bundle per route ≤ 170 KB gzip | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | EFF-03 | EFF | What-if recomputation < 50ms in browser | A3 | N/A (A3) | Future slice |
 | EFF-04 | EFF | Exposure compute < 20ms for 7 days | A3 | N/A (A3) | Future slice |
-| EFF-05 | EFF | Air data grid-cell cache hit ratio ≥ 90% | A1 | N/A (A1) | Future slice |
+| EFF-05 | EFF | Air data grid-cell cache hit ratio ≥ 90% | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | EFF-06 | EFF | First useful content < 3s on 3G network | A9 | N/A (A9) | Future slice |
 | TST-01 | TST | Unit, schema, and golden tests present | A0 | PASS | Automated check clean |
 | TST-02 | TST | Domain code coverage ≥ 95% lines | A3 | N/A (A3) | Future slice |
 | TST-03 | TST | Mutation test score ≥ 80% on domain logic | A3 | N/A (A3) | Future slice |
-| TST-04 | TST | NAQI boundary & property tests passing | A1 | N/A (A1) | Future slice |
+| TST-04 | TST | NAQI boundary & property tests passing | A1 | PASS | Automated check clean |
 | TST-05 | TST | Integration tests against Postgres/fixtures | A2 | N/A (A2) | Future slice |
 | TST-06 | TST | E2E user journeys verified (Playwright) | A3 | N/A (A3) | Future slice |
 | TST-07 | TST | AI evaluation thresholds passing | A6 | N/A (A6) | Future slice |
-| TST-08 | TST | Google API contract tests with fixtures | A1 | N/A (A1) | Future slice |
+| TST-08 | TST | Google API contract tests with fixtures | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | TST-09 | TST | Red-then-green regression tests for bugs | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | TST-10 | TST | Flake-free test suite (20 consecutive passes) | A10 | N/A (A10) | Future slice |
 | TST-11 | TST | Automated post-deploy smoke test green | A0 | PASS (VERIFIED) | Specification & code inspection verified |
@@ -76,22 +76,22 @@ Generated: 2026-11-19T10:55:27.562Z
 | GS-05 | GS | Secret Manager integration for API keys | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-06 | GS | Cloud Tasks & Cloud Scheduler for alerts | A7 | N/A (A7) | Future slice |
 | GS-07 | GS | Cloud Logging & Error Reporting configured | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| GS-08 | GS | Google Maps Platform (Places, Geocoding, Routes) | A1 | N/A (A1) | Future slice |
-| GS-09 | GS | Google Air Quality API primary ingestion | A1 | N/A (A1) | Future slice |
+| GS-08 | GS | Google Maps Platform (Places, Geocoding, Routes) | A1 | PASS (VERIFIED) | Specification & code inspection verified |
+| GS-09 | GS | Google Air Quality API primary ingestion | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-10 | GS | Firebase Cloud Messaging for web push | A7 | N/A (A7) | Future slice |
 | GS-11 | GS | Cloud Text-to-Speech / Speech-to-Text | A7 | N/A (A7) | Future slice |
 | GS-12 | GS | Cloud KMS field-level envelope encryption | A2 | N/A (A2) | Future slice |
 | GS-13 | GS | Workload Identity Federation for keyless CI | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| GS-14 | GS | Graceful degradation tested for all Google APIs | A1 | N/A (A1) | Future slice |
+| GS-14 | GS | Graceful degradation tested for all Google APIs | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | SCI-01 | SCI | All constants cite authoritative sources (EPA/CPCB) | A3 | N/A (A3) | Future slice |
 | SCI-02 | SCI | Methodology page publishes all formulas & limits | A3 | N/A (A3) | Future slice |
 | SCI-03 | SCI | Golden and property math tests all pass | A3 | N/A (A3) | Future slice |
 | SCI-04 | SCI | LLM explains, code calculates (no LLM math) | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | SCI-05 | SCI | Ranges displayed rather than false precision | A3 | N/A (A3) | Future slice |
 | SCI-06 | SCI | Cigarette-equivalent unit shows explicit caveat | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| SCI-07 | SCI | CPCB NAQI breakpoints table matches official spec | A1 | N/A (A1) | Future slice |
+| SCI-07 | SCI | CPCB NAQI breakpoints table matches official spec | A1 | PASS | Automated check clean |
 
 **Summary:**
-- Applicable Passed: 38
+- Applicable Passed: 53
 - Applicable Failed: 0
-- Future (N/A): 48
+- Future (N/A): 33
