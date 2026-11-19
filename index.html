@@ -441,6 +441,181 @@
       margin-right: 4px;
     }
 
+    /* --- What-If Simulator & Two-Way Impact Styles --- */
+    .persona-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .persona-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--surface-border);
+      background: var(--surface-bg);
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: all 0.15s ease;
+    }
+
+    .persona-btn:hover {
+      background: var(--surface-subtle);
+    }
+
+    .persona-btn.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+    }
+
+    .comparison-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .comp-card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      text-align: center;
+    }
+
+    .comp-card.highlight {
+      background: #F0FDF4;
+      border-color: #86EFAC;
+    }
+
+    .comp-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .comp-val {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+
+    .comp-range {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .delta-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-top: 8px;
+    }
+
+    .delta-good {
+      background: #DCFCE7;
+      color: #166534;
+    }
+
+    .delta-neutral {
+      background: #F1F5F9;
+      color: #475569;
+    }
+
+    .two-way-box {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin: 18px 0;
+    }
+
+    .two-way-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #065F46;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .two-way-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .two-way-item {
+      background: #FFFFFF;
+      border: 1px solid #D1FAE5;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .two-way-val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #047857;
+    }
+
+    .two-way-sub {
+      font-size: 0.78rem;
+      color: #065F46;
+      margin-top: 2px;
+    }
+
+    .caveat-box {
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: var(--text-muted);
+      background: var(--surface-bg);
+      border-left: 3px solid #F59E0B;
+      padding: 10px 14px;
+      margin-top: 14px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .reset-btn-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .btn-reset {
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-reset:hover {
+      background: var(--surface-subtle);
+      border-color: #CBD5E1;
+    }
+
     /* --- Myth Buster Cards --- */
     .search-box {
       margin-bottom: 20px;
@@ -725,7 +900,7 @@
           <span>🏠 Household Profile (F2)</span>
         </button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-dose">
-          <span>🧮 Personal Dose Calculator</span>
+          <span>🧮 Dose & What-If (F3–F5)</span>
         </button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-myths">
           <span>🔍 WhatsApp Myth Buster</span>
@@ -736,6 +911,9 @@
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-emergency">
           <span>⚠️ Health Guardrail</span>
         </button>
+        <a href="methodology.html" class="tab-btn" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center;" title="View Scientific Methodology & Param Citations">
+          <span>📖 Science Methodology (F24)</span>
+        </a>
       </nav>
     </div>
   </header>
@@ -1112,149 +1290,216 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 2: PERSONAL DOSE CALCULATOR ==================== -->
+    <!-- ==================== TAB 2: PERSONAL DOSE & WHAT-IF SIMULATOR ==================== -->
     <div id="tab-dose" class="tab-pane" role="tabpanel">
       <div class="card">
         <div class="card-header">
-          <h2 class="card-title">Personal Daily PM2.5 Inhaled Dose Calculator</h2>
-          <p class="card-desc">City AQI alone doesn't tell you how much pollution enters your lungs. Enter your household parameters to compute your actual daily microenvironmental dose (µg) using the US EPA Exposure Factors Handbook.</p>
-        </div>
-
-        <div class="grid-2">
-          <!-- Member & Conditions -->
-          <div class="form-group">
-            <label class="field-label" for="calc-member">Family Member</label>
-            <select id="calc-member">
-              <option value="child_6_10" selected>School Child (6–10 yrs) — 10.1 m³/day</option>
-              <option value="toddler_1_5">Toddler (1–5 yrs) — 8.1 m³/day</option>
-              <option value="adult_30_50">Adult (31–50 yrs) — 16.0 m³/day</option>
-              <option value="senior_65">Elderly (65+ yrs) — 14.2 m³/day</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="field-label" for="calc-condition">Health Condition / Vulnerability</label>
-            <select id="calc-condition">
-              <option value="none">No Chronic Respiratory Condition</option>
-              <option value="asthma" selected>Asthma / Bronchial Hyperactivity (+50% risk)</option>
-              <option value="copd">COPD / Chronic Bronchitis (+70% risk)</option>
-              <option value="pregnant">Pregnant (+60% risk)</option>
-              <option value="cardio">Cardiovascular Disease (+40% risk)</option>
-            </select>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h2 class="card-title">Personal Inhaled PM2.5 Dose & What-If Simulator (F3, F4, F5)</h2>
+              <p class="card-desc">City AQI alone does not reflect physical lung exposure. Pure mathematical calculation using the <strong>Nazaroff (2004)</strong> mass-balance differential equation and <strong>US EPA Exposure Factors Handbook (2011)</strong>. Explore what happens to your family's inhaled dose and community emissions when choices change.</p>
+            </div>
+            <a href="methodology.html" class="btn-reset" style="text-decoration: none;" title="Open Methodology Documentation">
+              📖 Science Formulas (F24)
+            </a>
           </div>
         </div>
 
-        <div class="grid-2">
-          <!-- Commute Parameters -->
-          <div class="form-group">
-            <label class="field-label" for="calc-commute-mode">Daily Commute Mode</label>
-            <select id="calc-commute-mode">
-              <option value="auto" selected>Auto-Rickshaw (1.4× outdoor exposure)</option>
-              <option value="twowheeler">Two-Wheeler / Bike (1.5× outdoor exposure)</option>
-              <option value="walk">Walking / Cycling (1.2× exposure)</option>
-              <option value="bus">Non-AC Bus (0.8× exposure)</option>
-              <option value="car_ac">Car with AC Recirculation (0.5× exposure)</option>
-              <option value="metro">Metro / Underground Subway (0.3× exposure)</option>
-              <option value="wfh">Work from Home / No Commute (0×)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="field-label" for="calc-commute-time">Commute Duration (One-Way): <span id="commute-mins-label">30 mins</span></label>
-            <input type="range" id="calc-commute-time" min="0" max="90" step="5" value="30">
+        <!-- Persona Quick Selector -->
+        <div style="margin-bottom: 16px;">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Load Demo Persona:</span>
+          <div class="persona-bar" style="margin-top: 6px;">
+            <button type="button" class="persona-btn active" id="btn-persona-priya">Priya's Child (6y Asthma, Pune, Bike Commute)</button>
+            <button type="button" class="persona-btn" id="btn-persona-dadaji">Dadaji (72y Elderly, LPG Cooking, Morning Walk)</button>
+            <button type="button" class="persona-btn" id="btn-persona-worker">Adult Commuter (32y, 20 km Two-Wheeler Commute)</button>
           </div>
         </div>
 
-        <div class="grid-2">
-          <!-- Home Type & Habits -->
-          <div class="form-group">
-            <label class="field-label" for="calc-home-type">Home Type</label>
-            <select id="calc-home-type">
-              <option value="apartment_high" selected>Multi-Story Apartment (Floor 3+)</option>
-              <option value="apartment_low">Ground Floor / Low-Rise Apartment</option>
-              <option value="independent">Independent House / Row House</option>
-            </select>
+        <div style="background: var(--surface-subtle); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--surface-border); margin-bottom: 20px;">
+          <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--accent); margin-bottom: 12px;">1. Baseline Household & Exposure Profile</h3>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="field-label" for="calc-member">Family Member</label>
+              <select id="calc-member">
+                <option value="child" selected>School Child (6–10 yrs) — Inhalation: 0.32–1.25 m³/h</option>
+                <option value="toddler">Toddler (1–5 yrs) — Inhalation: 0.27–0.92 m³/h</option>
+                <option value="adult">Adult (31–50 yrs) — Inhalation: 0.40–1.85 m³/h</option>
+                <option value="elderly">Elderly (65+ yrs) — Inhalation: 0.36–1.60 m³/h</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="field-label" for="calc-condition">Health Vulnerability</label>
+              <select id="calc-condition">
+                <option value="asthma" selected>Asthma / Bronchial Hyperactivity (High Vulnerability)</option>
+                <option value="none">No Chronic Respiratory Condition</option>
+                <option value="copd">COPD / Chronic Bronchitis</option>
+                <option value="pregnant">Pregnant Mother</option>
+                <option value="cardio">Cardiovascular Risk</option>
+              </select>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label class="field-label" for="calc-ambient">Ambient Outdoor PM2.5 (µg/m³)</label>
-            <input type="number" id="calc-ambient" value="200" min="20" max="999">
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="field-label" for="calc-ambient">Ambient Outdoor PM2.5 (µg/m³ 24h Mean)</label>
+              <input type="number" id="calc-ambient" value="180" min="20" max="999">
+            </div>
+
+            <div class="form-group">
+              <label class="field-label" for="calc-base-commute">Baseline Commute Mode</label>
+              <select id="calc-base-commute">
+                <option value="bike_scooter" selected>Two-Wheeler / Bike (In-transit ratio 1.20, 72 g CO2/km)</option>
+                <option value="auto_rickshaw">Auto-Rickshaw (In-transit ratio 1.15, 60 g CO2/km)</option>
+                <option value="bus">Non-AC Bus (In-transit ratio 0.85, 38 g CO2/km)</option>
+                <option value="car_ac">Car with AC (In-transit ratio 0.32, 175 g CO2/km)</option>
+                <option value="metro_train">Metro / Train (In-transit ratio 0.38, 16 g CO2/km)</option>
+                <option value="walk">Walking / Cycling (In-transit ratio 1.00, 0 g CO2/km)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="field-label" for="calc-commute-distance">Round-Trip Commute Distance: <span id="commute-dist-label" style="font-weight: 700; color: var(--accent);">20 km</span></label>
+            <input type="range" id="calc-commute-distance" min="5" max="50" step="5" value="20">
           </div>
         </div>
 
-        <!-- Interventions Switches -->
-        <h3 style="font-size: 1rem; margin: 18px 0 10px; font-weight: 700;">Protection Measures & Interventions</h3>
+        <!-- What-If Simulator Overrides -->
+        <div style="background: var(--surface-bg); padding: 18px; border-radius: var(--radius-md); border: 2px solid var(--accent); margin-bottom: 20px;">
+          <div class="reset-btn-bar">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent); margin: 0;">2. What-If Action Sliders & Scenario Modifiers (F4)</h3>
+            <button type="button" class="btn-reset" id="btn-reset-whatif">↺ Reset to Baseline (Verify 0.0 µg Invariant)</button>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 16px;">Move the sliders below to simulate personal dose changes and community emission cuts. If sliders match baseline, the mathematical engine guarantees <strong>strictly 0.0 µg delta</strong>.</p>
+
+          <div class="form-group">
+            <label class="field-label" for="whatif-purifier-hours">
+              Bedroom Air Purifier Runtime: <span id="whatif-purifier-label" style="font-weight: 700; color: var(--accent);">0 hrs (OFF)</span> — CADR 250 m³/h in 38 m³ room
+            </label>
+            <input type="range" id="whatif-purifier-hours" min="0" max="12" step="1" value="0">
+          </div>
+
+          <div class="form-group">
+            <label class="field-label" for="whatif-commute-mode">What-If Commute Switch (Two-Way Impact)</label>
+            <select id="whatif-commute-mode">
+              <option value="same" selected>(Keep Baseline Mode)</option>
+              <option value="metro_train">Switch to Metro / Electric Train (16 g CO2/km, 0.38 in-transit ratio)</option>
+              <option value="car_ac">Switch to Car with AC Recirculation (175 g CO2/km, 0.32 in-transit ratio)</option>
+              <option value="bus">Switch to Non-AC Public Bus (38 g CO2/km, 0.85 in-transit ratio)</option>
+              <option value="walk">Switch to Walk / Non-motorized (0 g CO2/km, 1.00 in-transit ratio)</option>
+            </select>
+          </div>
+
+          <div class="grid-2">
+            <label class="switch-row" for="whatif-windows" style="margin-bottom: 0;">
+              <div>
+                <strong>Seal windows during morning smog inversion (6–10 AM)</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Reduces air exchange rate from 2.8 h⁻¹ to 0.65 h⁻¹</div>
+              </div>
+              <span class="switch">
+                <input type="checkbox" id="whatif-windows">
+                <span class="slider"></span>
+              </span>
+            </label>
+
+            <label class="switch-row" for="whatif-chimney" style="margin-bottom: 0;">
+              <div>
+                <strong>Operate Kitchen Chimney / Range Exhaust</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Captures 75% of cooking emissions at source (16.2 mg/h vs 65 mg/h)</div>
+              </div>
+              <span class="switch">
+                <input type="checkbox" id="whatif-chimney">
+                <span class="slider"></span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 3. Mathematical Results Dashboard -->
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">3. Scientific Results & Two-Way Impact (F3, F5)</h3>
         
-        <label class="switch-row" for="switch-windows">
-          <div>
-            <strong>Keep windows sealed during peak smog hours</strong>
-            <div style="font-size: 0.82rem; color: var(--text-muted);">Reduces outdoor infiltration from 85% down to 40%</div>
-          </div>
-          <span class="switch">
-            <input type="checkbox" id="switch-windows" checked>
-            <span class="slider"></span>
-          </span>
-        </label>
-
-        <label class="switch-row" for="switch-purifier">
-          <div>
-            <strong>Run Air Purifier (DIY Corsi-Rosenthal or HEPA) in bedroom</strong>
-            <div style="font-size: 0.82rem; color: var(--text-muted);">Filters 75%+ of indoor particles in bedroom volume</div>
-          </div>
-          <span class="switch">
-            <input type="checkbox" id="switch-purifier">
-            <span class="slider"></span>
-          </span>
-        </label>
-
-        <label class="switch-row" for="switch-mask">
-          <div>
-            <strong>Wear fitted N95 / FFP2 mask during commute</strong>
-            <div style="font-size: 0.82rem; color: var(--text-muted);">Filters 95% of fine particles on roads; cloth masks do not work</div>
-          </div>
-          <span class="switch">
-            <input type="checkbox" id="switch-mask">
-            <span class="slider"></span>
-          </span>
-        </label>
-
-        <label class="switch-row" for="switch-coils">
-          <div>
-            <strong>Eliminate mosquito coils & agarbatti indoors</strong>
-            <div style="font-size: 0.82rem; color: var(--text-muted);">1 coil produces PM2.5 equivalent to 75–100 cigarettes inside the room</div>
-          </div>
-          <span class="switch">
-            <input type="checkbox" id="switch-coils">
-            <span class="slider"></span>
-          </span>
-        </label>
-
-        <!-- Result Box -->
-        <div class="dose-result-box">
-          <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">Estimated Inhaled PM2.5 Dose Today</div>
-          <div class="dose-stat" id="res-dose-num">168.4 µg</div>
-          <div style="font-size: 1rem; color: var(--text-main);" id="res-cig-equiv">
-            Equivalent to smoking <strong>7.6 cigarettes</strong> today
+        <div class="comparison-cards">
+          <!-- Baseline Card -->
+          <div class="comp-card">
+            <div class="comp-label">Baseline Inhaled Dose</div>
+            <div class="comp-val" id="res-base-val">172.5 µg</div>
+            <div class="comp-range" id="res-base-range">Likely range: 132.0 – 218.4 µg</div>
+            <div style="font-size: 0.82rem; margin-top: 8px; color: var(--text-muted);" id="res-base-who">
+              WHO Guideline Ratio: <strong>1.9×</strong>
+            </div>
           </div>
 
+          <!-- Scenario Card -->
+          <div class="comp-card">
+            <div class="comp-label">Scenario Inhaled Dose</div>
+            <div class="comp-val" id="res-scen-val">172.5 µg</div>
+            <div class="comp-range" id="res-scen-range">Likely range: 132.0 – 218.4 µg</div>
+            <div style="font-size: 0.82rem; margin-top: 8px; color: var(--text-muted);" id="res-scen-who">
+              WHO Guideline Ratio: <strong>1.9×</strong>
+            </div>
+          </div>
+
+          <!-- Avoided Dose Card -->
+          <div class="comp-card highlight">
+            <div class="comp-label" style="color: #047857;">Personal Dose Avoided (Delta)</div>
+            <div class="comp-val" id="res-delta-val" style="color: #047857;">0.0 µg</div>
+            <div class="comp-range" id="res-delta-range">Range: 0.0 – 0.0 µg</div>
+            <div id="res-delta-badge-container">
+              <span class="delta-badge delta-neutral" id="res-delta-badge">Zero Change (0.0%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Microenvironment Breakdown -->
+        <div class="dose-result-box" style="margin: 16px 0; padding: 16px;">
+          <div style="font-size: 0.88rem; font-weight: 600; color: var(--text-muted);">Daily Dose Microenvironment Breakdown</div>
           <div class="dose-progress-bar">
             <div class="bar-sleep" id="bar-sleep" style="width: 35%;" title="Sleep Dose"></div>
             <div class="bar-commute" id="bar-commute" style="width: 35%;" title="Commute Dose"></div>
             <div class="bar-indoor" id="bar-indoor" style="width: 30%;" title="Daytime Indoor Dose"></div>
           </div>
-
           <div class="bar-legend">
             <span><span class="legend-dot" style="background: #3B82F6;"></span>Sleep (<span id="txt-sleep-pct">35%</span>)</span>
             <span><span class="legend-dot" style="background: #EF4444;"></span>Commute (<span id="txt-commute-pct">35%</span>)</span>
-            <span><span class="legend-dot" style="background: #10B981;"></span>Indoor Daytime (<span id="txt-indoor-pct">30%</span>)</span>
+            <span><span class="legend-dot" style="background: #10B981;"></span>Indoor Awake (<span id="txt-indoor-pct">30%</span>)</span>
           </div>
         </div>
 
+        <!-- Two-Way Community Impact (F5) -->
+        <div class="two-way-box">
+          <div class="two-way-title">
+            <span>🌱</span> Two-Way Impact: Community Emissions Cut (F5)
+          </div>
+          <p style="font-size: 0.82rem; color: #065F46; margin-bottom: 10px;">When you change your transit mode, you protect both your own lungs and prevent tailpipe pollution for everyone on the street (ARAI/CPCB emission factors).</p>
+          <div class="two-way-grid">
+            <div class="two-way-item">
+              <div class="two-way-val" id="res-co2-cut">0 g CO₂</div>
+              <div class="two-way-sub">Tailpipe CO₂ Avoided Today</div>
+            </div>
+            <div class="two-way-item">
+              <div class="two-way-val" id="res-pm-cut">0 mg PM</div>
+              <div class="two-way-sub">Toxic Street PM2.5 Prevented</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Relatable Unit & Caveat -->
         <div style="background: var(--surface-bg); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--surface-border);">
-          <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--accent); margin-bottom: 6px;">💡 Your Highest Impact Action</h4>
-          <p id="res-action-tip" style="font-size: 0.88rem; color: var(--text-main);">
-            Adding a bedroom DIY purifier will immediately drop this child's daily dose by <strong>52.4 µg (−31%)</strong>.
-          </p>
+          <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-main);" id="res-cig-equiv">
+            Daily ambient exposure equivalent to approximately <strong>8.2 cigarettes/day</strong>.
+          </div>
+          <div class="caveat-box">
+            <strong>Mandatory Scientific Caveat (SCI-06 & Part 3.4):</strong>
+            Cigarette equivalence is calculated from Berkeley Earth's empirical conversion factor (22 µg/m³ 24h average PM2.5 ≈ 1 cigarette). This comparison is provided solely as an illustrative public communication metric. Ambient air pollution differs fundamentally from direct cigarette smoke in gas-phase carcinogen profile, particle morphology, and inhalation pathway. <em>This is not a clinical or medical diagnosis.</em>
+          </div>
+        </div>
+
+        <!-- Scientific Methodology Link -->
+        <div style="margin-top: 20px; text-align: center;">
+          <a href="methodology.html" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 8px;">
+            📖 View Complete Scientific Methodology, Mass Balance Equations & Sourced Parameters →
+          </a>
         </div>
       </div>
     </div>
@@ -1792,68 +2037,200 @@
     });
 
     // --- Tab 2: Exposure Engine Calculation ---
-    const INHALATION_RATES = {
-      child_6_10: 10.1,
-      toddler_1_5: 8.1,
-      adult_30_50: 16.0,
-      senior_65: 14.2
+    // --- Physical Science Parameters & What-If Engine (Part 3.2, 3.4, 3.5) ---
+    const SOURCED_IR = {
+      child: {
+        sleep: { low: 0.25, central: 0.32, high: 0.42 },
+        sedentary: { low: 0.30, central: 0.40, high: 0.55 },
+        light: { low: 0.55, central: 0.72, high: 0.95 },
+        moderate: { low: 0.90, central: 1.25, high: 1.65 }
+      },
+      toddler: {
+        sleep: { low: 0.20, central: 0.27, high: 0.35 },
+        sedentary: { low: 0.25, central: 0.34, high: 0.45 },
+        light: { low: 0.45, central: 0.58, high: 0.75 },
+        moderate: { low: 0.70, central: 0.92, high: 1.20 }
+      },
+      adult: {
+        sleep: { low: 0.30, central: 0.40, high: 0.52 },
+        sedentary: { low: 0.35, central: 0.50, high: 0.68 },
+        light: { low: 0.80, central: 1.15, high: 1.50 },
+        moderate: { low: 1.40, central: 1.85, high: 2.40 }
+      },
+      elderly: {
+        sleep: { low: 0.28, central: 0.36, high: 0.48 },
+        sedentary: { low: 0.32, central: 0.45, high: 0.62 },
+        light: { low: 0.70, central: 0.98, high: 1.35 },
+        moderate: { low: 1.20, central: 1.60, high: 2.10 }
+      }
     };
 
-    const COMMUTE_FACTORS = {
-      auto: 1.4,
-      twowheeler: 1.5,
-      walk: 1.2,
-      bus: 0.8,
-      car_ac: 0.5,
-      metro: 0.3,
-      wfh: 0
+    const SOURCED_TRANSIT = {
+      walk: { low: 0.85, central: 1.00, high: 1.25 },
+      bike_scooter: { low: 1.00, central: 1.20, high: 1.55 },
+      auto_rickshaw: { low: 0.95, central: 1.15, high: 1.45 },
+      bus: { low: 0.70, central: 0.85, high: 1.10 },
+      car_ac: { low: 0.20, central: 0.32, high: 0.48 },
+      metro_train: { low: 0.25, central: 0.38, high: 0.52 }
+    };
+
+    const SOURCED_EMISSIONS = {
+      bike_scooter: { co2: 72, pm: 0.050 },
+      auto_rickshaw: { co2: 60, pm: 0.040 },
+      bus: { co2: 38, pm: 0.012 },
+      car_ac: { co2: 175, pm: 0.070 },
+      metro_train: { co2: 16, pm: 0.002 },
+      walk: { co2: 0, pm: 0 }
     };
 
     function calculateDose() {
-      const memberKey = document.getElementById('calc-member').value;
-      const ir = INHALATION_RATES[memberKey] || 16.0;
+      const member = document.getElementById('calc-member').value;
+      const ambient = parseFloat(document.getElementById('calc-ambient').value) || 180;
+      const baseCommute = document.getElementById('calc-base-commute').value;
+      const commuteDist = parseFloat(document.getElementById('calc-commute-distance').value) || 20;
+      document.getElementById('commute-dist-label').textContent = `${commuteDist} km`;
 
-      const commuteMode = document.getElementById('calc-commute-mode').value;
-      const commuteMins = parseInt(document.getElementById('calc-commute-time').value, 10);
-      document.getElementById('commute-mins-label').textContent = `${commuteMins} mins`;
-      const commuteHours = (commuteMins * 2) / 60;
+      const whatifPurifierHours = parseInt(document.getElementById('whatif-purifier-hours').value, 10);
+      document.getElementById('whatif-purifier-label').textContent = whatifPurifierHours > 0
+        ? `${whatifPurifierHours} hrs (ACTIVE)`
+        : `0 hrs (OFF)`;
 
-      const ambient = parseFloat(document.getElementById('calc-ambient').value) || 200;
-      const windowsSealed = document.getElementById('switch-windows').checked;
-      const hasPurifier = document.getElementById('switch-purifier').checked;
-      const hasMask = document.getElementById('switch-mask').checked;
-      const noCoils = document.getElementById('switch-coils').checked;
+      const whatifCommuteSelect = document.getElementById('whatif-commute-mode').value;
+      const activeScenarioCommute = whatifCommuteSelect === 'same' ? baseCommute : whatifCommuteSelect;
+      const whatifWindows = document.getElementById('whatif-windows').checked;
+      const whatifChimney = document.getElementById('whatif-chimney').checked;
 
-      // Infiltration
-      const infFactor = windowsSealed ? 0.40 : 0.85;
-      const purifierReduction = hasPurifier ? 0.75 : 0; // CADR 300 reduces ~75% in room
-      const maskReduction = hasMask ? 0.90 : 0; // N95 tight fit
+      // Invariant check: is this a zero-change scenario?
+      const isZeroChange = (whatifPurifierHours === 0) &&
+                           (whatifCommuteSelect === 'same') &&
+                           (!whatifWindows) &&
+                           (!whatifChimney);
 
-      // Concentrations
-      const coilAdd = noCoils ? 0 : 35; // µg/m³ from coils/agarbatti
-      const cIndoorDay = (ambient * infFactor * (1 - purifierReduction)) + coilAdd;
-      const cSleep = (ambient * 0.40 * (1 - purifierReduction)); // Sleep with sealed windows
-      const commuteFactor = COMMUTE_FACTORS[commuteMode] || 0;
-      const cCommute = ambient * commuteFactor * (1 - maskReduction);
+      // Solve physical mass balance and schedule dose for a specific parameter vector ('low', 'central', 'high')
+      function computeSchedule(vector, commuteMode, purifierHours, windowsSealed, chimneyOn) {
+        const irSleep = SOURCED_IR[member].sleep[vector];
+        const irLight = SOURCED_IR[member].light[vector];
+        const irSedentary = SOURCED_IR[member].sedentary[vector];
 
-      const sleepHours = 8;
-      const daytimeHours = Math.max(0, 24 - sleepHours - commuteHours);
+        // Mass balance parameters
+        const P = vector === 'low' ? 0.65 : vector === 'central' ? 0.80 : 0.95;
+        const k = vector === 'low' ? 0.45 : vector === 'central' ? 0.25 : 0.10; // high deposition = lower conc
+        const aHome = windowsSealed ? (vector === 'low' ? 0.4 : 0.65) : (vector === 'low' ? 2.0 : 2.8);
+        const V_bed = 38.0; // m3
+        const V_home = 95.0; // m3
+        const S_cook = chimneyOn ? 16250 : 65000; // ug/h during cooking
 
-      const doseSleep = cSleep * ir * (sleepHours / 24);
-      const doseCommute = cCommute * ir * (commuteHours / 24);
-      const doseIndoor = cIndoorDay * ir * (daytimeHours / 24);
+        // Sleep Microenvironment (Bedroom with or without purifier)
+        const cadr = purifierHours > 0 ? 250 : 0;
+        const lambdaBed = aHome + k + (cadr / V_bed);
+        const CssBed = (P * aHome * ambient) / lambdaBed;
+        const C_bed = purifierHours >= 8 ? CssBed : ((purifierHours / 8) * CssBed + ((8 - purifierHours) / 8) * ((P * aHome * ambient) / (aHome + k)));
 
-      const totalDose = Math.round((doseSleep + doseCommute + doseIndoor) * 10) / 10;
-      const cigEquiv = Math.round((ambient / 22) * 10) / 10;
+        // Commute Microenvironment
+        const transRatio = SOURCED_TRANSIT[commuteMode][vector];
+        const C_commute = ambient * transRatio;
 
-      // Update UI
-      document.getElementById('res-dose-num').textContent = `${totalDose} µg`;
-      document.getElementById('res-cig-equiv').innerHTML = `Daily ambient exposure ≈ <strong>${cigEquiv} cigarettes</strong>`;
+        // Daytime Indoor Awake
+        const lambdaHome = aHome + k;
+        const CssHome = (P * aHome * ambient + (S_cook * 2.0 / 24.0) / V_home) / lambdaHome;
+        const C_home = CssHome;
 
-      // Update bar percentages
-      const safeTotal = Math.max(1, totalDose);
-      const pSleep = Math.round((doseSleep / safeTotal) * 100);
-      const pCommute = Math.round((doseCommute / safeTotal) * 100);
+        // Schedule timing
+        const tSleep = member === 'child' || member === 'toddler' ? 9.5 : 8.0;
+        const commuteSpeedKmH = commuteMode === 'walk' ? 4 : commuteMode === 'bike_scooter' ? 25 : commuteMode === 'metro_train' ? 35 : 20;
+        const tCommute = Math.min(2.5, Math.max(0.4, commuteDist / commuteSpeedKmH));
+        const tDaytime = Math.max(1.0, 24.0 - tSleep - tCommute);
+
+        // Physical Inhaled Doses (micrograms)
+        const doseSleep = C_bed * irSleep * tSleep;
+        const doseCommute = C_commute * irLight * tCommute;
+        const doseIndoor = C_home * irSedentary * tDaytime;
+        const totalDose = doseSleep + doseCommute + doseIndoor;
+
+        // Reference Dose for WHO continuous 15 ug/m3
+        const meanIR = (irSleep * tSleep + irLight * tCommute + irSedentary * tDaytime) / 24.0;
+        const doseRef = 15.0 * meanIR * 24.0;
+
+        return {
+          totalDose,
+          doseSleep,
+          doseCommute,
+          doseIndoor,
+          doseRef,
+          whoRatio: totalDose / doseRef
+        };
+      }
+
+      // 1. Calculate Baseline
+      const baseLow = computeSchedule('low', baseCommute, 0, false, false);
+      const baseCent = computeSchedule('central', baseCommute, 0, false, false);
+      const baseHigh = computeSchedule('high', baseCommute, 0, false, false);
+
+      // 2. Calculate Scenario
+      const scenLow = computeSchedule('low', activeScenarioCommute, whatifPurifierHours, whatifWindows, whatifChimney);
+      const scenCent = computeSchedule('central', activeScenarioCommute, whatifPurifierHours, whatifWindows, whatifChimney);
+      const scenHigh = computeSchedule('high', activeScenarioCommute, whatifPurifierHours, whatifWindows, whatifChimney);
+
+      // 3. Compute Delta
+      let deltaLow = Math.round((baseLow.totalDose - scenLow.totalDose) * 10) / 10;
+      let deltaCent = Math.round((baseCent.totalDose - scenCent.totalDose) * 10) / 10;
+      let deltaHigh = Math.round((baseHigh.totalDose - scenHigh.totalDose) * 10) / 10;
+      let deltaPct = baseCent.totalDose > 0
+        ? Math.round(((baseCent.totalDose - scenCent.totalDose) / baseCent.totalDose) * 1000) / 10
+        : 0.0;
+
+      // Two-Way Community Emissions Avoided (ARAI/CPCB)
+      let co2CutGrams = 0;
+      let pmCutMg = 0;
+      if (activeScenarioCommute !== baseCommute) {
+        const oldEf = SOURCED_EMISSIONS[baseCommute];
+        const newEf = SOURCED_EMISSIONS[activeScenarioCommute];
+        co2CutGrams = Math.round(commuteDist * Math.max(0, oldEf.co2 - newEf.co2));
+        pmCutMg = Math.round(commuteDist * Math.max(0, oldEf.pm - newEf.pm) * 1000);
+      }
+
+      // Enforce Strict Zero-Change Invariant
+      if (isZeroChange) {
+        deltaLow = 0.0;
+        deltaCent = 0.0;
+        deltaHigh = 0.0;
+        deltaPct = 0.0;
+        co2CutGrams = 0;
+        pmCutMg = 0;
+      }
+
+      // 4. Update UI Outputs
+      document.getElementById('res-base-val').textContent = `${(Math.round(baseCent.totalDose * 10) / 10).toFixed(1)} µg`;
+      document.getElementById('res-base-range').textContent = `Likely range: ${(Math.round(baseLow.totalDose * 10) / 10).toFixed(1)} – ${(Math.round(baseHigh.totalDose * 10) / 10).toFixed(1)} µg`;
+      document.getElementById('res-base-who').innerHTML = `WHO Guideline Ratio: <strong>${baseCent.whoRatio.toFixed(1)}×</strong>`;
+
+      document.getElementById('res-scen-val').textContent = `${(Math.round((isZeroChange ? baseCent.totalDose : scenCent.totalDose) * 10) / 10).toFixed(1)} µg`;
+      document.getElementById('res-scen-range').textContent = `Likely range: ${(Math.round((isZeroChange ? baseLow.totalDose : scenLow.totalDose) * 10) / 10).toFixed(1)} – ${(Math.round((isZeroChange ? baseHigh.totalDose : scenHigh.totalDose) * 10) / 10).toFixed(1)} µg`;
+      document.getElementById('res-scen-who').innerHTML = `WHO Guideline Ratio: <strong>${(isZeroChange ? baseCent.whoRatio : scenCent.whoRatio).toFixed(1)}×</strong>`;
+
+      document.getElementById('res-delta-val').textContent = isZeroChange ? `0.0 µg` : `−${deltaCent.toFixed(1)} µg`;
+      document.getElementById('res-delta-range').textContent = isZeroChange
+        ? `Range: 0.0 – 0.0 µg`
+        : `Range: −${deltaLow.toFixed(1)} to −${deltaHigh.toFixed(1)} µg`;
+
+      const badgeEl = document.getElementById('res-delta-badge');
+      if (isZeroChange) {
+        badgeEl.className = 'delta-badge delta-neutral';
+        badgeEl.textContent = 'Zero Change (0.0%)';
+      } else {
+        badgeEl.className = 'delta-badge delta-good';
+        badgeEl.textContent = `−${deltaPct.toFixed(1)}% Clean Air Gain`;
+      }
+
+      // Two-Way Emission Cut
+      document.getElementById('res-co2-cut').textContent = co2CutGrams > 0 ? `+${co2CutGrams.toLocaleString()} g CO₂` : `0 g CO₂`;
+      document.getElementById('res-pm-cut').textContent = pmCutMg > 0 ? `+${pmCutMg.toLocaleString()} mg PM` : `0 mg PM`;
+
+      // Microenvironment Progress Bar
+      const curSchedule = isZeroChange ? baseCent : scenCent;
+      const totalSafe = Math.max(1, curSchedule.totalDose);
+      const pSleep = Math.round((curSchedule.doseSleep / totalSafe) * 100);
+      const pCommute = Math.round((curSchedule.doseCommute / totalSafe) * 100);
       const pIndoor = Math.max(0, 100 - pSleep - pCommute);
 
       document.getElementById('bar-sleep').style.width = `${pSleep}%`;
@@ -1864,25 +2241,75 @@
       document.getElementById('txt-commute-pct').textContent = `${pCommute}%`;
       document.getElementById('txt-indoor-pct').textContent = `${pIndoor}%`;
 
-      // Tailored prescriptive tip
-      const tipEl = document.getElementById('res-action-tip');
-      if (!hasPurifier) {
-        const potentialSavings = Math.round(doseSleep * 0.75);
-        tipEl.innerHTML = `Running a DIY bedroom purifier will eliminate <strong>~${potentialSavings} µg (${Math.round((potentialSavings/totalDose)*100)}%)</strong> of this person's daily inhalation during sleep.`;
-      } else if (commuteHours > 0 && !hasMask) {
-        tipEl.innerHTML = `Switching to a certified N95 mask during the ${commuteMins}-min commute will slash commute dose by <strong>90%</strong> immediately.`;
-      } else if (!windowsSealed) {
-        tipEl.innerHTML = `Sealing windows during morning hours will cut baseline daytime indoor penetration in half.`;
-      } else {
-        tipEl.innerHTML = `Excellent! Your selected interventions have already reduced daily inhaled dose by <strong>over 60%</strong> from baseline.`;
-      }
+      // Relatable Unit
+      const cigEquiv = Math.round((ambient / 22.0) * 10) / 10;
+      document.getElementById('res-cig-equiv').innerHTML = `Ambient 24h PM2.5 (${ambient} µg/m³) equivalent to approximately <strong>${cigEquiv} cigarettes/day</strong>.`;
     }
 
-    // Attach listener to all calculator controls
-    ['calc-member', 'calc-condition', 'calc-commute-mode', 'calc-commute-time', 'calc-home-type', 'calc-ambient', 'switch-windows', 'switch-purifier', 'switch-mask', 'switch-coils'].forEach(id => {
+    // Persona Setup Helper
+    function setPersona(name) {
+      document.querySelectorAll('.persona-btn').forEach(btn => btn.classList.remove('active'));
+      const btnPriya = document.getElementById('btn-persona-priya');
+      const btnDadaji = document.getElementById('btn-persona-dadaji');
+      const btnWorker = document.getElementById('btn-persona-worker');
+
+      // Reset scenario modifiers to baseline
+      document.getElementById('whatif-purifier-hours').value = 0;
+      document.getElementById('whatif-commute-mode').value = 'same';
+      document.getElementById('whatif-windows').checked = false;
+      document.getElementById('whatif-chimney').checked = false;
+
+      if (name === 'priya') {
+        if (btnPriya) btnPriya.classList.add('active');
+        document.getElementById('calc-member').value = 'child';
+        document.getElementById('calc-condition').value = 'asthma';
+        document.getElementById('calc-ambient').value = 180;
+        document.getElementById('calc-base-commute').value = 'bike_scooter';
+        document.getElementById('calc-commute-distance').value = 20;
+      } else if (name === 'dadaji') {
+        if (btnDadaji) btnDadaji.classList.add('active');
+        document.getElementById('calc-member').value = 'elderly';
+        document.getElementById('calc-condition').value = 'copd';
+        document.getElementById('calc-ambient').value = 220;
+        document.getElementById('calc-base-commute').value = 'walk';
+        document.getElementById('calc-commute-distance').value = 5;
+      } else if (name === 'worker') {
+        if (btnWorker) btnWorker.classList.add('active');
+        document.getElementById('calc-member').value = 'adult';
+        document.getElementById('calc-condition').value = 'none';
+        document.getElementById('calc-ambient').value = 200;
+        document.getElementById('calc-base-commute').value = 'bike_scooter';
+        document.getElementById('calc-commute-distance').value = 25;
+      }
+      calculateDose();
+    }
+
+    // Event Listeners for Tab 2
+    ['calc-member', 'calc-condition', 'calc-ambient', 'calc-base-commute', 'calc-commute-distance',
+     'whatif-purifier-hours', 'whatif-commute-mode', 'whatif-windows', 'whatif-chimney'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', calculateDose);
     });
+
+    const btnResetWhatif = document.getElementById('btn-reset-whatif');
+    if (btnResetWhatif) {
+      btnResetWhatif.addEventListener('click', () => {
+        document.getElementById('whatif-purifier-hours').value = 0;
+        document.getElementById('whatif-commute-mode').value = 'same';
+        document.getElementById('whatif-windows').checked = false;
+        document.getElementById('whatif-chimney').checked = false;
+        calculateDose();
+      });
+    }
+
+    const btnPriya = document.getElementById('btn-persona-priya');
+    if (btnPriya) btnPriya.addEventListener('click', () => setPersona('priya'));
+
+    const btnDadaji = document.getElementById('btn-persona-dadaji');
+    if (btnDadaji) btnDadaji.addEventListener('click', () => setPersona('dadaji'));
+
+    const btnWorker = document.getElementById('btn-persona-worker');
+    if (btnWorker) btnWorker.addEventListener('click', () => setPersona('worker'));
 
     // --- Tab 3: WhatsApp Myth Corpus ---
     const MYTHS = [
