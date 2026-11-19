@@ -6,6 +6,12 @@
   <title>Scientific Methodology & Parameter Specifications — Saans (सांस)</title>
   <meta name="description" content="Formal documentation of CPCB NAQI algorithms, Nazaroff (2004) single-zone mass balance differential equations, EPA Inhalation Rates, and ARAI emission factors.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2226%22>🌱</text></svg>">
+  
+  <!-- KaTeX for High-Fidelity Mathematical Typography -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
   <style>
     :root {
       --bg-page: #F8FAF9;
@@ -31,7 +37,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 920px;
       margin: 0 auto;
       background: var(--surface-bg);
       border: 1px solid var(--surface-border);
@@ -60,16 +66,10 @@
     .back-link:hover { text-decoration: underline; }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 800;
       color: var(--text-main);
       letter-spacing: -0.02em;
-    }
-
-    .tagline {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      margin-top: 6px;
     }
 
     .axiom-box {
@@ -77,7 +77,7 @@
       border: 1px solid #A7F3D0;
       border-radius: var(--radius-sm);
       padding: 14px 18px;
-      margin: 20px 0;
+      margin: 20px 0 0;
       font-size: 0.95rem;
       color: #065F46;
     }
@@ -86,7 +86,7 @@
       font-size: 1.35rem;
       font-weight: 700;
       color: var(--accent);
-      margin: 32px 0 12px;
+      margin: 36px 0 12px;
       border-bottom: 1px solid var(--surface-border);
       padding-bottom: 6px;
     }
@@ -99,22 +99,87 @@
     }
 
     p, li {
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       color: var(--text-main);
       margin-bottom: 10px;
     }
 
-    .math-block {
-      background: #F8FAF9;
-      border: 1px solid var(--surface-border);
+    /* --- Mathematical Display Container --- */
+    .formula-card {
+      background: #FAFCFB;
+      border: 1px solid #CDE2D8;
       border-left: 4px solid var(--accent);
       border-radius: var(--radius-sm);
-      padding: 14px 18px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.92rem;
-      margin: 14px 0;
+      padding: 20px 24px;
+      margin: 18px 0 20px;
+    }
+
+    .formula-header {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .math-latex {
+      font-size: 1.25rem;
+      text-align: center;
+      padding: 12px 0;
       color: #0F172A;
       overflow-x: auto;
+    }
+
+    /* Fallback CSS Fraction & Math layout */
+    .math-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Cambria Math", "Times New Roman", Times, serif;
+      font-size: 1.25rem;
+      padding: 10px 0;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .fraction {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: middle;
+      text-align: center;
+      padding: 0 4px;
+    }
+
+    .fraction-top {
+      border-bottom: 1.5px solid currentColor;
+      padding-bottom: 2px;
+      line-height: 1.1;
+    }
+
+    .fraction-bottom {
+      padding-top: 2px;
+      line-height: 1.1;
+    }
+
+    .var-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px 16px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed #DDE5E0;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .var-grid code {
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 0.88rem;
+      background: #EEF4F1;
+      padding: 1px 6px;
+      border-radius: 4px;
     }
 
     table {
@@ -172,58 +237,135 @@
       <!-- SECTION 1 -->
       <section>
         <h2>1. National Air Quality Index (NAQI) — India CPCB Standard</h2>
-        <p>Calculated in strict compliance with the Central Pollution Control Board (CPCB) and Ministry of Environment, Forest and Climate Change (MoEFCC) 2014 NAQI standard.</p>
-        <div class="math-block">
-          I_p = ((I_hi - I_lo) / (BP_hi - BP_lo)) * (C_p - BP_lo) + I_lo
+        <p>Calculated in strict compliance with the Central Pollution Control Board (CPCB) and Ministry of Environment, Forest and Climate Change (MoEFCC) 2014 standard by linear interpolation within each criteria pollutant breakpoint band:</p>
+        
+        <div class="formula-card">
+          <div class="formula-header">Equation 1: CPCB Linear Sub-Index Interpolation</div>
+          <div class="math-latex">
+            $$I_p = \frac{I_{\text{hi}} - I_{\text{lo}}}{BP_{\text{hi}} - BP_{\text{lo}}} \cdot (C_p - BP_{\text{lo}}) + I_{\text{lo}}$$
+          </div>
+          <div class="math-fallback">
+            <em>I<sub>p</sub></em> = 
+            <span class="fraction">
+              <span class="fraction-top"><em>I</em><sub>hi</sub> − <em>I</em><sub>lo</sub></span>
+              <span class="fraction-bottom"><em>BP</em><sub>hi</sub> − <em>BP</em><sub>lo</sub></span>
+            </span>
+            × (<em>C<sub>p</sub></em> − <em>BP</em><sub>lo</sub>) + <em>I</em><sub>lo</sub>
+          </div>
+          <div class="var-grid">
+            <div><code>I_p</code>: Sub-index for specific pollutant <em>p</em></div>
+            <div><code>C_p</code>: Monitored concentration (µg/m³)</div>
+            <div><code>BP_hi, BP_lo</code>: Upper and lower concentration breakpoints</div>
+            <div><code>I_hi, I_lo</code>: Upper and lower AQI category breakpoints</div>
+          </div>
         </div>
-        <p><strong>Rules & Verification:</strong></p>
-        <ul style="padding-left: 20px;">
-          <li><strong>Overall NAQI:</strong> Evaluated as <code>max(I_p)</code> across all monitored pollutants.</li>
-          <li><strong>Completeness Gate:</strong> Requires at least 3 valid pollutant sub-indices, with at least one particulate matter pollutant (PM2.5 or PM10). If fewer than 3 pollutants are available, marked as <code>partial</code>.</li>
-          <li><strong>CPCB Category Bands:</strong> Good (0–50), Satisfactory (51–100), Moderate (101–200), Poor (201–300), Very Poor (301–400), Severe (401–500).</li>
-        </ul>
+
+        <div class="formula-card">
+          <div class="formula-header">Equation 2: Overall Composite NAQI</div>
+          <div class="math-latex">
+            $$\text{NAQI} = \max_{p \in \text{Pollutants}} I_p \quad \text{subject to } |\text{Pollutants}| \ge 3 \text{ and } (\text{PM}_{2.5} \in \text{P} \lor \text{PM}_{10} \in \text{P})$$
+          </div>
+        </div>
+
+        <p><strong>CPCB Category Bands:</strong> Good (0–50), Satisfactory (51–100), Moderate (101–200), Poor (201–300), Very Poor (301–400), Severe (401–500).</p>
       </section>
 
       <!-- SECTION 2 -->
       <section>
         <h2>2. Single-Zone Indoor Mass Balance Differential Model</h2>
-        <p>Urban Indians spend 70–90% of their daily hours indoors. Indoor air quality is modeled via the standard single-zone mass balance differential equation (Nazaroff, W. W., 2004, <em>Indoor particle dynamics</em>):</p>
-        <div class="math-block">
-          lambda = a + k + (Q_p / V)<br>
-          C_ss = (P * a * C_out + S / V) / lambda<br>
-          C_in(t + dt) = C_ss + (C_in(t) - C_ss) * exp(-lambda * dt)
+        <p>Urban families spend 70–90% of their day indoors. Indoor air quality is modeled using the classical physical mass balance differential equation (Nazaroff, W. W., 2004, <em>Indoor particle dynamics</em>):</p>
+        
+        <div class="formula-card">
+          <div class="formula-header">Equation 3: Total Particle Removal Decay Rate ($\lambda$)</div>
+          <div class="math-latex">
+            $$\lambda = a + k + \frac{Q_p}{V}$$
+          </div>
+          <div class="var-grid">
+            <div><code>a</code>: Air exchange rate (h⁻¹) [0.65 sealed, 2.8 open]</div>
+            <div><code>k</code>: Deposition loss rate (h⁻¹) [0.25 h⁻¹]</div>
+            <div><code>Q_p</code>: Purifier Clean Air Delivery Rate (CADR, m³/h)</div>
+            <div><code>V</code>: Room air volume (m³) [e.g. 38 m³ bedroom]</div>
+          </div>
         </div>
-        <p><strong>Physical Definitions:</strong></p>
-        <ul style="padding-left: 20px;">
-          <li><code>a</code>: Air exchange rate (h⁻¹), varying from 0.65 h⁻¹ (closed windows) to 2.8 h⁻¹ (open windows).</li>
-          <li><code>P</code>: Penetration factor of ambient particles through the building envelope (dimensionless, 0.65–0.95).</li>
-          <li><code>k</code>: Gravitational and electrostatic particle deposition rate (h⁻¹, 0.10–0.45 h⁻¹).</li>
-          <li><code>Q_p</code>: Clean Air Delivery Rate (CADR) of filtration equipment (m³/h).</li>
-          <li><code>V</code>: Effective zone volume (m³); e.g., 38 m³ for typical Indian master bedroom.</li>
-          <li><code>S</code>: Indoor emission source rate (µg/h); e.g., LPG cooking, agarbatti, or mosquito coils.</li>
-        </ul>
+
+        <div class="formula-card">
+          <div class="formula-header">Equation 4: Steady-State Indoor Concentration ($C_{ss}$)</div>
+          <div class="math-latex">
+            $$C_{ss} = \frac{P \cdot a \cdot C_{\text{out}} + \frac{S}{V}}{\lambda}$$
+          </div>
+          <div class="var-grid">
+            <div><code>P</code>: Envelope penetration factor (0.65–0.95)</div>
+            <div><code>C_out</code>: Ambient outdoor concentration (µg/m³)</div>
+            <div><code>S</code>: Indoor emission source rate (µg/h)</div>
+            <div><code>S / V</code>: Source concentration injection rate (µg/m³·h)</div>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-header">Equation 5: Transient Indoor Hourly Update</div>
+          <div class="math-latex">
+            $$C_{\text{in}}(t + \Delta t) = C_{ss} + \big(C_{\text{in}}(t) - C_{ss}\big) \cdot e^{-\lambda \Delta t}$$
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">
+            This differential solution accurately tracks rapid particulate decay when an air purifier is switched on, or concentration surges during unvented cooking.
+          </p>
+        </div>
       </section>
 
       <!-- SECTION 3 -->
       <section>
         <h2>3. Personal Daily Inhaled Dose Model</h2>
         <p>Physical particulate mass deposited in human airways is computed by integrating microenvironmental concentrations with activity-specific volumetric inhalation rates (US EPA Exposure Factors Handbook, 2011, Chapter 6):</p>
-        <div class="math-block">
-          Dose_m = sum_s [ C_e(t) * IR(m, a) * dt ]  (micrograms PM2.5 / day)<br>
-          Exposure Ratio = Dose_m / Dose_ref
+        
+        <div class="formula-card">
+          <div class="formula-header">Equation 6: 24-Hour Cumulative Inhaled Dose</div>
+          <div class="math-latex">
+            $$\text{Dose}_m = \sum_{s \in \text{Schedule}} C_e(t) \cdot \text{IR}(m, a) \cdot \Delta t_s \quad [\mu\text{g PM}_{2.5}/\text{day}]$$
+          </div>
+          <div class="var-grid">
+            <div><code>m</code>: Household member (child, toddler, adult, elderly)</div>
+            <div><code>IR(m, a)</code>: Volumetric inhalation rate (m³/h)</div>
+            <div><code>C_e(t)</code>: Concentration in microenvironment <em>e</em> (µg/m³)</div>
+            <div><code>Δt_s</code>: Duration spent in schedule segment <em>s</em> (hours)</div>
+          </div>
         </div>
-        <p>Where <code>Dose_ref</code> represents the daily inhaled dose for the same person at the WHO 2021 24-hour guideline continuous concentration (15 µg/m³).</p>
-        <p><strong>Uncertainty Bounds:</strong> In accordance with scientific integrity standards, single-point false precision is never presented as definitive truth. Every calculation simultaneously evaluates <code>low</code>, <code>central</code>, and <code>high</code> parameter vectors.</p>
+
+        <div class="formula-card">
+          <div class="formula-header">Equation 7: Exposure Ratio to WHO Continuous Guideline</div>
+          <div class="math-latex">
+            $$\text{Exposure Ratio} = \frac{\text{Dose}_m}{\text{Dose}_{\text{ref}}} \quad \text{where } \text{Dose}_{\text{ref}} = 15\,\mu\text{g}/\text{m}^3 \times \overline{\text{IR}} \times 24\,\text{h}$$
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">
+            Evaluated across <strong>[low, central, high]</strong> parameter vectors to reflect physiological uncertainty.
+          </p>
+        </div>
       </section>
 
       <!-- SECTION 4 -->
       <section>
-        <h2>4. What-If Simulator & Strict Zero-Change Invariant</h2>
-        <p>The what-if simulator allows families to assess intervention efficacy before purchasing hardware or changing habits:</p>
-        <ul style="padding-left: 20px;">
-          <li><strong>Zero-Change Invariant (Part 3.4):</strong> If user overrides match the baseline profile exactly, the engine is mathematically proven to return strictly <code>0.0 µg (0%)</code> delta dose and <code>0.0 g</code> community emissions.</li>
-          <li><strong>Two-Way Community Impact (Part 3.5):</strong> Switching transit modes (e.g. from petrol two-wheeler to electric metro) calculates community tailpipe CO₂ and PM2.5 mass avoided using official ARAI/CPCB vehicular emission factors.</li>
-        </ul>
+        <h2>4. What-If Simulator & Two-Way Community Impact</h2>
+        
+        <div class="formula-card">
+          <div class="formula-header">Equation 8: Personal Avoided Dose & Strict Zero-Change Invariant</div>
+          <div class="math-latex">
+            $$\Delta \text{Dose} = \text{Dose}_{\text{baseline}} - \text{Dose}_{\text{scenario}}$$
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">
+            <strong>Mathematical Invariant:</strong> If $\text{Scenario} \equiv \text{Baseline}$, then $\Delta \text{Dose} \equiv 0.0\,\mu\text{g}$ and $\Delta \% \equiv 0.0\%$.
+          </p>
+        </div>
+
+        <div class="formula-card">
+          <div class="formula-header">Equation 9: Community Tailpipe Emissions Avoided</div>
+          <div class="math-latex">
+            $$\Delta \text{CO}_2 = D \cdot \big(\text{EF}_{\text{old}}^{\text{CO}_2} - \text{EF}_{\text{new}}^{\text{CO}_2}\big) \quad [\text{g CO}_2/\text{day}]$$
+            $$\Delta \text{PM}_{2.5} = D \cdot \big(\text{EF}_{\text{old}}^{\text{PM}} - \text{EF}_{\text{new}}^{\text{PM}}\big) \quad [\text{mg PM}_{2.5}/\text{day}]$$
+          </div>
+          <div class="var-grid">
+            <div><code>D</code>: Commute round-trip distance (km)</div>
+            <div><code>EF_old, EF_new</code>: ARAI/CPCB tailpipe emission factors (e.g. 72 g/km bike vs 16 g/km metro)</div>
+          </div>
+        </div>
       </section>
 
       <!-- SECTION 5 -->
@@ -325,5 +467,30 @@
       </section>
     </main>
   </div>
+
+  <script>
+    // Initialize KaTeX auto-render on load
+    document.addEventListener("DOMContentLoaded", function() {
+      function renderMath() {
+        if (typeof renderMathInElement === 'function') {
+          renderMathInElement(document.body, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+          });
+          document.querySelectorAll('.math-fallback').forEach(function(el) {
+            el.style.display = 'none';
+          });
+        }
+      }
+      if (window.katex) {
+        renderMath();
+      } else {
+        window.addEventListener('load', renderMath);
+      }
+    });
+  </script>
 </body>
 </html>
