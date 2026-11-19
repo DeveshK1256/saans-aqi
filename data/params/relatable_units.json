@@ -1,0 +1,25 @@
+{
+  "description": "Relatable unit conversion parameters with mandatory scientific caveats",
+  "citation": "Muller, R. A., & Muller, E. A. (2015). Air Pollution and Cigarette Equivalence. Berkeley Earth.",
+  "parameters": {
+    "berkeley_earth_cigarette_pm25_threshold": {
+      "value": 22.0,
+      "unit": "ug/m3 per 24 hours",
+      "formula": "cigarettes_per_day = mean_24h_pm25 / 22.0",
+      "caveat": "Cigarette equivalence is a public communication heuristic based on average statistical health hazard ratios across epidemiological studies. It is not an exact clinical diagnostic measure and does not capture toxic gas constituents, direct smoking depth of puff, or individual immunological variability.",
+      "verified": true
+    },
+    "who_annual_guideline_pm25": {
+      "value": 5.0,
+      "unit": "ug/m3",
+      "citation": "WHO Global Air Quality Guidelines (2021)",
+      "verified": true
+    },
+    "who_24h_guideline_pm25": {
+      "value": 15.0,
+      "unit": "ug/m3",
+      "citation": "WHO Global Air Quality Guidelines (2021)",
+      "verified": true
+    }
+  }
+}

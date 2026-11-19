@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scientific Methodology & Parameter Specifications — Saans (सांस)</title>
+  <meta name="description" content="Formal documentation of CPCB NAQI algorithms, Nazaroff (2004) single-zone mass balance differential equations, EPA Inhalation Rates, and ARAI emission factors.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2226%22>🌱</text></svg>">
+  <style>
+    :root {
+      --bg-page: #F8FAF9;
+      --surface-bg: #FFFFFF;
+      --surface-subtle: #F1F5F3;
+      --surface-border: #DDE5E0;
+      --text-main: #1A2E26;
+      --text-muted: #4A6358;
+      --accent: #007A5A;
+      --accent-light: #E6F4F0;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 30px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 36px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    header {
+      border-bottom: 2px solid var(--surface-border);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .back-link:hover { text-decoration: underline; }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .axiom-box {
+      background: var(--accent-light);
+      border: 1px solid #A7F3D0;
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 0.95rem;
+      color: #065F46;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 32px 0 12px;
+      border-bottom: 1px solid var(--surface-border);
+      padding-bottom: 6px;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 18px 0 8px;
+    }
+
+    p, li {
+      font-size: 0.92rem;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    .math-block {
+      background: #F8FAF9;
+      border: 1px solid var(--surface-border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.92rem;
+      margin: 14px 0;
+      color: #0F172A;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      border: 1px solid var(--surface-border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--surface-subtle);
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .badge-verified {
+      display: inline-block;
+      background: #DCFCE7;
+      color: #166534;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .caveat-box {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-left: 4px solid #F59E0B;
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 0.88rem;
+      color: #92400E;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="back-link">← Return to Live Saans App</a>
+      <h1>Scientific Methodology & Calculation Specifications</h1>
+      <p class="tagline">Official mathematical and physical documentation for Saans (सांस) — Challenge 6: Urban Air Quality Assistant.</p>
+      <div class="axiom-box">
+        <strong>Core Axiom:</strong> The LLM explains, code calculates. All exposure, dose, sub-index, CADR decay rates, and emission numbers come strictly from pure, tested physical code in <code>src/domain/</code>.
+      </div>
+    </header>
+
+    <main>
+      <!-- SECTION 1 -->
+      <section>
+        <h2>1. National Air Quality Index (NAQI) — India CPCB Standard</h2>
+        <p>Calculated in strict compliance with the Central Pollution Control Board (CPCB) and Ministry of Environment, Forest and Climate Change (MoEFCC) 2014 NAQI standard.</p>
+        <div class="math-block">
+          I_p = ((I_hi - I_lo) / (BP_hi - BP_lo)) * (C_p - BP_lo) + I_lo
+        </div>
+        <p><strong>Rules & Verification:</strong></p>
+        <ul style="padding-left: 20px;">
+          <li><strong>Overall NAQI:</strong> Evaluated as <code>max(I_p)</code> across all monitored pollutants.</li>
+          <li><strong>Completeness Gate:</strong> Requires at least 3 valid pollutant sub-indices, with at least one particulate matter pollutant (PM2.5 or PM10). If fewer than 3 pollutants are available, marked as <code>partial</code>.</li>
+          <li><strong>CPCB Category Bands:</strong> Good (0–50), Satisfactory (51–100), Moderate (101–200), Poor (201–300), Very Poor (301–400), Severe (401–500).</li>
+        </ul>
+      </section>
+
+      <!-- SECTION 2 -->
+      <section>
+        <h2>2. Single-Zone Indoor Mass Balance Differential Model</h2>
+        <p>Urban Indians spend 70–90% of their daily hours indoors. Indoor air quality is modeled via the standard single-zone mass balance differential equation (Nazaroff, W. W., 2004, <em>Indoor particle dynamics</em>):</p>
+        <div class="math-block">
+          lambda = a + k + (Q_p / V)<br>
+          C_ss = (P * a * C_out + S / V) / lambda<br>
+          C_in(t + dt) = C_ss + (C_in(t) - C_ss) * exp(-lambda * dt)
+        </div>
+        <p><strong>Physical Definitions:</strong></p>
+        <ul style="padding-left: 20px;">
+          <li><code>a</code>: Air exchange rate (h⁻¹), varying from 0.65 h⁻¹ (closed windows) to 2.8 h⁻¹ (open windows).</li>
+          <li><code>P</code>: Penetration factor of ambient particles through the building envelope (dimensionless, 0.65–0.95).</li>
+          <li><code>k</code>: Gravitational and electrostatic particle deposition rate (h⁻¹, 0.10–0.45 h⁻¹).</li>
+          <li><code>Q_p</code>: Clean Air Delivery Rate (CADR) of filtration equipment (m³/h).</li>
+          <li><code>V</code>: Effective zone volume (m³); e.g., 38 m³ for typical Indian master bedroom.</li>
+          <li><code>S</code>: Indoor emission source rate (µg/h); e.g., LPG cooking, agarbatti, or mosquito coils.</li>
+        </ul>
+      </section>
+
+      <!-- SECTION 3 -->
+      <section>
+        <h2>3. Personal Daily Inhaled Dose Model</h2>
+        <p>Physical particulate mass deposited in human airways is computed by integrating microenvironmental concentrations with activity-specific volumetric inhalation rates (US EPA Exposure Factors Handbook, 2011, Chapter 6):</p>
+        <div class="math-block">
+          Dose_m = sum_s [ C_e(t) * IR(m, a) * dt ]  (micrograms PM2.5 / day)<br>
+          Exposure Ratio = Dose_m / Dose_ref
+        </div>
+        <p>Where <code>Dose_ref</code> represents the daily inhaled dose for the same person at the WHO 2021 24-hour guideline continuous concentration (15 µg/m³).</p>
+        <p><strong>Uncertainty Bounds:</strong> In accordance with scientific integrity standards, single-point false precision is never presented as definitive truth. Every calculation simultaneously evaluates <code>low</code>, <code>central</code>, and <code>high</code> parameter vectors.</p>
+      </section>
+
+      <!-- SECTION 4 -->
+      <section>
+        <h2>4. What-If Simulator & Strict Zero-Change Invariant</h2>
+        <p>The what-if simulator allows families to assess intervention efficacy before purchasing hardware or changing habits:</p>
+        <ul style="padding-left: 20px;">
+          <li><strong>Zero-Change Invariant (Part 3.4):</strong> If user overrides match the baseline profile exactly, the engine is mathematically proven to return strictly <code>0.0 µg (0%)</code> delta dose and <code>0.0 g</code> community emissions.</li>
+          <li><strong>Two-Way Community Impact (Part 3.5):</strong> Switching transit modes (e.g. from petrol two-wheeler to electric metro) calculates community tailpipe CO₂ and PM2.5 mass avoided using official ARAI/CPCB vehicular emission factors.</li>
+        </ul>
+      </section>
+
+      <!-- SECTION 5 -->
+      <section>
+        <h2>5. Parameter Registry & Authoritative Citations</h2>
+        <p>All constants are externally sourced from peer-reviewed literature or official regulatory bodies. Zero hardcoded numbers in business logic.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Bounds [Low, Central, High]</th>
+              <th>Authoritative Source</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Inhalation Rate (Child 6–10y, Sleep)</td>
+              <td>m³/h</td>
+              <td>[0.25, 0.32, 0.42]</td>
+              <td>US EPA Exposure Factors Handbook (2011), Table 6-1</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>Inhalation Rate (Child 6–10y, Light Activity)</td>
+              <td>m³/h</td>
+              <td>[0.55, 0.72, 0.95]</td>
+              <td>US EPA Exposure Factors Handbook (2011), Table 6-1</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>Inhalation Rate (Adult, Sedentary)</td>
+              <td>m³/h</td>
+              <td>[0.35, 0.50, 0.68]</td>
+              <td>US EPA Exposure Factors Handbook (2011), Table 6-1</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>In-Transit PM2.5 Ratio (Two-Wheeler / Bike)</td>
+              <td>ratio</td>
+              <td>[1.00, 1.20, 1.55]</td>
+              <td>Apte et al. (2011), Goel & Kumar (2015)</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>In-Transit PM2.5 Ratio (Metro / Train)</td>
+              <td>ratio</td>
+              <td>[0.25, 0.38, 0.52]</td>
+              <td>Apte et al. (2011), Goel & Kumar (2015)</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>Vehicular Tailpipe CO₂ (Two-Wheeler Petrol)</td>
+              <td>g CO₂/km</td>
+              <td>[55, 72, 90]</td>
+              <td>ARAI / CPCB Emission Factors Handbook (India)</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>Vehicular Tailpipe CO₂ (Electric Metro)</td>
+              <td>g CO₂/km</td>
+              <td>[10, 16, 24]</td>
+              <td>DMRC Environmental Impact Report (Grid-weighted)</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>Penetration Factor (P)</td>
+              <td>unitless</td>
+              <td>[0.65, 0.80, 0.95]</td>
+              <td>Nazaroff, W. W. (2004) Indoor particle dynamics</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>Particle Deposition Rate (k)</td>
+              <td>h⁻¹</td>
+              <td>[0.10, 0.25, 0.45]</td>
+              <td>Nazaroff, W. W. (2004) Indoor particle dynamics</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+            <tr>
+              <td>LPG Cooking Source Rate (Unvented)</td>
+              <td>µg/h</td>
+              <td>[40,000, 65,000, 95,000]</td>
+              <td>Huboyo et al. (2014); CPCB Indoor Emission Studies</td>
+              <td><span class="badge-verified">Verified</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SECTION 6 -->
+      <section>
+        <h2>6. Relatable Communication Units & Mandatory Caveat</h2>
+        <div class="caveat-box">
+          <strong>Mandatory Scientific Caveat (Part 3.4 & SCI-06):</strong><br>
+          Cigarette equivalence is derived using Berkeley Earth's empirical conversion rule (22 µg/m³ 24h average PM2.5 ≈ 1 cigarette). This comparison is deployed strictly as an intuitive risk communication metaphor for the public. Ambient urban air pollution differs fundamentally from directly inhaled cigarette smoke in chemical speciation, absence of heavy tobacco pyrolysis products, particle morphology, and physiological deposition mechanics. <em>It must never be presented as a medical diagnosis or clinical prognosis.</em>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

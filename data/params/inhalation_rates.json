@@ -1,0 +1,41 @@
+{
+  "description": "Short-term and daily inhalation rates by age group and activity level",
+  "citation": "US EPA Exposure Factors Handbook (2011 Edition), Chapter 6: Inhalation Rates, Table 6-1",
+  "rates": {
+    "infant": {
+      "sleep": { "low": 0.15, "central": 0.22, "high": 0.30, "unit": "m3/h", "verified": true },
+      "sedentary": { "low": 0.20, "central": 0.28, "high": 0.38, "unit": "m3/h", "verified": true },
+      "light": { "low": 0.35, "central": 0.45, "high": 0.60, "unit": "m3/h", "verified": true },
+      "moderate": { "low": 0.50, "central": 0.70, "high": 0.95, "unit": "m3/h", "verified": true },
+      "heavy": { "low": 0.80, "central": 1.10, "high": 1.50, "unit": "m3/h", "verified": true }
+    },
+    "toddler": {
+      "sleep": { "low": 0.20, "central": 0.27, "high": 0.35, "unit": "m3/h", "verified": true },
+      "sedentary": { "low": 0.25, "central": 0.34, "high": 0.45, "unit": "m3/h", "verified": true },
+      "light": { "low": 0.45, "central": 0.58, "high": 0.75, "unit": "m3/h", "verified": true },
+      "moderate": { "low": 0.70, "central": 0.92, "high": 1.20, "unit": "m3/h", "verified": true },
+      "heavy": { "low": 1.10, "central": 1.45, "high": 1.90, "unit": "m3/h", "verified": true }
+    },
+    "child": {
+      "sleep": { "low": 0.25, "central": 0.32, "high": 0.42, "unit": "m3/h", "verified": true },
+      "sedentary": { "low": 0.30, "central": 0.40, "high": 0.55, "unit": "m3/h", "verified": true },
+      "light": { "low": 0.55, "central": 0.72, "high": 0.95, "unit": "m3/h", "verified": true },
+      "moderate": { "low": 0.90, "central": 1.25, "high": 1.65, "unit": "m3/h", "verified": true },
+      "heavy": { "low": 1.50, "central": 2.05, "high": 2.70, "unit": "m3/h", "verified": true }
+    },
+    "adult": {
+      "sleep": { "low": 0.30, "central": 0.40, "high": 0.52, "unit": "m3/h", "verified": true },
+      "sedentary": { "low": 0.35, "central": 0.50, "high": 0.68, "unit": "m3/h", "verified": true },
+      "light": { "low": 0.80, "central": 1.15, "high": 1.50, "unit": "m3/h", "verified": true },
+      "moderate": { "low": 1.40, "central": 1.85, "high": 2.40, "unit": "m3/h", "verified": true },
+      "heavy": { "low": 2.40, "central": 3.10, "high": 4.10, "unit": "m3/h", "verified": true }
+    },
+    "elderly": {
+      "sleep": { "low": 0.28, "central": 0.36, "high": 0.48, "unit": "m3/h", "verified": true },
+      "sedentary": { "low": 0.32, "central": 0.45, "high": 0.62, "unit": "m3/h", "verified": true },
+      "light": { "low": 0.70, "central": 0.98, "high": 1.35, "unit": "m3/h", "verified": true },
+      "moderate": { "low": 1.20, "central": 1.60, "high": 2.10, "unit": "m3/h", "verified": true },
+      "heavy": { "low": 2.00, "central": 2.65, "high": 3.50, "unit": "m3/h", "verified": true }
+    }
+  }
+}

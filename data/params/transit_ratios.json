@@ -1,0 +1,54 @@
+{
+  "description": "In-transit PM2.5 exposure ratios relative to ambient background outdoor air (C / Cout)",
+  "citation": "Apte et al. (2011) High-resolution air pollution mapping; Goel & Kumar (2015) Characterisation of commute modes in Delhi",
+  "modes": {
+    "walk": {
+      "low": 0.85,
+      "central": 1.00,
+      "high": 1.25,
+      "unit": "ratio",
+      "source": "Sidewalk pedestrian exposure near arterial roads",
+      "verified": true
+    },
+    "bike_scooter": {
+      "low": 1.00,
+      "central": 1.20,
+      "high": 1.55,
+      "unit": "ratio",
+      "source": "Two-wheeler rider directly immersed in tailpipe exhaust plumes in stop-and-go Indian traffic",
+      "verified": true
+    },
+    "auto_rickshaw": {
+      "low": 0.95,
+      "central": 1.15,
+      "high": 1.45,
+      "unit": "ratio",
+      "source": "Three-wheeler open-sided cabin with partial roof trapping exhaust",
+      "verified": true
+    },
+    "bus": {
+      "low": 0.70,
+      "central": 0.85,
+      "high": 1.10,
+      "unit": "ratio",
+      "source": "Standard non-AC state transit bus with open windows",
+      "verified": true
+    },
+    "car_ac": {
+      "low": 0.20,
+      "central": 0.32,
+      "high": 0.48,
+      "unit": "ratio",
+      "source": "Private car with closed windows and AC in internal air recirculation mode with cabin air filter",
+      "verified": true
+    },
+    "metro_train": {
+      "low": 0.25,
+      "central": 0.38,
+      "high": 0.52,
+      "unit": "ratio",
+      "source": "Underground / elevated AC Metro system with central HVAC filtration",
+      "verified": true
+    }
+  }
+}

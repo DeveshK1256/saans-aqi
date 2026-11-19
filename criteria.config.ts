@@ -62,8 +62,8 @@ export const CRITERIA_CHECKS: CriteriaCheck[] = [
   // --- Efficiency ---
   { id: 'EFF-01', criterion: 'EFF', title: 'Lighthouse mobile performance ≥ 90 (public)', since: 'A0', isManual: true },
   { id: 'EFF-02', criterion: 'EFF', title: 'JS bundle per route ≤ 170 KB gzip', since: 'A0', isManual: true },
-  { id: 'EFF-03', criterion: 'EFF', title: 'What-if recomputation < 50ms in browser', since: 'A3', isManual: true },
-  { id: 'EFF-04', criterion: 'EFF', title: 'Exposure compute < 20ms for 7 days', since: 'A3', command: 'npx vitest run tests/unit/exposure-engine.test.ts 2>&1' },
+  { id: 'EFF-03', criterion: 'EFF', title: 'What-if recomputation < 50ms in browser', since: 'A3', command: 'npx vitest run tests/unit/what-if.test.ts 2>&1' },
+  { id: 'EFF-04', criterion: 'EFF', title: 'Exposure compute < 20ms for 7 days', since: 'A3', command: 'npx vitest run tests/unit/exposure-model.test.ts 2>&1' },
   { id: 'EFF-05', criterion: 'EFF', title: 'Air data grid-cell cache hit ratio ≥ 90%', since: 'A1', isManual: true },
   { id: 'EFF-06', criterion: 'EFF', title: 'First useful content < 3s on 3G network', since: 'A9', isManual: true },
 
@@ -114,7 +114,7 @@ export const CRITERIA_CHECKS: CriteriaCheck[] = [
   // --- Science ---
   { id: 'SCI-01', criterion: 'SCI', title: 'All constants cite authoritative sources (EPA/CPCB)', since: 'A3', isManual: true },
   { id: 'SCI-02', criterion: 'SCI', title: 'Methodology page publishes all formulas & limits', since: 'A3', isManual: true },
-  { id: 'SCI-03', criterion: 'SCI', title: 'Golden and property math tests all pass', since: 'A3', command: 'npx vitest run tests/unit/exposure-engine.test.ts 2>&1' },
+  { id: 'SCI-03', criterion: 'SCI', title: 'Golden and property math tests all pass', since: 'A3', command: 'npx vitest run tests/unit/exposure-model.test.ts 2>&1' },
   { id: 'SCI-04', criterion: 'SCI', title: 'LLM explains, code calculates (no LLM math)', since: 'A0', isManual: true },
   { id: 'SCI-05', criterion: 'SCI', title: 'Ranges displayed rather than false precision', since: 'A3', isManual: true },
   { id: 'SCI-06', criterion: 'SCI', title: 'Cigarette-equivalent unit shows explicit caveat', since: 'A0', isManual: true },

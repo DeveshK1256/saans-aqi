@@ -1,0 +1,46 @@
+{
+  "description": "Mass balance physical parameters for indoor residential microenvironments",
+  "citation": "Nazaroff, W. W. (2004). Indoor particle dynamics. Indoor Air, 14(s7), 175-183; Chen & Zhao (2011).",
+  "parameters": {
+    "penetration_factor": {
+      "low": 0.65,
+      "central": 0.80,
+      "high": 0.95,
+      "unit": "dimensionless",
+      "source": "US EPA / Nazaroff (2004)",
+      "verified": true
+    },
+    "deposition_rate_k": {
+      "low": 0.10,
+      "central": 0.25,
+      "high": 0.45,
+      "unit": "h^-1",
+      "source": "Thatcher & Layton (1995); Howard-Reed et al. (2003)",
+      "verified": true
+    },
+    "air_exchange_closed": {
+      "low": 0.30,
+      "central": 0.60,
+      "high": 1.10,
+      "unit": "h^-1",
+      "source": "Indian urban residential baseline (CPCB/MoEFCC building surveys)",
+      "verified": true
+    },
+    "air_exchange_open": {
+      "low": 2.50,
+      "central": 4.80,
+      "high": 8.00,
+      "unit": "h^-1",
+      "source": "Cross-ventilation opening measurements (Wallace et al., 2002)",
+      "verified": true
+    },
+    "default_bedroom_volume": {
+      "low": 28.0,
+      "central": 38.0,
+      "high": 55.0,
+      "unit": "m3",
+      "source": "Indian urban apartment standard 10x12x9 ft to 12x14x10 ft",
+      "verified": true
+    }
+  }
+}

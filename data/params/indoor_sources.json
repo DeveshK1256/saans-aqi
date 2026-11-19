@@ -1,0 +1,46 @@
+{
+  "description": "Indoor PM2.5 source emission rates (S) in residential settings",
+  "citation": "Huboyo et al. (2014); See & Balasubramanian (2011); Gordon et al. (2014) WHO indoor air quality guidelines",
+  "sources": {
+    "lpg_cooking_no_exhaust": {
+      "low": 1200,
+      "central": 2400,
+      "high": 4500,
+      "unit": "ug/h",
+      "source": "LPG cooking with Indian shallow/deep frying without exhaust",
+      "verified": true
+    },
+    "lpg_cooking_with_chimney": {
+      "low": 250,
+      "central": 550,
+      "high": 950,
+      "unit": "ug/h",
+      "source": "LPG cooking with powered kitchen range hood (70-80% capture efficiency)",
+      "verified": true
+    },
+    "agarbatti_incense": {
+      "low": 1800,
+      "central": 3200,
+      "high": 5500,
+      "unit": "ug/h",
+      "source": "Standard 1g Indian agarbatti burning continuously for 45 mins",
+      "verified": true
+    },
+    "mosquito_coil": {
+      "low": 2800,
+      "central": 5100,
+      "high": 8200,
+      "unit": "ug/h",
+      "source": "Liu et al. (2003) - 1 burning coil emits PM2.5 equivalent to 75-137 cigarettes",
+      "verified": true
+    },
+    "tobacco_smoking": {
+      "low": 6000,
+      "central": 10500,
+      "high": 16000,
+      "unit": "ug/h",
+      "source": "Klepeis et al. (2001) - 1 cigarette smoldering/active in enclosed room",
+      "verified": true
+    }
+  }
+}

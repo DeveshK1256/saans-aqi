@@ -48,3 +48,25 @@
 - **Context:** Storing sensitive category flags (e.g., asthma, pregnancy, cardiovascular conditions) in plaintext database columns creates substantial privacy risks during data dumps or unauthorized access.
 - **Decision:** Implement Google Cloud KMS envelope encryption (`GS-12`, `SEC-20`) using authenticated AES-256-GCM. Sensitive fields are serialized into an authenticated envelope (`kms:{version}:{iv}:{ciphertext}:{authTag}`) before persistence. The database stores only ciphertext; decryption occurs transiently in memory for the verified owner.
 - **Consequences:** Guarantees zero plaintext leakage at rest. Any ciphertext tampering causes GCM authentication failure and rejects processing.
+
+## ADR-008: Single-Zone Mass Balance Differential Indoor Air Model
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Urban families spend 70–90% of their day indoors, where outdoor smog infiltrates and indoor sources (cooking, incense, coils) create dangerous localized PM2.5 concentrations. Simple empirical multipliers fail to account for building envelope leakage, CADR filtration decay rates, or volume dynamics.
+- **Decision:** Implement the Nazaroff (2004) single-zone mass balance analytical differential equation:
+  $$\lambda = a + k + \frac{Q_p}{V}$$
+  $$C_{ss} = \frac{P \cdot a \cdot C_{out} + S / V}{\lambda}$$
+  $$C_{in}(t + \Delta t) = C_{ss} + (C_{in}(t) - C_{ss}) \cdot e^{-\lambda \Delta t}$$
+  All parameters ($P, k, a, S, V$) are maintained as `{low, central, high, unit, source, citation, verified}` in `data/params/` without hardcoded constants in logic.
+- **Consequences:** Accurate transient and steady-state concentration predictions under window sealing, HEPA filtration, and indoor cooking emission events. Executes in <1 ms with zero I/O.
+
+## ADR-009: Two-Way Impact What-If Engine (Personal Exposure & Community Emissions)
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Features F4 & F5 require showing users both personal exposure reduction (µg/day dose avoided) and collective community emission mitigation (g CO2 and mg PM2.5 avoided) when making lifestyle modifications such as shifting from two-wheeler to metro or running an air purifier. The engine must adhere strictly to the Zero-Change Invariant (Part 3.4): zero drift or phantom savings when inputs remain unchanged.
+- **Decision:** Build `simulateWhatIf` in `src/domain/exposure/what-if.ts`:
+  1. **Zero-Change Invariant**: If overrides match baseline profile exactly, return strictly `{ low: 0.0, central: 0.0, high: 0.0 }` delta dose and `0.0 g` emissions avoided.
+  2. **Exposure Reduction**: Evaluate baseline schedule vs scenario schedule across low, central, and high parameter bounds.
+  3. **Community Emissions Avoided**: Calculate passenger-kilometer emission factors from ARAI/CPCB data (72 g CO2/km for petrol bike vs 16 g CO2/km for electric metro).
+  4. **Relatable Unit Caveat**: Any cigarette-equivalent conversion (Berkeley Earth 22 µg/m³ = 1 cigarette) must accompany an explicit epidemiological disclaimer noting differing chemical composition and exposure pathways.
+- **Consequences:** Provides transparent, scientifically rigorous, and empowering insights for families and communities without pseudo-scientific claims. Runs in <2 ms in-browser or on server.

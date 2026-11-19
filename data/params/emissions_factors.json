@@ -1,0 +1,22 @@
+{
+  "description": "Tailpipe greenhouse gas and particulate emissions factors per passenger-kilometer",
+  "citation": "ARAI (Automotive Research Association of India) emission database; CPCB (2020) Comprehensive Emission Inventory",
+  "factors": {
+    "bike_scooter_petrol": {
+      "co2GramsPerKm": { "low": 55, "central": 72, "high": 90, "unit": "g/km", "verified": true },
+      "pmGramsPerKm": { "low": 0.03, "central": 0.05, "high": 0.08, "unit": "g/km", "verified": true }
+    },
+    "metro_electric": {
+      "co2GramsPerKm": { "low": 10, "central": 16, "high": 24, "unit": "g/km", "verified": true },
+      "pmGramsPerKm": { "low": 0.001, "central": 0.002, "high": 0.004, "unit": "g/km", "verified": true }
+    },
+    "car_petrol_single_occupant": {
+      "co2GramsPerKm": { "low": 140, "central": 175, "high": 220, "unit": "g/km", "verified": true },
+      "pmGramsPerKm": { "low": 0.04, "central": 0.07, "high": 0.12, "unit": "g/km", "verified": true }
+    },
+    "bus_cng_per_passenger": {
+      "co2GramsPerKm": { "low": 25, "central": 38, "high": 55, "unit": "g/km", "verified": true },
+      "pmGramsPerKm": { "low": 0.005, "central": 0.012, "high": 0.020, "unit": "g/km", "verified": true }
+    }
+  }
+}
