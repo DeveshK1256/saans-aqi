@@ -1008,6 +1008,41 @@
       font-size: 0.85rem;
       color: var(--text-faint);
     }
+
+    /* Google Auth Dialog Modal */
+    dialog#google-auth-dialog {
+      border: none;
+      border-radius: 24px;
+      padding: 0;
+      max-width: 440px;
+      width: 92vw;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+      background: #ffffff;
+      color: #1f2937;
+      overflow: hidden;
+    }
+    dialog#google-auth-dialog::backdrop {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    .google-acc-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #ffffff;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+    .google-acc-row:hover {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body>
@@ -1859,6 +1894,80 @@
     </div>
 
   </main>
+
+  <!-- ==================== GOOGLE SIGN-IN ACCOUNT SELECTOR MODAL (GS-02 & DPDP 2023) ==================== -->
+  <dialog id="google-auth-dialog" aria-labelledby="google-auth-title">
+    <div style="padding: 28px 24px 20px;">
+      <!-- Google Logo & Close Button -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <button id="btn-close-auth-modal" type="button" style="border: none; background: #f3f4f6; font-size: 1.2rem; line-height: 1; cursor: pointer; color: #4b5563; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" aria-label="Close dialog">✕</button>
+      </div>
+
+      <!-- Title & Subtitle -->
+      <h3 id="google-auth-title" style="font-size: 1.35rem; font-weight: 600; margin: 0 0 4px 0; color: #111827;">Sign in with Google</h3>
+      <p style="font-size: 0.88rem; color: #6b7280; margin: 0 0 18px 0;">Choose a Google account to continue to <strong>Saans (सांस)</strong></p>
+
+      <!-- Account Selection List -->
+      <div id="google-accounts-container" style="display: flex; flex-direction: column; gap: 8px;">
+        <!-- Account 1: Priya Sharma -->
+        <button type="button" class="google-acc-row" id="btn-choose-priya">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; box-shadow: 0 1px 3px rgba(66,133,244,0.3);">P</div>
+          <div style="flex-grow: 1; min-width: 0;">
+            <div style="font-size: 0.92rem; font-weight: 600; color: #111827;">Priya Sharma</div>
+            <div style="font-size: 0.8rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya.sharma@gmail.com</div>
+          </div>
+          <span style="font-size: 0.72rem; background: #EAF4EE; color: #1B7837; padding: 3px 8px; border-radius: 12px; font-weight: 600; border: 1px solid #C4E2CF;">Pune Profile</span>
+        </button>
+
+        <!-- Account 2: Devesh Kumar (Personal / Custom) -->
+        <button type="button" class="google-acc-row" id="btn-choose-devesh">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: #0F9D58; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; box-shadow: 0 1px 3px rgba(15,157,88,0.3);">D</div>
+          <div style="flex-grow: 1; min-width: 0;">
+            <div style="font-size: 0.92rem; font-weight: 600; color: #111827;">Devesh Kumar</div>
+            <div style="font-size: 0.8rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">devesh.kumar@gmail.com</div>
+          </div>
+          <span style="font-size: 0.72rem; background: #e0f2fe; color: #0284c7; padding: 3px 8px; border-radius: 12px; font-weight: 600; border: 1px solid #bae6fd;">Delhi NCR</span>
+        </button>
+
+        <!-- Button to trigger custom input -->
+        <button type="button" id="btn-toggle-custom-acc" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 14px; border: 1px dashed #cbd5e1; border-radius: 12px; background: #f8fafc; text-align: left; cursor: pointer; transition: background 0.15s;">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: #ffffff; color: #4b5563; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; border: 1px solid #cbd5e1;">+</div>
+          <div>
+            <div style="font-size: 0.92rem; font-weight: 600; color: #374151;">Use another Google account</div>
+            <div style="font-size: 0.78rem; color: #6b7280;">Sign in with your own name & Gmail</div>
+          </div>
+        </button>
+
+        <!-- Form for custom account -->
+        <div id="custom-account-box" style="display: none; padding: 14px; border: 1px solid #93c5fd; border-radius: 12px; background: #f0f7ff;">
+          <div style="font-size: 0.84rem; font-weight: 700; color: #1e40af; margin-bottom: 8px;">Enter your Google Account details:</div>
+          <div style="margin-bottom: 8px;">
+            <label for="custom-acc-name" style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 2px;">Your Name</label>
+            <input type="text" id="custom-acc-name" placeholder="e.g. Rahul Verma" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.86rem; box-sizing: border-box;">
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label for="custom-acc-email" style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 2px;">Gmail Address</label>
+            <input type="email" id="custom-acc-email" placeholder="e.g. rahul.verma@gmail.com" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.86rem; box-sizing: border-box;">
+          </div>
+          <div style="display: flex; gap: 8px; justify-content: flex-end;">
+            <button type="button" id="btn-cancel-custom-input" style="padding: 6px 12px; font-size: 0.8rem; border: 1px solid #cbd5e1; background: white; border-radius: 6px; cursor: pointer;">Cancel</button>
+            <button type="button" id="btn-confirm-custom-acc" style="padding: 6px 14px; font-size: 0.8rem; font-weight: 600; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer;">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dialog Footer (Google OAuth Notice) -->
+    <div style="background: #f9fafb; border-top: 1px solid #e5e7eb; padding: 12px 24px; font-size: 0.73rem; color: #6b7280; line-height: 1.45;">
+      To continue, Google will share your name and email with <strong>Saans</strong>. Protected under DPDP Act 2023 with Cloud KMS AES-256-GCM envelope encryption.
+    </div>
+  </dialog>
 
   <footer>
     <div class="container">
@@ -2785,7 +2894,7 @@
           if (headerLogin) {
             headerLogin.addEventListener('click', (e) => {
               e.stopPropagation();
-              loginWithGoogle();
+              openGoogleAuthModal();
             });
           }
         }
@@ -2793,49 +2902,198 @@
       }
     }
 
-    function loginWithGoogle(customUser) {
-      if (customUser) {
-        currentAuthUser = {
-          isLoggedIn: true,
-          name: customUser.name || 'Priya Sharma',
-          email: customUser.email || 'priya.sharma@gmail.com',
-          avatarInitial: (customUser.name || 'P').charAt(0).toUpperCase(),
-          avatarColor: '#4285F4',
-          provider: 'Google OpenID (GS-02)'
-        };
-      } else {
-        const inputName = prompt('Sign in via Google OpenID:\nEnter full name (or leave default for Priya Sharma):', 'Priya Sharma');
-        if (inputName === null) return;
-        const chosenName = inputName.trim() || 'Priya Sharma';
-        const defaultEmail = chosenName.toLowerCase().replace(/[^a-z0-9]/g, '.') + '@gmail.com';
-        const inputEmail = prompt('Enter Google Account email:', defaultEmail);
-        if (inputEmail === null) return;
-        const chosenEmail = inputEmail.trim() || defaultEmail;
-
-        currentAuthUser = {
-          isLoggedIn: true,
-          name: chosenName,
-          email: chosenEmail,
-          avatarInitial: chosenName.charAt(0).toUpperCase(),
-          avatarColor: '#4285F4',
-          provider: 'Google OpenID (GS-02)'
-        };
+    // Google Sign-In Modal Handlers
+    function openGoogleAuthModal() {
+      const dialog = document.getElementById('google-auth-dialog');
+      if (dialog) {
+        const customBox = document.getElementById('custom-account-box');
+        if (customBox) customBox.style.display = 'none';
+        const customBtn = document.getElementById('btn-toggle-custom-acc');
+        if (customBtn) customBtn.style.display = 'flex';
+        
+        if (typeof dialog.showModal === 'function') {
+          dialog.showModal();
+        } else {
+          dialog.setAttribute('open', 'true');
+        }
       }
+    }
+
+    function closeGoogleAuthModal() {
+      const dialog = document.getElementById('google-auth-dialog');
+      if (dialog) {
+        if (typeof dialog.close === 'function') {
+          dialog.close();
+        } else {
+          dialog.removeAttribute('open');
+        }
+      }
+    }
+
+    function loginAsUser(userObj) {
+      currentAuthUser = {
+        isLoggedIn: true,
+        name: userObj.name,
+        email: userObj.email,
+        avatarInitial: userObj.avatarInitial || userObj.name.charAt(0).toUpperCase(),
+        avatarColor: userObj.avatarColor || '#4285F4',
+        provider: userObj.provider || 'Google OpenID (GS-02)'
+      };
+      try {
+        localStorage.setItem('saans_auth_user', JSON.stringify(currentAuthUser));
+        localStorage.removeItem('saans_profile_deleted');
+      } catch (e) {}
+
       updateAuthUI();
-      if (currentAuthUser.name.toLowerCase().includes('priya')) {
+
+      if (userObj.isPriya) {
         applyPriyaDefaults();
         saveHouseholdProfile();
+      } else {
+        const m1Alias = document.getElementById('m1-alias');
+        if (m1Alias && userObj.m1Alias) m1Alias.value = userObj.m1Alias;
+        const m1Age = document.getElementById('m1-age');
+        if (m1Age && userObj.m1Age) m1Age.value = userObj.m1Age;
+        if (userObj.city) {
+          const cityEl = document.getElementById('hh-city');
+          if (cityEl) cityEl.value = userObj.city;
+        }
+        if (userObj.locality) {
+          const locEl = document.getElementById('hh-locality');
+          if (locEl) locEl.value = userObj.locality;
+        }
+        const m2Alias = document.getElementById('m2-alias');
+        if (m2Alias && userObj.m2Alias) m2Alias.value = userObj.m2Alias;
+        const m2Age = document.getElementById('m2-age');
+        if (m2Age && userObj.m2Age) m2Age.value = userObj.m2Age;
+
+        document.getElementById('hh-consent-check').checked = true;
+        updateMemberAgeBadges();
+        saveHouseholdProfile();
       }
-      alert(`Signed in successfully as ${currentAuthUser.name} (${currentAuthUser.email}) via Google OpenID.`);
     }
 
     function logoutUser() {
       if (confirm('Do you want to log out of Saans? This will switch your session to Guest.')) {
         currentAuthUser = { isLoggedIn: false };
+        try {
+          localStorage.removeItem('saans_auth_user');
+        } catch (e) {}
         clearHouseholdForm();
         updateAuthUI();
-        alert('You have been logged out. Switched to Guest mode.');
       }
+    }
+
+    // Modal Close Button
+    const btnCloseModal = document.getElementById('btn-close-auth-modal');
+    if (btnCloseModal) {
+      btnCloseModal.addEventListener('click', closeGoogleAuthModal);
+    }
+
+    // Modal Backdrop Click
+    const authDialog = document.getElementById('google-auth-dialog');
+    if (authDialog) {
+      authDialog.addEventListener('click', (e) => {
+        const rect = authDialog.getBoundingClientRect();
+        const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height
+          && rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+        if (!isInDialog) {
+          closeGoogleAuthModal();
+        }
+      });
+    }
+
+    // Account choice 1: Priya Sharma
+    const btnChoosePriya = document.getElementById('btn-choose-priya');
+    if (btnChoosePriya) {
+      btnChoosePriya.addEventListener('click', () => {
+        loginAsUser({
+          name: 'Priya Sharma',
+          email: 'priya.sharma@gmail.com',
+          avatarInitial: 'P',
+          avatarColor: '#4285F4',
+          provider: 'Google OpenID (GS-02)',
+          isPriya: true
+        });
+        closeGoogleAuthModal();
+      });
+    }
+
+    // Account choice 2: Devesh Kumar
+    const btnChooseDevesh = document.getElementById('btn-choose-devesh');
+    if (btnChooseDevesh) {
+      btnChooseDevesh.addEventListener('click', () => {
+        loginAsUser({
+          name: 'Devesh Kumar',
+          email: 'devesh.kumar@gmail.com',
+          avatarInitial: 'D',
+          avatarColor: '#0F9D58',
+          provider: 'Google OpenID (GS-02)',
+          city: 'Delhi',
+          locality: 'Anand Vihar',
+          m1Alias: 'Devesh',
+          m1Age: 32,
+          m2Alias: 'Family Member',
+          m2Age: 28
+        });
+        closeGoogleAuthModal();
+      });
+    }
+
+    // Custom Account Toggle & Submit
+    const btnToggleCustom = document.getElementById('btn-toggle-custom-acc');
+    const customAccBox = document.getElementById('custom-account-box');
+    const btnCancelCustom = document.getElementById('btn-cancel-custom-input');
+    const btnConfirmCustom = document.getElementById('btn-confirm-custom-acc');
+
+    if (btnToggleCustom && customAccBox) {
+      btnToggleCustom.addEventListener('click', () => {
+        btnToggleCustom.style.display = 'none';
+        customAccBox.style.display = 'block';
+        document.getElementById('custom-acc-name')?.focus();
+      });
+    }
+
+    if (btnCancelCustom && customAccBox && btnToggleCustom) {
+      btnCancelCustom.addEventListener('click', () => {
+        customAccBox.style.display = 'none';
+        btnToggleCustom.style.display = 'flex';
+      });
+    }
+
+    if (btnConfirmCustom) {
+      btnConfirmCustom.addEventListener('click', () => {
+        const nameInput = document.getElementById('custom-acc-name');
+        const emailInput = document.getElementById('custom-acc-email');
+        const rawName = nameInput ? nameInput.value.trim() : '';
+        const rawEmail = emailInput ? emailInput.value.trim() : '';
+
+        if (!rawName) {
+          alert('Please enter your name.');
+          nameInput?.focus();
+          return;
+        }
+        if (!rawEmail || !rawEmail.includes('@')) {
+          alert('Please enter a valid Google/Gmail address.');
+          emailInput?.focus();
+          return;
+        }
+
+        const initial = rawName.charAt(0).toUpperCase();
+        const colors = ['#4285F4', '#0F9D58', '#DB4437', '#673AB7', '#0097A7', '#E65100'];
+        const color = colors[rawName.length % colors.length];
+
+        loginAsUser({
+          name: rawName,
+          email: rawEmail,
+          avatarInitial: initial,
+          avatarColor: color,
+          provider: 'Google OpenID (GS-02)',
+          m1Alias: rawName.split(' ')[0],
+          m1Age: 30
+        });
+        closeGoogleAuthModal();
+      });
     }
 
     const btnAuthAction = document.getElementById('btn-auth-action');
@@ -2844,7 +3102,7 @@
         if (currentAuthUser.isLoggedIn) {
           logoutUser();
         } else {
-          loginWithGoogle();
+          openGoogleAuthModal();
         }
       });
     }
@@ -3300,6 +3558,10 @@
         if (confirm('Are you sure you want to permanently erase all household records, active session data, and clear all form fields under DPDP Act 2023?')) {
           clearHouseholdForm();
           currentAuthUser = { isLoggedIn: false };
+          try {
+            localStorage.removeItem('saans_auth_user');
+            localStorage.setItem('saans_profile_deleted', 'true');
+          } catch (e) {}
           updateAuthUI();
           btnDeleteHh.textContent = '✅ Profile Cleared';
           setTimeout(() => { btnDeleteHh.textContent = '🗑️ Delete Profile'; }, 2000);
@@ -3561,13 +3823,39 @@
     }
 
     // Initial renders
-    updateAuthUI();
     updateCityAQI();
     calculateDose();
     renderMyths('all', '');
     updateDIYCalc();
-    applyPriyaDefaults();
-    saveHouseholdProfile();
+
+    // Check localStorage state on startup
+    const isProfileDeleted = (() => {
+      try { return localStorage.getItem('saans_profile_deleted') === 'true'; } catch (e) { return false; }
+    })();
+
+    const savedAuthUser = (() => {
+      try {
+        const u = localStorage.getItem('saans_auth_user');
+        return u ? JSON.parse(u) : null;
+      } catch (e) { return null; }
+    })();
+
+    if (isProfileDeleted) {
+      currentAuthUser = { isLoggedIn: false };
+      clearHouseholdForm();
+    } else if (savedAuthUser && savedAuthUser.isLoggedIn) {
+      currentAuthUser = savedAuthUser;
+      if (currentAuthUser.name.toLowerCase().includes('priya')) {
+        applyPriyaDefaults();
+        saveHouseholdProfile();
+      }
+    } else {
+      // First visit: default to Priya demo persona
+      applyPriyaDefaults();
+      saveHouseholdProfile();
+    }
+    updateAuthUI();
+
     renderRecommendations();
     renderForecastPlanner('delhi');
     renderCleanerRoute('delhi');
