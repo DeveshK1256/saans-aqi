@@ -1336,8 +1336,8 @@
             </div>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <button class="btn btn-secondary" id="btn-prefill-priya" style="background: var(--accent-light); color: var(--accent); border-color: var(--accent);" title="Instant 2-minute onboarding test profile">
-              ⚡ Pre-fill Priya's Profile (Pune Asthmatic Child)
+            <button class="btn btn-secondary" id="btn-prefill-priya" style="background: var(--accent-light); color: var(--accent); border-color: var(--accent);" title="Populate form with Pune asthmatic child benchmark scenario">
+              ⚡ Load Sample Data (Pune Asthmatic Child)
             </button>
             <button class="btn btn-secondary" id="btn-auth-action" style="padding: 8px 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
               🚪 Log Out
@@ -1909,56 +1909,97 @@
         <button id="btn-close-auth-modal" type="button" style="border: none; background: #f3f4f6; font-size: 1.2rem; line-height: 1; cursor: pointer; color: #4b5563; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" aria-label="Close dialog">✕</button>
       </div>
 
-      <!-- Title & Subtitle -->
-      <h3 id="google-auth-title" style="font-size: 1.35rem; font-weight: 600; margin: 0 0 4px 0; color: #111827;">Sign in with Google</h3>
-      <p style="font-size: 0.88rem; color: #6b7280; margin: 0 0 18px 0;">Choose a Google account to continue to <strong>Saans (सांस)</strong></p>
+      <!-- VIEW 1: Choose Account or Enter Email -->
+      <div id="google-auth-step-choose">
+        <h3 id="google-auth-title" style="font-size: 1.35rem; font-weight: 600; margin: 0 0 4px 0; color: #111827;">Sign in with Google</h3>
+        <p style="font-size: 0.88rem; color: #6b7280; margin: 0 0 18px 0;">Choose a Google account to continue to <strong>Saans (सांस)</strong></p>
 
-      <!-- Account Selection List -->
-      <div id="google-accounts-container" style="display: flex; flex-direction: column; gap: 8px;">
-        <!-- Account 1: Priya Sharma -->
-        <button type="button" class="google-acc-row" id="btn-choose-priya">
-          <div style="width: 38px; height: 38px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; box-shadow: 0 1px 3px rgba(66,133,244,0.3);">P</div>
-          <div style="flex-grow: 1; min-width: 0;">
-            <div style="font-size: 0.92rem; font-weight: 600; color: #111827;">Priya Sharma</div>
-            <div style="font-size: 0.8rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya.sharma@gmail.com</div>
+        <!-- Account Selection List -->
+        <div id="google-accounts-container" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Account 1: Priya Sharma -->
+          <button type="button" class="google-acc-row" id="btn-choose-priya">
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; box-shadow: 0 1px 3px rgba(66,133,244,0.3);">P</div>
+            <div style="flex-grow: 1; min-width: 0;">
+              <div style="font-size: 0.92rem; font-weight: 600; color: #111827;">Priya Sharma</div>
+              <div style="font-size: 0.8rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya.sharma@gmail.com</div>
+            </div>
+            <span style="font-size: 0.72rem; background: #EAF4EE; color: #1B7837; padding: 3px 8px; border-radius: 12px; font-weight: 600; border: 1px solid #C4E2CF;">Pune Demo</span>
+          </button>
+
+          <!-- Account 2: Devesh Kumar (Personal / Custom) -->
+          <button type="button" class="google-acc-row" id="btn-choose-devesh">
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #0F9D58; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; box-shadow: 0 1px 3px rgba(15,157,88,0.3);">D</div>
+            <div style="flex-grow: 1; min-width: 0;">
+              <div style="font-size: 0.92rem; font-weight: 600; color: #111827;">Devesh Kumar</div>
+              <div style="font-size: 0.8rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">devesh.kumar@gmail.com</div>
+            </div>
+            <span style="font-size: 0.72rem; background: #e0f2fe; color: #0284c7; padding: 3px 8px; border-radius: 12px; font-weight: 600; border: 1px solid #bae6fd;">Delhi NCR</span>
+          </button>
+
+          <!-- Button to trigger custom input -->
+          <button type="button" id="btn-toggle-custom-acc" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 14px; border: 1px dashed #cbd5e1; border-radius: 12px; background: #f8fafc; text-align: left; cursor: pointer; transition: background 0.15s;">
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #ffffff; color: #4b5563; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; border: 1px solid #cbd5e1;">+</div>
+            <div>
+              <div style="font-size: 0.92rem; font-weight: 600; color: #374151;">Use another Google account</div>
+              <div style="font-size: 0.78rem; color: #6b7280;">Sign in with your own name & Gmail</div>
+            </div>
+          </button>
+
+          <!-- Form for custom account -->
+          <div id="custom-account-box" style="display: none; padding: 14px; border: 1px solid #93c5fd; border-radius: 12px; background: #f0f7ff;">
+            <div style="font-size: 0.84rem; font-weight: 700; color: #1e40af; margin-bottom: 8px;">Enter Google Account credentials:</div>
+            <div style="margin-bottom: 8px;">
+              <label for="custom-acc-name" style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 2px;">Your Name</label>
+              <input type="text" id="custom-acc-name" placeholder="e.g. Rahul Verma" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.86rem; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 12px;">
+              <label for="custom-acc-email" style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 2px;">Google Email</label>
+              <input type="email" id="custom-acc-email" placeholder="e.g. rahul.verma@gmail.com" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.86rem; box-sizing: border-box;">
+            </div>
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <button type="button" id="btn-cancel-custom-input" style="padding: 6px 12px; font-size: 0.8rem; border: 1px solid #cbd5e1; background: white; border-radius: 6px; cursor: pointer;">Cancel</button>
+              <button type="button" id="btn-proceed-to-password" style="padding: 6px 14px; font-size: 0.8rem; font-weight: 600; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer;">Next</button>
+            </div>
           </div>
-          <span style="font-size: 0.72rem; background: #EAF4EE; color: #1B7837; padding: 3px 8px; border-radius: 12px; font-weight: 600; border: 1px solid #C4E2CF;">Pune Profile</span>
+        </div>
+      </div>
+
+      <!-- VIEW 2: Google Password Verification Step -->
+      <div id="google-auth-step-password" style="display: none;">
+        <button type="button" id="btn-back-to-accounts" style="border: none; background: none; color: #1a73e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 4px;">
+          ← Back to accounts
         </button>
 
-        <!-- Account 2: Devesh Kumar (Personal / Custom) -->
-        <button type="button" class="google-acc-row" id="btn-choose-devesh">
-          <div style="width: 38px; height: 38px; border-radius: 50%; background: #0F9D58; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; box-shadow: 0 1px 3px rgba(15,157,88,0.3);">D</div>
-          <div style="flex-grow: 1; min-width: 0;">
-            <div style="font-size: 0.92rem; font-weight: 600; color: #111827;">Devesh Kumar</div>
-            <div style="font-size: 0.8rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">devesh.kumar@gmail.com</div>
-          </div>
-          <span style="font-size: 0.72rem; background: #e0f2fe; color: #0284c7; padding: 3px 8px; border-radius: 12px; font-weight: 600; border: 1px solid #bae6fd;">Delhi NCR</span>
-        </button>
+        <!-- Selected Account Chip -->
+        <div style="display: inline-flex; align-items: center; gap: 8px; border: 1px solid #e5e7eb; padding: 5px 12px; border-radius: 20px; background: #f9fafb; margin-bottom: 16px;">
+          <div id="pwd-step-avatar" style="width: 22px; height: 22px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700;">P</div>
+          <span id="pwd-step-email" style="font-size: 0.82rem; font-weight: 600; color: #374151;">priya.sharma@gmail.com</span>
+        </div>
 
-        <!-- Button to trigger custom input -->
-        <button type="button" id="btn-toggle-custom-acc" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 14px; border: 1px dashed #cbd5e1; border-radius: 12px; background: #f8fafc; text-align: left; cursor: pointer; transition: background 0.15s;">
-          <div style="width: 38px; height: 38px; border-radius: 50%; background: #ffffff; color: #4b5563; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; border: 1px solid #cbd5e1;">+</div>
-          <div>
-            <div style="font-size: 0.92rem; font-weight: 600; color: #374151;">Use another Google account</div>
-            <div style="font-size: 0.78rem; color: #6b7280;">Sign in with your own name & Gmail</div>
-          </div>
-        </button>
+        <h3 id="pwd-step-welcome" style="font-size: 1.35rem; font-weight: 600; margin: 0 0 4px 0; color: #111827;">Welcome</h3>
+        <p style="font-size: 0.86rem; color: #6b7280; margin: 0 0 16px 0;">To continue to Saans, verify your Google password</p>
 
-        <!-- Form for custom account -->
-        <div id="custom-account-box" style="display: none; padding: 14px; border: 1px solid #93c5fd; border-radius: 12px; background: #f0f7ff;">
-          <div style="font-size: 0.84rem; font-weight: 700; color: #1e40af; margin-bottom: 8px;">Enter your Google Account details:</div>
-          <div style="margin-bottom: 8px;">
-            <label for="custom-acc-name" style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 2px;">Your Name</label>
-            <input type="text" id="custom-acc-name" placeholder="e.g. Rahul Verma" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.86rem; box-sizing: border-box;">
-          </div>
-          <div style="margin-bottom: 12px;">
-            <label for="custom-acc-email" style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 2px;">Gmail Address</label>
-            <input type="email" id="custom-acc-email" placeholder="e.g. rahul.verma@gmail.com" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.86rem; box-sizing: border-box;">
-          </div>
-          <div style="display: flex; gap: 8px; justify-content: flex-end;">
-            <button type="button" id="btn-cancel-custom-input" style="padding: 6px 12px; font-size: 0.8rem; border: 1px solid #cbd5e1; background: white; border-radius: 6px; cursor: pointer;">Cancel</button>
-            <button type="button" id="btn-confirm-custom-acc" style="padding: 6px 14px; font-size: 0.8rem; font-weight: 600; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer;">Sign In</button>
-          </div>
+        <!-- Password input -->
+        <div style="margin-bottom: 10px;">
+          <label for="google-acc-password" style="display: block; font-size: 0.78rem; font-weight: 600; color: #374151; margin-bottom: 4px;">Enter your password</label>
+          <input type="password" id="google-acc-password" placeholder="Enter your password" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.92rem; box-sizing: border-box;" autocomplete="current-password">
+          <div id="google-pwd-error" style="display: none; color: #dc2626; font-size: 0.78rem; margin-top: 4px; font-weight: 500;">Please enter your password to continue.</div>
+        </div>
+
+        <!-- Show password toggle -->
+        <div style="margin-bottom: 20px;">
+          <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #4b5563; cursor: pointer;">
+            <input type="checkbox" id="chk-show-password" style="cursor: pointer;">
+            Show password
+          </label>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.8rem; color: #1a73e8; cursor: pointer; font-weight: 600;" onclick="alert('Demo environment: you can enter any password to verify and sign in.')">Forgot password?</span>
+          <button type="button" id="btn-submit-google-login" style="padding: 8px 20px; font-size: 0.86rem; font-weight: 600; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+            <span>Continue to Saans</span>
+          </button>
         </div>
       </div>
     </div>
@@ -2816,6 +2857,8 @@
       provider: 'Google OpenID (GS-02)'
     };
 
+    let pendingGoogleAuth = null;
+
     function updateAuthUI() {
       const nameEl = document.getElementById('auth-user-name');
       const emailEl = document.getElementById('auth-user-email');
@@ -2823,6 +2866,7 @@
       const actionBtn = document.getElementById('btn-auth-action');
       const headerWidget = document.getElementById('header-auth-widget');
       const recVuln = document.getElementById('rec-target-vulnerable');
+      const prefillBtn = document.getElementById('btn-prefill-priya');
 
       if (currentAuthUser.isLoggedIn) {
         if (nameEl) nameEl.textContent = currentAuthUser.name;
@@ -2839,6 +2883,9 @@
           actionBtn.style.color = 'var(--text-main)';
           actionBtn.style.borderColor = 'var(--surface-border)';
           actionBtn.title = 'Sign out of current profile';
+        }
+        if (prefillBtn) {
+          prefillBtn.textContent = '⚡ Load Sample Data (Pune Asthmatic Child)';
         }
         if (headerWidget) {
           headerWidget.innerHTML = `
@@ -2874,20 +2921,24 @@
         }
         if (actionBtn) {
           actionBtn.innerHTML = `
-            <svg width="15" height="15" viewBox="0 0 24 24" style="vertical-align: -2px; margin-right: 4px;"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-            Sign in with Google
+            <svg width="15" height="15" viewBox="0 0 24 24" style="vertical-align: -2px; margin-right: 5px;"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+            Continue with Google
           `;
           actionBtn.className = 'btn btn-secondary';
           actionBtn.style.background = '#ffffff';
           actionBtn.style.color = '#1f2937';
           actionBtn.style.borderColor = '#d1d5db';
-          actionBtn.title = 'Sign in via Google OpenID';
+          actionBtn.style.fontWeight = '600';
+          actionBtn.title = 'Continue with Google OpenID';
+        }
+        if (prefillBtn) {
+          prefillBtn.textContent = '⚡ Load Sample Data (Pune Asthmatic Child)';
         }
         if (headerWidget) {
           headerWidget.innerHTML = `
-            <button id="header-btn-login" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid var(--surface-border); border-radius: 20px; font-weight: 600; cursor: pointer;" title="Sign in with Google">
+            <button id="header-btn-login" class="btn btn-secondary" style="padding: 4px 12px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid var(--surface-border); border-radius: 20px; font-weight: 600; cursor: pointer;" title="Continue with Google">
               <svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-              Sign in
+              Continue with Google
             </button>
           `;
           const headerLogin = document.getElementById('header-btn-login');
@@ -2902,14 +2953,30 @@
       }
     }
 
-    // Google Sign-In Modal Handlers
+    // Google Sign-In 2-Step Modal Handlers
     function openGoogleAuthModal() {
       const dialog = document.getElementById('google-auth-dialog');
       if (dialog) {
+        // Reset to Step 1
+        const stepChoose = document.getElementById('google-auth-step-choose');
+        const stepPassword = document.getElementById('google-auth-step-password');
+        if (stepChoose) stepChoose.style.display = 'block';
+        if (stepPassword) stepPassword.style.display = 'none';
+
         const customBox = document.getElementById('custom-account-box');
         if (customBox) customBox.style.display = 'none';
         const customBtn = document.getElementById('btn-toggle-custom-acc');
         if (customBtn) customBtn.style.display = 'flex';
+
+        const pwdInput = document.getElementById('google-acc-password');
+        if (pwdInput) {
+          pwdInput.value = '';
+          pwdInput.type = 'password';
+        }
+        const pwdErr = document.getElementById('google-pwd-error');
+        if (pwdErr) pwdErr.style.display = 'none';
+        const chkShow = document.getElementById('chk-show-password');
+        if (chkShow) chkShow.checked = false;
         
         if (typeof dialog.showModal === 'function') {
           dialog.showModal();
@@ -2930,6 +2997,34 @@
       }
     }
 
+    function goToPasswordStep(accountObj) {
+      pendingGoogleAuth = accountObj;
+      const stepChoose = document.getElementById('google-auth-step-choose');
+      const stepPassword = document.getElementById('google-auth-step-password');
+
+      if (stepChoose) stepChoose.style.display = 'none';
+      if (stepPassword) stepPassword.style.display = 'block';
+
+      const avatarChip = document.getElementById('pwd-step-avatar');
+      if (avatarChip) {
+        avatarChip.textContent = accountObj.avatarInitial || accountObj.name.charAt(0).toUpperCase();
+        avatarChip.style.background = accountObj.avatarColor || '#4285F4';
+      }
+      const emailChip = document.getElementById('pwd-step-email');
+      if (emailChip) emailChip.textContent = accountObj.email;
+
+      const welcomeTitle = document.getElementById('pwd-step-welcome');
+      if (welcomeTitle) welcomeTitle.textContent = `Welcome, ${accountObj.name.split(' ')[0]}`;
+
+      const pwdInput = document.getElementById('google-acc-password');
+      if (pwdInput) {
+        pwdInput.value = '';
+        pwdInput.focus();
+      }
+      const pwdErr = document.getElementById('google-pwd-error');
+      if (pwdErr) pwdErr.style.display = 'none';
+    }
+
     function loginAsUser(userObj) {
       currentAuthUser = {
         isLoggedIn: true,
@@ -2947,11 +3042,11 @@
       updateAuthUI();
 
       if (userObj.isPriya) {
-        applyPriyaDefaults();
+        applySampleProfileData();
         saveHouseholdProfile();
       } else {
         const m1Alias = document.getElementById('m1-alias');
-        if (m1Alias && userObj.m1Alias) m1Alias.value = userObj.m1Alias;
+        if (m1Alias) m1Alias.value = userObj.m1Alias || userObj.name.split(' ')[0];
         const m1Age = document.getElementById('m1-age');
         if (m1Age && userObj.m1Age) m1Age.value = userObj.m1Age;
         if (userObj.city) {
@@ -3003,11 +3098,11 @@
       });
     }
 
-    // Account choice 1: Priya Sharma
+    // Account choice 1: Priya Sharma (moves to password verification)
     const btnChoosePriya = document.getElementById('btn-choose-priya');
     if (btnChoosePriya) {
       btnChoosePriya.addEventListener('click', () => {
-        loginAsUser({
+        goToPasswordStep({
           name: 'Priya Sharma',
           email: 'priya.sharma@gmail.com',
           avatarInitial: 'P',
@@ -3015,15 +3110,14 @@
           provider: 'Google OpenID (GS-02)',
           isPriya: true
         });
-        closeGoogleAuthModal();
       });
     }
 
-    // Account choice 2: Devesh Kumar
+    // Account choice 2: Devesh Kumar (moves to password verification)
     const btnChooseDevesh = document.getElementById('btn-choose-devesh');
     if (btnChooseDevesh) {
       btnChooseDevesh.addEventListener('click', () => {
-        loginAsUser({
+        goToPasswordStep({
           name: 'Devesh Kumar',
           email: 'devesh.kumar@gmail.com',
           avatarInitial: 'D',
@@ -3036,15 +3130,14 @@
           m2Alias: 'Family Member',
           m2Age: 28
         });
-        closeGoogleAuthModal();
       });
     }
 
-    // Custom Account Toggle & Submit
+    // Custom Account Toggle & Proceed to Password
     const btnToggleCustom = document.getElementById('btn-toggle-custom-acc');
     const customAccBox = document.getElementById('custom-account-box');
     const btnCancelCustom = document.getElementById('btn-cancel-custom-input');
-    const btnConfirmCustom = document.getElementById('btn-confirm-custom-acc');
+    const btnProceedToPassword = document.getElementById('btn-proceed-to-password');
 
     if (btnToggleCustom && customAccBox) {
       btnToggleCustom.addEventListener('click', () => {
@@ -3061,8 +3154,8 @@
       });
     }
 
-    if (btnConfirmCustom) {
-      btnConfirmCustom.addEventListener('click', () => {
+    if (btnProceedToPassword) {
+      btnProceedToPassword.addEventListener('click', () => {
         const nameInput = document.getElementById('custom-acc-name');
         const emailInput = document.getElementById('custom-acc-email');
         const rawName = nameInput ? nameInput.value.trim() : '';
@@ -3083,7 +3176,7 @@
         const colors = ['#4285F4', '#0F9D58', '#DB4437', '#673AB7', '#0097A7', '#E65100'];
         const color = colors[rawName.length % colors.length];
 
-        loginAsUser({
+        goToPasswordStep({
           name: rawName,
           email: rawEmail,
           avatarInitial: initial,
@@ -3092,7 +3185,73 @@
           m1Alias: rawName.split(' ')[0],
           m1Age: 30
         });
+      });
+    }
+
+    // Back to Account Selection Button
+    const btnBackToAccounts = document.getElementById('btn-back-to-accounts');
+    if (btnBackToAccounts) {
+      btnBackToAccounts.addEventListener('click', () => {
+        const stepChoose = document.getElementById('google-auth-step-choose');
+        const stepPassword = document.getElementById('google-auth-step-password');
+        if (stepChoose) stepChoose.style.display = 'block';
+        if (stepPassword) stepPassword.style.display = 'none';
+      });
+    }
+
+    // Show / Hide Password Checkbox
+    const chkShowPwd = document.getElementById('chk-show-password');
+    if (chkShowPwd) {
+      chkShowPwd.addEventListener('change', () => {
+        const pwdInput = document.getElementById('google-acc-password');
+        if (pwdInput) {
+          pwdInput.type = chkShowPwd.checked ? 'text' : 'password';
+        }
+      });
+    }
+
+    // Submit Password and Authenticate
+    const btnSubmitLogin = document.getElementById('btn-submit-google-login');
+    const pwdInput = document.getElementById('google-acc-password');
+
+    function performGoogleAuth() {
+      const pwd = pwdInput ? pwdInput.value.trim() : '';
+      const pwdErr = document.getElementById('google-pwd-error');
+
+      if (!pwd) {
+        if (pwdErr) pwdErr.style.display = 'block';
+        pwdInput?.focus();
+        return;
+      }
+      if (pwdErr) pwdErr.style.display = 'none';
+
+      if (!pendingGoogleAuth) return;
+
+      if (btnSubmitLogin) {
+        btnSubmitLogin.innerHTML = '<span>Verifying...</span>';
+        btnSubmitLogin.disabled = true;
+      }
+
+      setTimeout(() => {
+        if (btnSubmitLogin) {
+          btnSubmitLogin.innerHTML = '<span>Continue to Saans</span>';
+          btnSubmitLogin.disabled = false;
+        }
+        loginAsUser(pendingGoogleAuth);
         closeGoogleAuthModal();
+        alert(`Signed in successfully as ${currentAuthUser.name} (${currentAuthUser.email}) via Google OpenID.`);
+      }, 350);
+    }
+
+    if (btnSubmitLogin) {
+      btnSubmitLogin.addEventListener('click', performGoogleAuth);
+    }
+    if (pwdInput) {
+      pwdInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          performGoogleAuth();
+        }
       });
     }
 
@@ -3107,7 +3266,8 @@
       });
     }
 
-    function applyPriyaDefaults() {
+    // Household Sample Data Loader (Populates form WITHOUT modifying currentAuthUser)
+    function applySampleProfileData() {
       document.getElementById('hh-city').value = 'Pune';
       document.getElementById('hh-locality').value = 'Shivajinagar / Kothrud';
       document.getElementById('hh-home-type').value = 'apartment';
@@ -3119,7 +3279,9 @@
       document.getElementById('hh-purifier').checked = false;
       document.getElementById('hh-pets').checked = false;
 
-      document.getElementById('m1-alias').value = 'Priya';
+      // Keep user's active session name if logged in
+      const defaultAlias = currentAuthUser.isLoggedIn ? (currentAuthUser.name.split(' ')[0]) : 'Priya';
+      document.getElementById('m1-alias').value = defaultAlias;
       if (document.getElementById('m1-age')) document.getElementById('m1-age').value = 34;
       document.getElementById('m1-commute').value = 'bike_scooter';
       document.getElementById('m1-asthma').checked = false;
@@ -3132,23 +3294,17 @@
       document.getElementById('hh-consent-check').checked = true;
       updateMemberAgeBadges();
     }
+    // Backward compatibility alias
+    const applyPriyaDefaults = applySampleProfileData;
 
     const btnPrefillPriya = document.getElementById('btn-prefill-priya');
     if (btnPrefillPriya) {
       btnPrefillPriya.addEventListener('click', () => {
-        currentAuthUser = {
-          isLoggedIn: true,
-          name: 'Priya Sharma',
-          email: 'priya.sharma@gmail.com',
-          avatarInitial: 'P',
-          avatarColor: '#4285F4',
-          provider: 'Google OpenID (GS-02)'
-        };
-        updateAuthUI();
-        applyPriyaDefaults();
+        // Loads sample household fields WITHOUT changing who is logged in!
+        applySampleProfileData();
         saveHouseholdProfile();
-        btnPrefillPriya.textContent = '✅ Priya Profile Loaded (<30s)';
-        setTimeout(() => { btnPrefillPriya.textContent = "⚡ Pre-fill Priya's Profile (Pune Asthmatic Child)"; }, 2000);
+        btnPrefillPriya.textContent = '✅ Sample Data Loaded (<30s)';
+        setTimeout(() => { btnPrefillPriya.textContent = "⚡ Load Sample Data (Pune Asthmatic Child)"; }, 2000);
       });
     }
 
