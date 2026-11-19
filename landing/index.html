@@ -1022,8 +1022,11 @@
             <span>Evidence-Based Urban Air Quality Assistant</span>
           </div>
         </a>
-        <div class="badge-live" id="live-indicator">
-          <span>Delhi NCR · CPCB AQI 342</span>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div class="badge-live" id="live-indicator">
+            <span>Delhi NCR · CPCB AQI 342</span>
+          </div>
+          <div id="header-auth-widget"></div>
         </div>
       </div>
 
@@ -1286,20 +1289,25 @@
     <!-- ==================== TAB: HOUSEHOLD PROFILE & 2-MINUTE ONBOARDING (FEATURE F2 & SLICE A2) ==================== -->
     <div id="tab-household" class="tab-pane" role="tabpanel">
       <!-- Google Sign-In & DPDP 2023 Consent Header -->
-      <div class="card">
+      <div class="card" id="card-auth-header">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem;">
-              G
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.15rem; box-shadow: 0 2px 6px rgba(66, 133, 244, 0.3);" id="auth-avatar">
+              P
             </div>
             <div>
-              <div style="font-size: 0.95rem; font-weight: 700;" id="auth-user-name">Priya Sharma</div>
+              <div style="font-size: 1rem; font-weight: 700;" id="auth-user-name">Priya Sharma</div>
               <div style="font-size: 0.82rem; color: var(--text-muted);" id="auth-user-email">priya.sharma@gmail.com · Signed in via Google OpenID (GS-02)</div>
             </div>
           </div>
-          <button class="btn btn-secondary" id="btn-prefill-priya" style="background: var(--accent-light); color: var(--accent); border-color: var(--accent);" title="Instant 2-minute onboarding test profile">
-            ⚡ Pre-fill Priya's Profile (Pune Asthmatic Child)
-          </button>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-secondary" id="btn-prefill-priya" style="background: var(--accent-light); color: var(--accent); border-color: var(--accent);" title="Instant 2-minute onboarding test profile">
+              ⚡ Pre-fill Priya's Profile (Pune Asthmatic Child)
+            </button>
+            <button class="btn btn-secondary" id="btn-auth-action" style="padding: 8px 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+              🚪 Log Out
+            </button>
+          </div>
         </div>
 
         <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 12px 16px;">
@@ -2689,6 +2697,158 @@
       }
     }
 
+    // ==================== AUTHENTICATION & SESSION MANAGEMENT (GS-02 & DPDP ACT 2023) ====================
+    let currentAuthUser = {
+      isLoggedIn: true,
+      name: 'Priya Sharma',
+      email: 'priya.sharma@gmail.com',
+      avatarInitial: 'P',
+      avatarColor: '#4285F4',
+      provider: 'Google OpenID (GS-02)'
+    };
+
+    function updateAuthUI() {
+      const nameEl = document.getElementById('auth-user-name');
+      const emailEl = document.getElementById('auth-user-email');
+      const avatarEl = document.getElementById('auth-avatar');
+      const actionBtn = document.getElementById('btn-auth-action');
+      const headerWidget = document.getElementById('header-auth-widget');
+      const recVuln = document.getElementById('rec-target-vulnerable');
+
+      if (currentAuthUser.isLoggedIn) {
+        if (nameEl) nameEl.textContent = currentAuthUser.name;
+        if (emailEl) emailEl.textContent = `${currentAuthUser.email} · Signed in via ${currentAuthUser.provider || 'Google OpenID (GS-02)'}`;
+        if (avatarEl) {
+          avatarEl.textContent = currentAuthUser.avatarInitial || currentAuthUser.name.charAt(0).toUpperCase();
+          avatarEl.style.background = currentAuthUser.avatarColor || '#4285F4';
+          avatarEl.style.boxShadow = '0 2px 6px rgba(66, 133, 244, 0.3)';
+        }
+        if (actionBtn) {
+          actionBtn.innerHTML = '🚪 Log Out';
+          actionBtn.className = 'btn btn-secondary';
+          actionBtn.style.background = 'var(--surface)';
+          actionBtn.style.color = 'var(--text-main)';
+          actionBtn.style.borderColor = 'var(--surface-border)';
+          actionBtn.title = 'Sign out of current profile';
+        }
+        if (headerWidget) {
+          headerWidget.innerHTML = `
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.92); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--surface-border); font-size: 0.8rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+              <div style="width: 22px; height: 22px; border-radius: 50%; background: ${currentAuthUser.avatarColor || '#4285F4'}; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700;">
+                ${currentAuthUser.avatarInitial || 'P'}
+              </div>
+              <span style="font-weight: 600; color: var(--text-main);">${currentAuthUser.name.split(' ')[0]}</span>
+              <button id="header-btn-logout" style="border: none; background: none; color: #dc2626; font-size: 0.75rem; font-weight: 600; cursor: pointer; padding: 0 2px; margin-left: 2px;" title="Sign out of Saans">
+                Logout
+              </button>
+            </div>
+          `;
+          const headerLogout = document.getElementById('header-btn-logout');
+          if (headerLogout) {
+            headerLogout.addEventListener('click', (e) => {
+              e.stopPropagation();
+              logoutUser();
+            });
+          }
+        }
+        if (recVuln && (recVuln.textContent === 'Household Profile Cleared' || recVuln.textContent.includes('Priya'))) {
+          recVuln.textContent = `${currentAuthUser.name.split(' ')[0]}'s 6-year-old child (Asthma risk)`;
+        }
+      } else {
+        // Logged out / Guest State
+        if (nameEl) nameEl.textContent = 'Guest User (Not Signed In)';
+        if (emailEl) emailEl.textContent = 'Session data is stored in memory only · Sign in to save or sync profile';
+        if (avatarEl) {
+          avatarEl.textContent = '👤';
+          avatarEl.style.background = '#94a3b8';
+          avatarEl.style.boxShadow = 'none';
+        }
+        if (actionBtn) {
+          actionBtn.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" style="vertical-align: -2px; margin-right: 4px;"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+            Sign in with Google
+          `;
+          actionBtn.className = 'btn btn-secondary';
+          actionBtn.style.background = '#ffffff';
+          actionBtn.style.color = '#1f2937';
+          actionBtn.style.borderColor = '#d1d5db';
+          actionBtn.title = 'Sign in via Google OpenID';
+        }
+        if (headerWidget) {
+          headerWidget.innerHTML = `
+            <button id="header-btn-login" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid var(--surface-border); border-radius: 20px; font-weight: 600; cursor: pointer;" title="Sign in with Google">
+              <svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+              Sign in
+            </button>
+          `;
+          const headerLogin = document.getElementById('header-btn-login');
+          if (headerLogin) {
+            headerLogin.addEventListener('click', (e) => {
+              e.stopPropagation();
+              loginWithGoogle();
+            });
+          }
+        }
+        if (recVuln) recVuln.textContent = 'Household Profile Cleared';
+      }
+    }
+
+    function loginWithGoogle(customUser) {
+      if (customUser) {
+        currentAuthUser = {
+          isLoggedIn: true,
+          name: customUser.name || 'Priya Sharma',
+          email: customUser.email || 'priya.sharma@gmail.com',
+          avatarInitial: (customUser.name || 'P').charAt(0).toUpperCase(),
+          avatarColor: '#4285F4',
+          provider: 'Google OpenID (GS-02)'
+        };
+      } else {
+        const inputName = prompt('Sign in via Google OpenID:\nEnter full name (or leave default for Priya Sharma):', 'Priya Sharma');
+        if (inputName === null) return;
+        const chosenName = inputName.trim() || 'Priya Sharma';
+        const defaultEmail = chosenName.toLowerCase().replace(/[^a-z0-9]/g, '.') + '@gmail.com';
+        const inputEmail = prompt('Enter Google Account email:', defaultEmail);
+        if (inputEmail === null) return;
+        const chosenEmail = inputEmail.trim() || defaultEmail;
+
+        currentAuthUser = {
+          isLoggedIn: true,
+          name: chosenName,
+          email: chosenEmail,
+          avatarInitial: chosenName.charAt(0).toUpperCase(),
+          avatarColor: '#4285F4',
+          provider: 'Google OpenID (GS-02)'
+        };
+      }
+      updateAuthUI();
+      if (currentAuthUser.name.toLowerCase().includes('priya')) {
+        applyPriyaDefaults();
+        saveHouseholdProfile();
+      }
+      alert(`Signed in successfully as ${currentAuthUser.name} (${currentAuthUser.email}) via Google OpenID.`);
+    }
+
+    function logoutUser() {
+      if (confirm('Do you want to log out of Saans? This will switch your session to Guest.')) {
+        currentAuthUser = { isLoggedIn: false };
+        clearHouseholdForm();
+        updateAuthUI();
+        alert('You have been logged out. Switched to Guest mode.');
+      }
+    }
+
+    const btnAuthAction = document.getElementById('btn-auth-action');
+    if (btnAuthAction) {
+      btnAuthAction.addEventListener('click', () => {
+        if (currentAuthUser.isLoggedIn) {
+          logoutUser();
+        } else {
+          loginWithGoogle();
+        }
+      });
+    }
+
     function applyPriyaDefaults() {
       document.getElementById('hh-city').value = 'Pune';
       document.getElementById('hh-locality').value = 'Shivajinagar / Kothrud';
@@ -2718,6 +2878,15 @@
     const btnPrefillPriya = document.getElementById('btn-prefill-priya');
     if (btnPrefillPriya) {
       btnPrefillPriya.addEventListener('click', () => {
+        currentAuthUser = {
+          isLoggedIn: true,
+          name: 'Priya Sharma',
+          email: 'priya.sharma@gmail.com',
+          avatarInitial: 'P',
+          avatarColor: '#4285F4',
+          provider: 'Google OpenID (GS-02)'
+        };
+        updateAuthUI();
         applyPriyaDefaults();
         saveHouseholdProfile();
         btnPrefillPriya.textContent = '✅ Priya Profile Loaded (<30s)';
@@ -3128,11 +3297,13 @@
     const btnDeleteHh = document.getElementById('btn-delete-household');
     if (btnDeleteHh) {
       btnDeleteHh.addEventListener('click', () => {
-        if (confirm('Are you sure you want to permanently erase all household records and clear all form fields under DPDP Act 2023?')) {
+        if (confirm('Are you sure you want to permanently erase all household records, active session data, and clear all form fields under DPDP Act 2023?')) {
           clearHouseholdForm();
+          currentAuthUser = { isLoggedIn: false };
+          updateAuthUI();
           btnDeleteHh.textContent = '✅ Profile Cleared';
           setTimeout(() => { btnDeleteHh.textContent = '🗑️ Delete Profile'; }, 2000);
-          alert('Household profile deleted and all form fields have been cleared.');
+          alert('Household profile and active login session permanently erased under DPDP Act 2023.');
         }
       });
     }
@@ -3390,6 +3561,7 @@
     }
 
     // Initial renders
+    updateAuthUI();
     updateCityAQI();
     calculateDose();
     renderMyths('all', '');
