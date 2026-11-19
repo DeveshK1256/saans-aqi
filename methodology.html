@@ -12,6 +12,16 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('saans_theme');
+        if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+        if (t) document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+
   <style>
     :root {
       --bg-page: #F8FAF9;
@@ -24,6 +34,90 @@
       --accent-light: #E6F4F0;
       --radius-sm: 6px;
       --radius-md: 10px;
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #0E1210;
+      --surface-bg: #181D1B;
+      --surface-subtle: #212825;
+      --surface-border: #303A36;
+      --text-main: #F4F6F5;
+      --text-muted: #A3ACA7;
+      --accent: #14B89A;
+      --accent-light: #12332A;
+    }
+
+    [data-theme="dark"] .container {
+      background: var(--surface-bg);
+      border-color: var(--surface-border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="dark"] .formula-card {
+      background: var(--surface-subtle);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] table th {
+      background: var(--surface-subtle);
+      color: var(--text-main);
+    }
+
+    [data-theme="dark"] table td, [data-theme="dark"] table th {
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .axiom-box {
+      background: var(--accent-light);
+      border-color: rgba(20, 184, 154, 0.35);
+      color: #A7F3D0;
+    }
+
+    [data-theme="dark"] .axiom-box strong {
+      color: #34D399;
+    }
+
+    [data-theme="dark"] .caveat-box {
+      background: rgba(251, 191, 36, 0.12);
+      border-color: rgba(251, 191, 36, 0.35);
+      color: #FDE68A;
+    }
+
+    [data-theme="dark"] .caveat-box strong {
+      color: #FBBF24;
+    }
+
+    [data-theme="dark"] .var-grid code {
+      background: var(--surface-border);
+      color: var(--text-main);
+    }
+
+    [data-theme="dark"] .katex {
+      color: #F4F6F5 !important;
+    }
+
+    [data-theme="dark"] .math-fallback {
+      color: #F4F6F5;
+    }
+
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .theme-toggle-btn:hover {
+      background: var(--surface-border);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -226,7 +320,10 @@
 <body>
   <div class="container">
     <header>
-      <a href="index.html" class="back-link">← Return to Live Saans App</a>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <a href="index.html" class="back-link" style="margin-bottom: 0;">← Return to Live Saans App</a>
+        <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode">🌙 Dark</button>
+      </div>
       <h1>Scientific Methodology & Calculation Specifications</h1>
       <div class="axiom-box">
         <strong>Core Axiom:</strong> The LLM explains, code calculates. All exposure, dose, sub-index, CADR decay rates, and emission numbers come strictly from pure, tested physical code in <code>src/domain/</code>.
@@ -469,6 +566,29 @@
   </div>
 
   <script>
+    // Theme toggle handling
+    (function() {
+      var btn = document.getElementById('theme-toggle-btn');
+      if (!btn) return;
+      function updateBtnText() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        btn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+        btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      }
+      updateBtnText();
+      btn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        if (next === 'light') {
+          document.documentElement.removeAttribute('data-theme');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        try { localStorage.setItem('saans_theme', next); } catch(e) {}
+        updateBtnText();
+      });
+    })();
+
     // Initialize KaTeX auto-render on load
     document.addEventListener("DOMContentLoaded", function() {
       function renderMath() {

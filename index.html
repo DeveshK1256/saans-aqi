@@ -10,6 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
   <!-- Client-Side PDF Generator for Household Reports (DPDP Act 2023) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('saans_theme');
+        if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+        if (t) document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
   <style>
     /* --- CSS Variables & Design System (Anti-AI-Slop & Editorial Warmth) --- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,6 +47,25 @@
       --font-hindi: 'Noto Sans Devanagari', sans-serif;
     }
 
+    [data-theme="dark"] {
+      --surface-bg: #0E1210;
+      --surface-card: #181D1B;
+      --surface-subtle: #212825;
+      --surface-border: #303A36;
+      --text-main: #F4F6F5;
+      --text-muted: #A3ACA7;
+      --text-faint: #747E7A;
+      --accent: #14B89A;
+      --accent-hover: #0D9488;
+      --accent-light: #12332A;
+      --danger: #F87171;
+      --danger-light: #381A1A;
+      --warning: #FBBF24;
+      --warning-light: #372A0D;
+      --success: #34D399;
+      --success-light: #133324;
+    }
+
     html {
       font-size: 16px;
       scroll-behavior: smooth;
@@ -50,6 +78,7 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       padding-bottom: 80px;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     /* Remove Netlify badge & frame permanently */
@@ -78,7 +107,8 @@
     header {
       padding: 32px 0 20px;
       border-bottom: 1px solid var(--surface-border);
-      background: #FFFFFF;
+      background: var(--surface-card);
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
 
     .header-top {
@@ -254,18 +284,19 @@
       color: var(--text-main);
     }
 
-    select, input[type="text"], input[type="number"], input[type="range"] {
+    select, input[type="text"], input[type="number"], input[type="password"], input[type="email"], input[type="range"], textarea {
       width: 100%;
       padding: 10px 14px;
       border: 1px solid var(--surface-border);
       border-radius: var(--radius-md);
       font-family: inherit;
       font-size: 0.95rem;
-      background: #FFFFFF;
+      background: var(--surface-card);
       color: var(--text-main);
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
-    select:focus, input:focus {
+    select:focus, input:focus, textarea:focus {
       outline: 2px solid var(--accent);
       outline-offset: 1px;
       border-color: var(--accent);
@@ -286,16 +317,37 @@
       font-family: inherit;
       cursor: pointer;
       text-decoration: none;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, transform 0.1s ease;
     }
 
     .btn:hover { background: var(--accent-hover); }
+    .btn:active { transform: scale(0.98); }
     .btn-secondary {
       background: var(--surface-subtle);
       color: var(--text-main);
       border: 1px solid var(--surface-border);
     }
-    .btn-secondary:hover { background: #E8E5DF; }
+    .btn-secondary:hover { background: var(--surface-border); }
+
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .theme-toggle-btn:hover {
+      background: var(--surface-border);
+    }
 
     /* --- AQI Visualizer Card --- */
     .aqi-banner {
@@ -306,9 +358,10 @@
       gap: 20px;
       padding: 24px;
       border-radius: var(--radius-lg);
-      background: #FFF;
+      background: var(--surface-card);
       border: 2px solid var(--surface-border);
       margin-bottom: 24px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
 
     .aqi-badge-large {
@@ -925,6 +978,28 @@
       margin-bottom: 8px;
     }
 
+    .emergency-desc {
+      font-size: 0.95rem;
+      color: #7F1D1D;
+      margin-bottom: 14px;
+    }
+
+    .emergency-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.92rem;
+      color: #991B1B;
+      margin-bottom: 16px;
+    }
+
+    .emergency-warning-text {
+      font-weight: 700;
+      color: #991B1B;
+      font-size: 0.95rem;
+    }
+
     .helpline-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -1078,6 +1153,304 @@
     .auth-quick-btn:hover {
       background: #E8E5DF;
     }
+
+    /* --- Dark Mode Semantic Overrides & WCAG AA Legibility --- */
+    [data-theme="dark"] body {
+      background-color: var(--surface-bg);
+      color: var(--text-main);
+    }
+
+    [data-theme="dark"] header {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .card {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="dark"] .tab-btn {
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      border-color: transparent;
+    }
+
+    [data-theme="dark"] .tab-btn:hover {
+      background: var(--surface-border);
+      color: var(--text-main);
+    }
+
+    [data-theme="dark"] .tab-btn.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .aqi-banner {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .badge-live {
+      background: rgba(20, 184, 154, 0.15);
+      color: var(--accent);
+    }
+
+    [data-theme="dark"] .timeline-item {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .comp-card {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .comp-card.highlight {
+      background: rgba(20, 184, 154, 0.12);
+      border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .two-way-box {
+      background: rgba(20, 184, 154, 0.1);
+      border-color: rgba(20, 184, 154, 0.35);
+    }
+
+    [data-theme="dark"] .two-way-title {
+      color: #34D399;
+    }
+
+    [data-theme="dark"] .two-way-item {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .two-way-val {
+      color: #34D399;
+    }
+
+    [data-theme="dark"] .two-way-sub {
+      color: var(--text-muted);
+    }
+
+    [data-theme="dark"] .caveat-box {
+      background: var(--surface-card);
+      border-left-color: var(--warning);
+      color: var(--text-muted);
+    }
+
+    [data-theme="dark"] .btn-reset {
+      background: var(--surface-subtle);
+      border-color: var(--surface-border);
+      color: var(--text-main);
+    }
+
+    [data-theme="dark"] .btn-reset:hover {
+      background: var(--surface-border);
+    }
+
+    [data-theme="dark"] .rec-card {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .badge-p1 {
+      background: rgba(20, 184, 154, 0.2);
+      color: #14B89A;
+    }
+
+    [data-theme="dark"] .badge-p2 {
+      background: rgba(2, 132, 199, 0.2);
+      color: #38BDF8;
+    }
+
+    [data-theme="dark"] .badge-p3 {
+      background: rgba(245, 158, 11, 0.2);
+      color: #FBBF24;
+    }
+
+    [data-theme="dark"] .rec-impact-tag {
+      background: rgba(20, 184, 154, 0.15);
+      border-color: rgba(20, 184, 154, 0.4);
+      color: #14B89A;
+    }
+
+    [data-theme="dark"] .why-this-drawer {
+      background: var(--surface-subtle);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .forecast-card {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .forecast-card.severe {
+      background: rgba(248, 113, 113, 0.12);
+      border-color: #F87171;
+    }
+
+    [data-theme="dark"] .shopping-list-item {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .shopping-urgent {
+      background: rgba(248, 113, 113, 0.15);
+      border-color: rgba(248, 113, 113, 0.4);
+    }
+
+    [data-theme="dark"] .route-card {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .route-card.cleaner {
+      background: rgba(20, 184, 154, 0.12);
+      border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .myth-card {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .filter-pill {
+      background: var(--surface-subtle);
+      border-color: var(--surface-border);
+      color: var(--text-muted);
+    }
+
+    [data-theme="dark"] .filter-pill:hover,
+    [data-theme="dark"] .filter-pill.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .price-card {
+      background: var(--surface-card);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] .price-card.diy {
+      background: var(--accent-light);
+      border-color: var(--accent);
+    }
+
+    [data-theme="dark"] .emergency-box {
+      background: rgba(248, 113, 113, 0.12);
+      border-color: var(--danger);
+    }
+
+    [data-theme="dark"] .emergency-title {
+      color: #F87171;
+    }
+
+    [data-theme="dark"] .emergency-desc {
+      color: #FECACA;
+    }
+
+    [data-theme="dark"] .emergency-list {
+      color: #FCA5A5;
+    }
+
+    [data-theme="dark"] .emergency-warning-text {
+      color: #F87171;
+    }
+
+    [data-theme="dark"] #stagnation-banner {
+      background: rgba(248, 113, 113, 0.15) !important;
+      border-color: rgba(248, 113, 113, 0.4) !important;
+    }
+
+    [data-theme="dark"] #stagnation-banner strong {
+      color: #FECACA !important;
+    }
+
+    [data-theme="dark"] #stagnation-desc {
+      color: #FCA5A5 !important;
+    }
+
+    [data-theme="dark"] .vuln-notice-box {
+      background: rgba(251, 191, 36, 0.12) !important;
+      border-color: rgba(251, 191, 36, 0.35) !important;
+      color: #FDE68A !important;
+    }
+
+    [data-theme="dark"] #m2-badge-display {
+      background: var(--surface-card) !important;
+      color: #FBBF24 !important;
+      border-color: rgba(251, 191, 36, 0.35) !important;
+    }
+
+    .member-card.child {
+      background: #FDF9F3;
+      border: 1px solid #F0E6D2;
+    }
+
+    [data-theme="dark"] #m1-badge-display {
+      background: var(--surface-card) !important;
+      color: var(--text-main) !important;
+      border-color: var(--surface-border) !important;
+    }
+
+    [data-theme="dark"] .member-card.child {
+      background: rgba(251, 191, 36, 0.08) !important;
+      border-color: rgba(251, 191, 36, 0.25) !important;
+    }
+
+    [data-theme="dark"] .member-card.child .member-child-title {
+      color: #FBBF24 !important;
+    }
+
+    [data-theme="dark"] .child-asthma-box {
+      background: rgba(251, 191, 36, 0.15) !important;
+      border-color: rgba(251, 191, 36, 0.35) !important;
+    }
+
+    [data-theme="dark"] .child-asthma-label {
+      color: #FDE68A !important;
+    }
+
+    [data-theme="dark"] .helpline-card {
+      background: var(--surface-card);
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+
+    [data-theme="dark"] .member-card {
+      background: var(--surface-subtle);
+      border-color: var(--surface-border);
+    }
+
+    [data-theme="dark"] dialog#saans-auth-dialog {
+      background: var(--surface-card);
+      color: var(--text-main);
+      border-color: var(--surface-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    [data-theme="dark"] .auth-tab-btn.active {
+      background: var(--surface-card);
+      color: var(--accent);
+    }
+
+    [data-theme="dark"] .auth-quick-btn {
+      background: var(--surface-subtle);
+      border-color: var(--surface-border);
+      color: var(--text-main);
+    }
+
+    [data-theme="dark"] .auth-quick-btn:hover {
+      background: var(--surface-border);
+    }
+
+    [data-theme="dark"] footer {
+      border-color: var(--surface-border);
+      color: var(--text-faint);
+    }
   </style>
 </head>
 <body>
@@ -1096,6 +1469,10 @@
           <div class="badge-live" id="live-indicator">
             <span>Delhi NCR · CPCB AQI 342</span>
           </div>
+          <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle theme mode" title="Switch between Light and Dark mode">
+            <span id="theme-toggle-icon">🌙</span>
+            <span id="theme-toggle-text">Dark</span>
+          </button>
           <div id="header-auth-widget"></div>
         </div>
       </div>
@@ -1513,10 +1890,10 @@
             </div>
 
             <!-- Member 2: Child (Asthmatic) -->
-            <div class="member-card" style="background: #FDF9F3; border: 1px solid #F0E6D2; border-radius: var(--radius-md); padding: 14px 16px;">
+            <div class="member-card child" style="border-radius: var(--radius-md); padding: 14px 16px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span style="font-weight: 700; font-size: 0.95rem; color: #8C5503;">🧒 Member 2 (Child — Most Vulnerable)</span>
-                <span style="font-size: 0.8rem; background: #FFFFFF; color: #8C5503; padding: 2px 8px; border-radius: 10px; border: 1px solid #E4CE9E;" id="m2-badge-display">Child · 6 yrs</span>
+                <span class="member-child-title" style="font-weight: 700; font-size: 0.95rem; color: #8C5503;">🧒 Member 2 (Child — Most Vulnerable)</span>
+                <span style="font-size: 0.8rem; background: var(--surface-card); color: #8C5503; padding: 2px 8px; border-radius: 10px; border: 1px solid #E4CE9E;" id="m2-badge-display">Child · 6 yrs</span>
               </div>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
                 <div>
@@ -1537,8 +1914,8 @@
                   </select>
                 </div>
               </div>
-              <div style="margin-top: 10px; font-size: 0.84rem; background: #FFF4E5; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid #FED7AA;">
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #C2410C; font-weight: 600;">
+              <div class="child-asthma-box" style="margin-top: 10px; font-size: 0.84rem; background: #FFF4E5; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid #FED7AA;">
+                <label class="child-asthma-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #C2410C; font-weight: 600;">
                   <input type="checkbox" id="m2-asthma" checked style="width: auto;">
                   <span>⚠️ Diagnosed Asthma / Active Wheezing (Encrypted with Cloud KMS)</span>
                 </label>
@@ -1892,11 +2269,11 @@
         <div class="emergency-title">
           <span>🚨 Critical Respiratory Symptom Escalation</span>
         </div>
-        <p style="font-size: 0.95rem; color: #7F1D1D; margin-bottom: 14px;">
+        <p class="emergency-desc">
           Saans is an environmental exposure calculator, <strong>never a doctor or medical emergency device</strong>. If you, your child, or an elderly family member experience any of the following acute symptoms, seek immediate emergency medical care:
         </p>
 
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.92rem; color: #991B1B; margin-bottom: 16px;">
+        <ul class="emergency-list">
           <li>⚠️ <strong>Audible wheezing or whistling sound</strong> when breathing in or out</li>
           <li>⚠️ <strong>Inability to complete full sentences</strong> without gasping for breath</li>
           <li>⚠️ <strong>Chest tightness, pain, or pressure</strong> radiating to arm or jaw</li>
@@ -1904,7 +2281,7 @@
           <li>⚠️ <strong>Child's ribs pulling in deeply</strong> during breathing (retractions)</li>
         </ul>
 
-        <div style="font-weight: 700; color: #991B1B; font-size: 0.95rem;">
+        <div class="emergency-warning-text">
           Do not rely on indoor air purifiers, steam, or herbal teas during acute breathing distress.
         </div>
 
@@ -1930,7 +2307,7 @@
   <!-- ==================== SAANS HOUSEHOLD REGISTRATION & LOGIN MODAL ==================== -->
   <dialog id="saans-auth-dialog" aria-labelledby="saans-auth-modal-title">
     <!-- Header with Close Button -->
-    <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--surface-border); background: #FFFFFF;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--surface-border); background: var(--surface-card);">
       <div style="display: flex; align-items: center; gap: 10px;">
         <div class="brand-icon" style="width: 32px; height: 32px; font-size: 1.1rem; border-radius: 8px;">सां</div>
         <div>
@@ -2980,12 +3357,12 @@
         }
         if (headerWidget) {
           headerWidget.innerHTML = `
-            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--surface-border); font-size: 0.82rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--surface-subtle); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--surface-border); font-size: 0.82rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
               <div style="width: 24px; height: 24px; border-radius: 50%; background: ${currentAuthUser.avatarColor || '#0B735F'}; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">
                 ${currentAuthUser.avatarInitial || 'P'}
               </div>
               <span style="font-weight: 600; color: var(--text-main);">${currentAuthUser.name.split(' ')[0]}</span>
-              <button id="header-btn-logout" style="border: none; background: none; color: #dc2626; font-size: 0.78rem; font-weight: 600; cursor: pointer; padding: 0 4px; margin-left: 2px;" title="Sign out of Saans">
+              <button id="header-btn-logout" style="border: none; background: none; color: var(--danger); font-size: 0.78rem; font-weight: 600; cursor: pointer; padding: 0 4px; margin-left: 2px;" title="Sign out of Saans">
                 Log Out
               </button>
             </div>
@@ -4159,6 +4536,56 @@
     renderRecommendations();
     renderForecastPlanner('delhi');
     renderCleanerRoute('delhi');
+
+    // ==================== THEME MANAGEMENT (LIGHT & DARK MODE) ====================
+    function getPreferredTheme() {
+      try {
+        const savedTheme = localStorage.getItem('saans_theme');
+        if (savedTheme === 'dark' || savedTheme === 'light') return savedTheme;
+      } catch (e) {}
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      const iconEl = document.getElementById('theme-toggle-icon');
+      const textEl = document.getElementById('theme-toggle-text');
+      if (theme === 'dark') {
+        if (iconEl) iconEl.textContent = '☀️';
+        if (textEl) textEl.textContent = 'Light';
+      } else {
+        if (iconEl) iconEl.textContent = '🌙';
+        if (textEl) textEl.textContent = 'Dark';
+      }
+      try {
+        localStorage.setItem('saans_theme', theme);
+      } catch (e) {}
+    }
+
+    const currentSavedTheme = getPreferredTheme();
+    applyTheme(currentSavedTheme);
+
+    const btnThemeToggle = document.getElementById('theme-toggle-btn');
+    if (btnThemeToggle) {
+      btnThemeToggle.addEventListener('click', () => {
+        const active = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = active === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+      });
+    }
+
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        try {
+          if (!localStorage.getItem('saans_theme')) {
+            applyTheme(e.matches ? 'dark' : 'light');
+          }
+        } catch (err) {}
+      });
+    }
 
     // Prevent / remove Netlify frame if re-injected
     function removeNetlifyBadge() {
