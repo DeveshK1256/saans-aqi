@@ -1897,87 +1897,75 @@
 
   </main>
 
-  <!-- ==================== GOOGLE SIGN-IN ACCOUNT SELECTOR MODAL (GS-02 & DPDP 2023 - DARK MODE SPEC) ==================== -->
-  <dialog id="google-auth-dialog" aria-labelledby="google-auth-title">
-    <div style="padding: 24px 28px 20px; background: #131314; color: #e3e3e3;">
-      <!-- Google Logo, Header & Close Button -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
+  <!-- ==================== SAANS HOUSEHOLD ACCOUNT SELECTOR MODAL (GS-02 & DPDP 2023) ==================== -->
+  <dialog id="google-auth-dialog" aria-labelledby="google-auth-title" style="border: 1px solid #374151; border-radius: 20px; padding: 0; max-width: 440px; width: 92vw; background: #111827; color: #f9fafb; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+    <div style="padding: 24px 24px 20px;">
+      <!-- Header & Close Button -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-          </svg>
-          <span style="font-size: 14px; font-weight: 500; color: #f1f3f4; letter-spacing: 0.1px;">Sign in with Google</span>
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #0f766e, #064e3b); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 15px;">सां</div>
+          <span style="font-size: 15px; font-weight: 700; color: #f9fafb;">Saans (सांस) Account</span>
         </div>
-        <button id="btn-close-auth-modal" type="button" style="border: none; background: #2d2e30; font-size: 1rem; line-height: 1; cursor: pointer; color: #9aa0a6; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s;" aria-label="Close dialog">✕</button>
+        <button id="btn-close-auth-modal" type="button" style="border: none; background: #1f2937; font-size: 1rem; line-height: 1; cursor: pointer; color: #9ca3af; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" aria-label="Close dialog">✕</button>
       </div>
 
-      <!-- VIEW 1: Choose Account (Pixel-Perfect to Screenshot) -->
+      <!-- VIEW 1: Choose Account -->
       <div id="google-auth-step-choose">
-        <!-- App Badge Icon (Saans) -->
-        <div style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #0f766e 0%, #064e3b 100%); border: 1px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); margin-bottom: 16px;">
-          <span style="font-size: 20px; font-weight: 800; color: #ffffff;">सां</span>
-        </div>
-
-        <h3 id="google-auth-title" style="font-size: 26px; font-weight: 400; margin: 0 0 6px 0; color: #f1f3f4; letter-spacing: -0.2px;">Choose an account</h3>
-        <p style="font-size: 14px; color: #f1f3f4; margin: 0 0 20px 0;">to continue to <a href="#" style="color: #8ab4f8; text-decoration: none; font-weight: 500;">Saans (सांस)</a></p>
+        <h3 id="google-auth-title" style="font-size: 20px; font-weight: 600; margin: 0 0 6px 0; color: #f9fafb;">Select Profile</h3>
+        <p style="font-size: 13px; color: #9ca3af; margin: 0 0 18px 0;">Sign in to sync your household air quality profile and routine:</p>
 
         <!-- Account Selection List -->
-        <div id="google-accounts-container" style="display: flex; flex-direction: column; border-top: 1px solid #3c4043; margin-bottom: 20px;">
-          <!-- Account 1: Codex (From screenshot) -->
-          <button type="button" class="google-acc-row" id="btn-choose-codex">
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: #9333ea; color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 15px; flex-shrink: 0;">C</div>
+        <div id="google-accounts-container" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;">
+          <!-- Account 1: Priya Sharma -->
+          <button type="button" class="google-acc-row" id="btn-choose-priya" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 14px; border: 1px solid #374151; border-radius: 12px; background: #1f2937; cursor: pointer; text-align: left; transition: background 0.15s;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">P</div>
             <div style="flex-grow: 1; min-width: 0;">
-              <div style="font-size: 14px; font-weight: 500; color: #f1f3f4;">Codex</div>
-              <div style="font-size: 12px; color: #9aa0a6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">codextrial0@gmail.com</div>
+              <div style="font-size: 14px; font-weight: 600; color: #f9fafb;">Priya Sharma</div>
+              <div style="font-size: 12px; color: #9ca3af; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya.sharma@gmail.com · Pune Demo</div>
             </div>
           </button>
 
           <!-- Account 2: Devesh Kumar -->
-          <button type="button" class="google-acc-row" id="btn-choose-devesh">
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: #059669; color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 15px; flex-shrink: 0;">D</div>
+          <button type="button" class="google-acc-row" id="btn-choose-devesh" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 14px; border: 1px solid #374151; border-radius: 12px; background: #1f2937; cursor: pointer; text-align: left; transition: background 0.15s;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: #059669; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">D</div>
             <div style="flex-grow: 1; min-width: 0;">
-              <div style="font-size: 14px; font-weight: 500; color: #f1f3f4;">Devesh Kumar</div>
-              <div style="font-size: 12px; color: #9aa0a6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">devesh.kumar@gmail.com</div>
+              <div style="font-size: 14px; font-weight: 600; color: #f9fafb;">Devesh Kumar</div>
+              <div style="font-size: 12px; color: #9ca3af; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">devesh.kumar@gmail.com · Delhi NCR</div>
             </div>
           </button>
 
-          <!-- Account 3: Priya Sharma -->
-          <button type="button" class="google-acc-row" id="btn-choose-priya">
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 15px; flex-shrink: 0;">P</div>
+          <!-- Account 3: Codex -->
+          <button type="button" class="google-acc-row" id="btn-choose-codex" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 14px; border: 1px solid #374151; border-radius: 12px; background: #1f2937; cursor: pointer; text-align: left; transition: background 0.15s;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: #9333ea; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">C</div>
             <div style="flex-grow: 1; min-width: 0;">
-              <div style="font-size: 14px; font-weight: 500; color: #f1f3f4;">Priya Sharma</div>
-              <div style="font-size: 12px; color: #9aa0a6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya.sharma@gmail.com</div>
+              <div style="font-size: 14px; font-weight: 600; color: #f9fafb;">Codex</div>
+              <div style="font-size: 12px; color: #9ca3af; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">codextrial0@gmail.com · Dwarka</div>
             </div>
           </button>
 
           <!-- Use another account row -->
-          <button type="button" class="google-acc-row" id="btn-toggle-custom-acc" style="color: #f1f3f4;">
-            <div style="width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #e3e3e3; flex-shrink: 0;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
+          <button type="button" class="google-acc-row" id="btn-toggle-custom-acc" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 14px; border: 1px dashed #4b5563; border-radius: 12px; background: transparent; cursor: pointer; text-align: left; color: #f9fafb;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: #374151; display: flex; align-items: center; justify-content: center; color: #d1d5db; font-size: 16px; flex-shrink: 0;">+</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 600; color: #f9fafb;">Sign in with another name & email</div>
+              <div style="font-size: 11px; color: #9ca3af;">Enter your own name for this device</div>
             </div>
-            <div style="font-size: 14px; font-weight: 500; color: #f1f3f4;">Use another account</div>
           </button>
 
           <!-- Custom Account Box -->
-          <div id="custom-account-box" style="display: none; padding: 14px; border: 1px solid #3c4043; border-radius: 10px; background: #1e1f20; margin-top: 10px;">
-            <div style="font-size: 13px; font-weight: 500; color: #f1f3f4; margin-bottom: 8px;">Enter Google Account:</div>
-            <div style="margin-bottom: 10px;">
-              <label for="custom-acc-name" style="display: block; font-size: 11px; color: #9aa0a6; margin-bottom: 3px;">Full Name</label>
-              <input type="text" id="custom-acc-name" placeholder="e.g. Rahul Verma" style="width: 100%; padding: 8px 10px; border: 1px solid #3c4043; border-radius: 6px; font-size: 13px; background: #131314; color: #f1f3f4; box-sizing: border-box;">
+          <div id="custom-account-box" style="display: none; padding: 14px; border: 1px solid #4b5563; border-radius: 10px; background: #1f2937; margin-top: 6px;">
+            <div style="font-size: 12px; font-weight: 600; color: #f9fafb; margin-bottom: 8px;">Enter details:</div>
+            <div style="margin-bottom: 8px;">
+              <label for="custom-acc-name" style="display: block; font-size: 11px; color: #9ca3af; margin-bottom: 2px;">Your Name</label>
+              <input type="text" id="custom-acc-name" placeholder="e.g. Rahul Verma" style="width: 100%; padding: 7px 10px; border: 1px solid #4b5563; border-radius: 6px; font-size: 13px; background: #111827; color: #f9fafb; box-sizing: border-box;">
             </div>
-            <div style="margin-bottom: 12px;">
-              <label for="custom-acc-email" style="display: block; font-size: 11px; color: #9aa0a6; margin-bottom: 3px;">Google Email</label>
-              <input type="email" id="custom-acc-email" placeholder="e.g. rahul.verma@gmail.com" style="width: 100%; padding: 8px 10px; border: 1px solid #3c4043; border-radius: 6px; font-size: 13px; background: #131314; color: #f1f3f4; box-sizing: border-box;">
+            <div style="margin-bottom: 10px;">
+              <label for="custom-acc-email" style="display: block; font-size: 11px; color: #9ca3af; margin-bottom: 2px;">Email Address</label>
+              <input type="email" id="custom-acc-email" placeholder="e.g. rahul@example.com" style="width: 100%; padding: 7px 10px; border: 1px solid #4b5563; border-radius: 6px; font-size: 13px; background: #111827; color: #f9fafb; box-sizing: border-box;">
             </div>
             <div style="display: flex; gap: 8px; justify-content: flex-end;">
-              <button type="button" id="btn-cancel-custom-input" style="padding: 6px 12px; font-size: 12px; border: 1px solid #3c4043; background: transparent; color: #9aa0a6; border-radius: 6px; cursor: pointer;">Cancel</button>
-              <button type="button" id="btn-submit-custom-acc" style="padding: 6px 14px; font-size: 12px; font-weight: 500; background: #8ab4f8; color: #041e49; border: none; border-radius: 6px; cursor: pointer;">Sign in</button>
+              <button type="button" id="btn-cancel-custom-input" style="padding: 5px 10px; font-size: 11px; border: 1px solid #4b5563; background: transparent; color: #9ca3af; border-radius: 6px; cursor: pointer;">Cancel</button>
+              <button type="button" id="btn-submit-custom-acc" style="padding: 5px 12px; font-size: 11px; font-weight: 600; background: #0d9488; color: white; border: none; border-radius: 6px; cursor: pointer;">Save & Continue</button>
             </div>
           </div>
         </div>
