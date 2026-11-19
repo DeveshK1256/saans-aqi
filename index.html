@@ -1009,39 +1009,41 @@
       color: var(--text-faint);
     }
 
-    /* Google Auth Dialog Modal */
+    /* Google Auth Dialog Modal - Dark Theme matching Google Identity Spec */
     dialog#google-auth-dialog {
-      border: none;
+      border: 1px solid #3c4043;
       border-radius: 24px;
       padding: 0;
       max-width: 440px;
       width: 92vw;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
-      background: #ffffff;
-      color: #1f2937;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+      background: #131314;
+      color: #e3e3e3;
       overflow: hidden;
+      font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
     dialog#google-auth-dialog::backdrop {
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
     }
     .google-acc-row {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      background: #ffffff;
+      padding: 13px 12px;
+      border: none;
+      border-bottom: 1px solid #3c4043;
+      border-radius: 0;
+      background: transparent;
       text-align: left;
       cursor: pointer;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      color: #e3e3e3;
+      transition: background-color 0.15s ease;
     }
-    .google-acc-row:hover {
-      background: #f8fafc !important;
-      border-color: #cbd5e1 !important;
-      transform: translateY(-1px);
+    .google-acc-row:hover, .google-acc-row:focus-visible {
+      background: #2d2e30 !important;
+      outline: none;
     }
   </style>
 </head>
@@ -1895,118 +1897,131 @@
 
   </main>
 
-  <!-- ==================== GOOGLE SIGN-IN ACCOUNT SELECTOR MODAL (GS-02 & DPDP 2023) ==================== -->
+  <!-- ==================== GOOGLE SIGN-IN ACCOUNT SELECTOR MODAL (GS-02 & DPDP 2023 - DARK MODE SPEC) ==================== -->
   <dialog id="google-auth-dialog" aria-labelledby="google-auth-title">
-    <div style="padding: 28px 24px 20px;">
-      <!-- Google Logo & Close Button -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-        </svg>
-        <button id="btn-close-auth-modal" type="button" style="border: none; background: #f3f4f6; font-size: 1.2rem; line-height: 1; cursor: pointer; color: #4b5563; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" aria-label="Close dialog">✕</button>
+    <div style="padding: 24px 28px 20px; background: #131314; color: #e3e3e3;">
+      <!-- Google Logo, Header & Close Button -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span style="font-size: 14px; font-weight: 500; color: #f1f3f4; letter-spacing: 0.1px;">Sign in with Google</span>
+        </div>
+        <button id="btn-close-auth-modal" type="button" style="border: none; background: #2d2e30; font-size: 1rem; line-height: 1; cursor: pointer; color: #9aa0a6; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s;" aria-label="Close dialog">✕</button>
       </div>
 
-      <!-- VIEW 1: Choose Account or Enter Email -->
+      <!-- VIEW 1: Choose Account (Pixel-Perfect to Screenshot) -->
       <div id="google-auth-step-choose">
-        <h3 id="google-auth-title" style="font-size: 1.35rem; font-weight: 600; margin: 0 0 4px 0; color: #111827;">Sign in with Google</h3>
-        <p style="font-size: 0.88rem; color: #6b7280; margin: 0 0 18px 0;">Choose a Google account to continue to <strong>Saans (सांस)</strong></p>
+        <!-- App Badge Icon (Saans) -->
+        <div style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #0f766e 0%, #064e3b 100%); border: 1px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); margin-bottom: 16px;">
+          <span style="font-size: 20px; font-weight: 800; color: #ffffff;">सां</span>
+        </div>
+
+        <h3 id="google-auth-title" style="font-size: 26px; font-weight: 400; margin: 0 0 6px 0; color: #f1f3f4; letter-spacing: -0.2px;">Choose an account</h3>
+        <p style="font-size: 14px; color: #f1f3f4; margin: 0 0 20px 0;">to continue to <a href="#" style="color: #8ab4f8; text-decoration: none; font-weight: 500;">Saans (सांस)</a></p>
 
         <!-- Account Selection List -->
-        <div id="google-accounts-container" style="display: flex; flex-direction: column; gap: 8px;">
-          <!-- Account 1: Priya Sharma -->
-          <button type="button" class="google-acc-row" id="btn-choose-priya">
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; box-shadow: 0 1px 3px rgba(66,133,244,0.3);">P</div>
+        <div id="google-accounts-container" style="display: flex; flex-direction: column; border-top: 1px solid #3c4043; margin-bottom: 20px;">
+          <!-- Account 1: Codex (From screenshot) -->
+          <button type="button" class="google-acc-row" id="btn-choose-codex">
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #9333ea; color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 15px; flex-shrink: 0;">C</div>
             <div style="flex-grow: 1; min-width: 0;">
-              <div style="font-size: 0.92rem; font-weight: 600; color: #111827;">Priya Sharma</div>
-              <div style="font-size: 0.8rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya.sharma@gmail.com</div>
+              <div style="font-size: 14px; font-weight: 500; color: #f1f3f4;">Codex</div>
+              <div style="font-size: 12px; color: #9aa0a6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">codextrial0@gmail.com</div>
             </div>
-            <span style="font-size: 0.72rem; background: #EAF4EE; color: #1B7837; padding: 3px 8px; border-radius: 12px; font-weight: 600; border: 1px solid #C4E2CF;">Pune Demo</span>
           </button>
 
-          <!-- Account 2: Devesh Kumar (Personal / Custom) -->
+          <!-- Account 2: Devesh Kumar -->
           <button type="button" class="google-acc-row" id="btn-choose-devesh">
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: #0F9D58; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; box-shadow: 0 1px 3px rgba(15,157,88,0.3);">D</div>
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #059669; color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 15px; flex-shrink: 0;">D</div>
             <div style="flex-grow: 1; min-width: 0;">
-              <div style="font-size: 0.92rem; font-weight: 600; color: #111827;">Devesh Kumar</div>
-              <div style="font-size: 0.8rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">devesh.kumar@gmail.com</div>
-            </div>
-            <span style="font-size: 0.72rem; background: #e0f2fe; color: #0284c7; padding: 3px 8px; border-radius: 12px; font-weight: 600; border: 1px solid #bae6fd;">Delhi NCR</span>
-          </button>
-
-          <!-- Button to trigger custom input -->
-          <button type="button" id="btn-toggle-custom-acc" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 14px; border: 1px dashed #cbd5e1; border-radius: 12px; background: #f8fafc; text-align: left; cursor: pointer; transition: background 0.15s;">
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: #ffffff; color: #4b5563; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; border: 1px solid #cbd5e1;">+</div>
-            <div>
-              <div style="font-size: 0.92rem; font-weight: 600; color: #374151;">Use another Google account</div>
-              <div style="font-size: 0.78rem; color: #6b7280;">Sign in with your own name & Gmail</div>
+              <div style="font-size: 14px; font-weight: 500; color: #f1f3f4;">Devesh Kumar</div>
+              <div style="font-size: 12px; color: #9aa0a6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">devesh.kumar@gmail.com</div>
             </div>
           </button>
 
-          <!-- Form for custom account -->
-          <div id="custom-account-box" style="display: none; padding: 14px; border: 1px solid #93c5fd; border-radius: 12px; background: #f0f7ff;">
-            <div style="font-size: 0.84rem; font-weight: 700; color: #1e40af; margin-bottom: 8px;">Enter Google Account credentials:</div>
-            <div style="margin-bottom: 8px;">
-              <label for="custom-acc-name" style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 2px;">Your Name</label>
-              <input type="text" id="custom-acc-name" placeholder="e.g. Rahul Verma" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.86rem; box-sizing: border-box;">
+          <!-- Account 3: Priya Sharma -->
+          <button type="button" class="google-acc-row" id="btn-choose-priya">
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 15px; flex-shrink: 0;">P</div>
+            <div style="flex-grow: 1; min-width: 0;">
+              <div style="font-size: 14px; font-weight: 500; color: #f1f3f4;">Priya Sharma</div>
+              <div style="font-size: 12px; color: #9aa0a6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya.sharma@gmail.com</div>
+            </div>
+          </button>
+
+          <!-- Use another account row -->
+          <button type="button" class="google-acc-row" id="btn-toggle-custom-acc" style="color: #f1f3f4;">
+            <div style="width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #e3e3e3; flex-shrink: 0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div style="font-size: 14px; font-weight: 500; color: #f1f3f4;">Use another account</div>
+          </button>
+
+          <!-- Custom Account Box -->
+          <div id="custom-account-box" style="display: none; padding: 14px; border: 1px solid #3c4043; border-radius: 10px; background: #1e1f20; margin-top: 10px;">
+            <div style="font-size: 13px; font-weight: 500; color: #f1f3f4; margin-bottom: 8px;">Enter Google Account credentials:</div>
+            <div style="margin-bottom: 10px;">
+              <label for="custom-acc-name" style="display: block; font-size: 11px; color: #9aa0a6; margin-bottom: 3px;">Full Name</label>
+              <input type="text" id="custom-acc-name" placeholder="e.g. Rahul Verma" style="width: 100%; padding: 8px 10px; border: 1px solid #3c4043; border-radius: 6px; font-size: 13px; background: #131314; color: #f1f3f4; box-sizing: border-box;">
             </div>
             <div style="margin-bottom: 12px;">
-              <label for="custom-acc-email" style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 2px;">Google Email</label>
-              <input type="email" id="custom-acc-email" placeholder="e.g. rahul.verma@gmail.com" style="width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.86rem; box-sizing: border-box;">
+              <label for="custom-acc-email" style="display: block; font-size: 11px; color: #9aa0a6; margin-bottom: 3px;">Google Email</label>
+              <input type="email" id="custom-acc-email" placeholder="e.g. rahul.verma@gmail.com" style="width: 100%; padding: 8px 10px; border: 1px solid #3c4043; border-radius: 6px; font-size: 13px; background: #131314; color: #f1f3f4; box-sizing: border-box;">
             </div>
             <div style="display: flex; gap: 8px; justify-content: flex-end;">
-              <button type="button" id="btn-cancel-custom-input" style="padding: 6px 12px; font-size: 0.8rem; border: 1px solid #cbd5e1; background: white; border-radius: 6px; cursor: pointer;">Cancel</button>
-              <button type="button" id="btn-proceed-to-password" style="padding: 6px 14px; font-size: 0.8rem; font-weight: 600; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer;">Next</button>
+              <button type="button" id="btn-cancel-custom-input" style="padding: 6px 12px; font-size: 12px; border: 1px solid #3c4043; background: transparent; color: #9aa0a6; border-radius: 6px; cursor: pointer;">Cancel</button>
+              <button type="button" id="btn-proceed-to-password" style="padding: 6px 14px; font-size: 12px; font-weight: 500; background: #8ab4f8; color: #041e49; border: none; border-radius: 6px; cursor: pointer;">Next</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- VIEW 2: Google Password Verification Step -->
+      <!-- VIEW 2: Google Password Verification Step (Dark Theme) -->
       <div id="google-auth-step-password" style="display: none;">
-        <button type="button" id="btn-back-to-accounts" style="border: none; background: none; color: #1a73e8; font-size: 0.82rem; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 4px;">
-          ← Back to accounts
-        </button>
-
         <!-- Selected Account Chip -->
-        <div style="display: inline-flex; align-items: center; gap: 8px; border: 1px solid #e5e7eb; padding: 5px 12px; border-radius: 20px; background: #f9fafb; margin-bottom: 16px;">
-          <div id="pwd-step-avatar" style="width: 22px; height: 22px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700;">P</div>
-          <span id="pwd-step-email" style="font-size: 0.82rem; font-weight: 600; color: #374151;">priya.sharma@gmail.com</span>
+        <div id="btn-back-to-accounts" style="display: inline-flex; align-items: center; gap: 8px; border: 1px solid #3c4043; padding: 4px 12px; border-radius: 20px; background: #1e1f20; margin-bottom: 20px; cursor: pointer;" title="Back to account choice">
+          <div id="pwd-step-avatar" style="width: 22px; height: 22px; border-radius: 50%; background: #9333ea; color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">C</div>
+          <span id="pwd-step-email" style="font-size: 13px; font-weight: 500; color: #f1f3f4;">codextrial0@gmail.com</span>
+          <span style="font-size: 10px; color: #9aa0a6;">▼</span>
         </div>
 
-        <h3 id="pwd-step-welcome" style="font-size: 1.35rem; font-weight: 600; margin: 0 0 4px 0; color: #111827;">Welcome</h3>
-        <p style="font-size: 0.86rem; color: #6b7280; margin: 0 0 16px 0;">To continue to Saans, verify your Google password</p>
+        <h3 id="pwd-step-welcome" style="font-size: 24px; font-weight: 400; margin: 0 0 6px 0; color: #f1f3f4;">Welcome</h3>
+        <p style="font-size: 14px; color: #9aa0a6; margin: 0 0 20px 0;">To continue to Saans, verify your Google password</p>
 
         <!-- Password input -->
-        <div style="margin-bottom: 10px;">
-          <label for="google-acc-password" style="display: block; font-size: 0.78rem; font-weight: 600; color: #374151; margin-bottom: 4px;">Enter your password</label>
-          <input type="password" id="google-acc-password" placeholder="Enter your password" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.92rem; box-sizing: border-box;" autocomplete="current-password">
-          <div id="google-pwd-error" style="display: none; color: #dc2626; font-size: 0.78rem; margin-top: 4px; font-weight: 500;">Please enter your password to continue.</div>
+        <div style="margin-bottom: 12px;">
+          <input type="password" id="google-acc-password" placeholder="Enter your password" style="width: 100%; padding: 12px 14px; border: 1px solid #3c4043; border-radius: 8px; font-size: 15px; background: transparent; color: #f1f3f4; box-sizing: border-box; outline: none;" autocomplete="current-password">
+          <div id="google-pwd-error" style="display: none; color: #f28b82; font-size: 12px; margin-top: 6px; font-weight: 500;">Please enter your password to continue.</div>
         </div>
 
         <!-- Show password toggle -->
-        <div style="margin-bottom: 20px;">
-          <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #4b5563; cursor: pointer;">
-            <input type="checkbox" id="chk-show-password" style="cursor: pointer;">
+        <div style="margin-bottom: 24px;">
+          <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #9aa0a6; cursor: pointer;">
+            <input type="checkbox" id="chk-show-password" style="accent-color: #8ab4f8; cursor: pointer;">
             Show password
           </label>
         </div>
 
         <!-- Action buttons -->
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.8rem; color: #1a73e8; cursor: pointer; font-weight: 600;" onclick="alert('Demo environment: you can enter any password to verify and sign in.')">Forgot password?</span>
-          <button type="button" id="btn-submit-google-login" style="padding: 8px 20px; font-size: 0.86rem; font-weight: 600; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+          <span style="font-size: 13px; color: #8ab4f8; cursor: pointer; font-weight: 500;" onclick="alert('Demo environment: you can enter any password to verify and sign in.')">Forgot password?</span>
+          <button type="button" id="btn-submit-google-login" style="padding: 10px 24px; font-size: 14px; font-weight: 500; background: #8ab4f8; color: #041e49; border: none; border-radius: 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
             <span>Continue to Saans</span>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Dialog Footer (Google OAuth Notice) -->
-    <div style="background: #f9fafb; border-top: 1px solid #e5e7eb; padding: 12px 24px; font-size: 0.73rem; color: #6b7280; line-height: 1.45;">
-      To continue, Google will share your name and email with <strong>Saans</strong>. Protected under DPDP Act 2023 with Cloud KMS AES-256-GCM envelope encryption.
+    <!-- Dialog Footer (Matching Screenshot Notice) -->
+    <div style="background: #131314; border-top: 1px solid #3c4043; padding: 14px 28px; font-size: 12px; color: #9aa0a6; line-height: 1.5;">
+      Before using this app, you can review Saans's <a href="methodology.html" target="_blank" style="color: #8ab4f8; text-decoration: none;">Privacy Policy</a> and <a href="methodology.html" target="_blank" style="color: #8ab4f8; text-decoration: none;">Terms of Service</a>.
     </div>
   </dialog>
 
@@ -2953,8 +2968,25 @@
       }
     }
 
-    // Google Sign-In 2-Step Modal Handlers
+    // Google Sign-In Handlers (Popup Window & In-Page Modal Fallback)
     function openGoogleAuthModal() {
+      // 1. Attempt real Google Accounts popup window centered on screen
+      const width = 460;
+      const height = 680;
+      const left = Math.max(0, Math.round(window.screenX + (window.outerWidth - width) / 2));
+      const top = Math.max(0, Math.round(window.screenY + (window.outerHeight - height) / 2));
+
+      try {
+        const popup = window.open('google-signin.html', 'google_signin_popup', `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes`);
+        if (popup && !popup.closed) {
+          popup.focus();
+          return;
+        }
+      } catch (e) {
+        console.warn('Popup blocked by browser, opening in-page modal', e);
+      }
+
+      // 2. Fallback to in-page dark-mode dialog
       const dialog = document.getElementById('google-auth-dialog');
       if (dialog) {
         // Reset to Step 1
@@ -2986,6 +3018,28 @@
       }
     }
 
+    // Cross-window postMessage listener for Google Sign-In Popup
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'SAANS_GOOGLE_AUTH' && event.data.user) {
+        loginAsUser(event.data.user);
+        closeGoogleAuthModal();
+        alert(`Signed in successfully as ${event.data.user.name} (${event.data.user.email}) via Google OpenID.`);
+      }
+    });
+
+    // Storage event listener fallback (for multi-tab / popup sync)
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'saans_auth_user' && event.newValue) {
+        try {
+          const user = JSON.parse(event.newValue);
+          if (user && user.isLoggedIn && (!currentAuthUser || currentAuthUser.email !== user.email)) {
+            currentAuthUser = user;
+            updateAuthUI();
+          }
+        } catch (e) {}
+      }
+    });
+
     function closeGoogleAuthModal() {
       const dialog = document.getElementById('google-auth-dialog');
       if (dialog) {
@@ -3008,7 +3062,7 @@
       const avatarChip = document.getElementById('pwd-step-avatar');
       if (avatarChip) {
         avatarChip.textContent = accountObj.avatarInitial || accountObj.name.charAt(0).toUpperCase();
-        avatarChip.style.background = accountObj.avatarColor || '#4285F4';
+        avatarChip.style.background = accountObj.avatarColor || '#9333ea';
       }
       const emailChip = document.getElementById('pwd-step-email');
       if (emailChip) emailChip.textContent = accountObj.email;
@@ -3098,7 +3152,25 @@
       });
     }
 
-    // Account choice 1: Priya Sharma (moves to password verification)
+    // Account choice 1: Codex (matching screenshot)
+    const btnChooseCodex = document.getElementById('btn-choose-codex');
+    if (btnChooseCodex) {
+      btnChooseCodex.addEventListener('click', () => {
+        goToPasswordStep({
+          name: 'Codex',
+          email: 'codextrial0@gmail.com',
+          avatarInitial: 'C',
+          avatarColor: '#9333ea',
+          provider: 'Google OpenID (GS-02)',
+          city: 'Delhi',
+          locality: 'Dwarka Sector 8',
+          m1Alias: 'Codex',
+          m1Age: 27
+        });
+      });
+    }
+
+    // Account choice 2: Priya Sharma (moves to password verification)
     const btnChoosePriya = document.getElementById('btn-choose-priya');
     if (btnChoosePriya) {
       btnChoosePriya.addEventListener('click', () => {
@@ -3106,14 +3178,14 @@
           name: 'Priya Sharma',
           email: 'priya.sharma@gmail.com',
           avatarInitial: 'P',
-          avatarColor: '#4285F4',
+          avatarColor: '#2563eb',
           provider: 'Google OpenID (GS-02)',
           isPriya: true
         });
       });
     }
 
-    // Account choice 2: Devesh Kumar (moves to password verification)
+    // Account choice 3: Devesh Kumar (moves to password verification)
     const btnChooseDevesh = document.getElementById('btn-choose-devesh');
     if (btnChooseDevesh) {
       btnChooseDevesh.addEventListener('click', () => {
@@ -3121,7 +3193,7 @@
           name: 'Devesh Kumar',
           email: 'devesh.kumar@gmail.com',
           avatarInitial: 'D',
-          avatarColor: '#0F9D58',
+          avatarColor: '#059669',
           provider: 'Google OpenID (GS-02)',
           city: 'Delhi',
           locality: 'Anand Vihar',
