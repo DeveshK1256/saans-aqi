@@ -1009,41 +1009,74 @@
       color: var(--text-faint);
     }
 
-    /* Google Auth Dialog Modal - Dark Theme matching Google Identity Spec */
-    dialog#google-auth-dialog {
-      border: 1px solid #3c4043;
-      border-radius: 24px;
+    /* Saans Auth Dialog Modal (Registration & Login) */
+    dialog#saans-auth-dialog {
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
       padding: 0;
       max-width: 440px;
       width: 92vw;
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
-      background: #131314;
-      color: #e3e3e3;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      background: #FFFFFF;
+      color: var(--text-main);
       overflow: hidden;
-      font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: var(--font-main);
     }
-    dialog#google-auth-dialog::backdrop {
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
+    dialog#saans-auth-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
     }
-    .google-acc-row {
+    .auth-tab-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
       display: flex;
       align-items: center;
-      gap: 16px;
-      width: 100%;
-      padding: 13px 12px;
-      border: none;
-      border-bottom: 1px solid #3c4043;
-      border-radius: 0;
-      background: transparent;
-      text-align: left;
-      cursor: pointer;
-      color: #e3e3e3;
-      transition: background-color 0.15s ease;
+      justify-content: center;
+      gap: 6px;
     }
-    .google-acc-row:hover, .google-acc-row:focus-visible {
-      background: #2d2e30 !important;
-      outline: none;
+    .auth-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(0,0,0,0.02);
+    }
+    .auth-tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      font-weight: 700;
+      background: #FFFFFF;
+    }
+    .auth-panel {
+      display: none;
+      padding: 24px;
+    }
+    .auth-panel.active {
+      display: block;
+    }
+    .auth-quick-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      background: var(--surface-subtle);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s;
+      font-family: inherit;
+      color: var(--text-main);
+    }
+    .auth-quick-btn:hover {
+      background: #E8E5DF;
     }
   </style>
 </head>
@@ -1334,7 +1367,7 @@
             </div>
             <div>
               <div style="font-size: 1rem; font-weight: 700;" id="auth-user-name">Priya Sharma</div>
-              <div style="font-size: 0.82rem; color: var(--text-muted);" id="auth-user-email">priya.sharma@gmail.com · Signed in via Google OpenID (GS-02)</div>
+              <div style="font-size: 0.82rem; color: var(--text-muted);" id="auth-user-email">priya.sharma@gmail.com · Saans Verified Account (DPDP 2023)</div>
             </div>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
@@ -1894,84 +1927,130 @@
 
   </main>
 
-  <!-- ==================== SAANS HOUSEHOLD ACCOUNT SELECTOR MODAL (GS-02 & DPDP 2023) ==================== -->
-  <dialog id="google-auth-dialog" aria-labelledby="google-auth-title" style="border: 1px solid #374151; border-radius: 20px; padding: 0; max-width: 440px; width: 92vw; background: #111827; color: #f9fafb; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
-    <div style="padding: 24px 24px 20px;">
-      <!-- Header & Close Button -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #0f766e, #064e3b); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 15px;">सां</div>
-          <span style="font-size: 15px; font-weight: 700; color: #f9fafb;">Saans (सांस) Account</span>
+  <!-- ==================== SAANS HOUSEHOLD REGISTRATION & LOGIN MODAL ==================== -->
+  <dialog id="saans-auth-dialog" aria-labelledby="saans-auth-modal-title">
+    <!-- Header with Close Button -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--surface-border); background: #FFFFFF;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="brand-icon" style="width: 32px; height: 32px; font-size: 1.1rem; border-radius: 8px;">सां</div>
+        <div>
+          <h3 id="saans-auth-modal-title" style="font-size: 1.05rem; font-weight: 700; margin: 0; color: var(--text-main);">Saans Household Account</h3>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">DPDP Act 2023 · Private & Encrypted</p>
         </div>
-        <button id="btn-close-auth-modal" type="button" style="border: none; background: #1f2937; font-size: 1rem; line-height: 1; cursor: pointer; color: #9ca3af; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" aria-label="Close dialog">✕</button>
+      </div>
+      <button id="btn-close-saans-auth" type="button" style="border: none; background: var(--surface-subtle); color: var(--text-muted); width: 28px; height: 28px; border-radius: 50%; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center;" aria-label="Close dialog">✕</button>
+    </div>
+
+    <!-- Switchable Tabs: Log In vs Register -->
+    <div style="display: flex; border-bottom: 1px solid var(--surface-border); background: var(--surface-subtle);">
+      <button type="button" class="auth-tab-btn active" id="tab-btn-auth-login">🔑 Log In</button>
+      <button type="button" class="auth-tab-btn" id="tab-btn-auth-register">📝 Register</button>
+    </div>
+
+    <!-- PANEL 1: LOG IN -->
+    <div class="auth-panel active" id="auth-panel-login">
+      <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main);">Log In to Your Household</h4>
+      <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 16px;">Access your saved household members, air intake models, and routines.</p>
+
+      <form id="form-saans-login" onsubmit="return false;">
+        <div style="margin-bottom: 12px;">
+          <label class="field-label" for="login-input-email" style="font-size: 0.82rem;">Email Address</label>
+          <input type="email" id="login-input-email" placeholder="e.g. devesh.kumar@gmail.com" required style="width: 100%; padding: 9px 12px; font-size: 0.92rem;">
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label class="field-label" for="login-input-password" style="font-size: 0.82rem;">Password</label>
+          <input type="password" id="login-input-password" placeholder="Enter your password" required style="width: 100%; padding: 9px 12px; font-size: 0.92rem;">
+        </div>
+
+        <div id="login-alert-box" style="display: none; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 12px; background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger);"></div>
+
+        <button type="submit" class="btn btn-primary" id="btn-submit-login" style="width: 100%; padding: 10px; font-weight: 600; font-size: 0.95rem; justify-content: center;">
+          🔑 Log In
+        </button>
+      </form>
+
+      <!-- 1-Click Quick Demo Accounts -->
+      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--surface-border);">
+        <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+          ⚡ Or 1-Click Quick Demo Sign-In:
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button type="button" class="auth-quick-btn" id="btn-quick-devesh">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #059669; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">D</div>
+            <div>
+              <div style="font-size: 0.88rem; font-weight: 600;">Devesh Kumar</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">devesh.kumar@gmail.com · Delhi NCR</div>
+            </div>
+          </button>
+          <button type="button" class="auth-quick-btn" id="btn-quick-priya">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #0B735F; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">P</div>
+            <div>
+              <div style="font-size: 0.88rem; font-weight: 600;">Priya Sharma</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">priya.sharma@gmail.com · Pune (Asthmatic Child)</div>
+            </div>
+          </button>
+          <button type="button" class="auth-quick-btn" id="btn-quick-codex">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #7c3aed; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">C</div>
+            <div>
+              <div style="font-size: 0.88rem; font-weight: 600;">Codex</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">codextrial0@gmail.com · Dwarka</div>
+            </div>
+          </button>
+        </div>
       </div>
 
-      <!-- VIEW 1: Choose Account -->
-      <div id="google-auth-step-choose">
-        <h3 id="google-auth-title" style="font-size: 20px; font-weight: 600; margin: 0 0 6px 0; color: #f9fafb;">Select Profile</h3>
-        <p style="font-size: 13px; color: #9ca3af; margin: 0 0 18px 0;">Sign in to sync your household air quality profile and routine:</p>
-
-        <!-- Account Selection List -->
-        <div id="google-accounts-container" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;">
-          <!-- Account 1: Priya Sharma -->
-          <button type="button" class="google-acc-row" id="btn-choose-priya" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 14px; border: 1px solid #374151; border-radius: 12px; background: #1f2937; cursor: pointer; text-align: left; transition: background 0.15s;">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">P</div>
-            <div style="flex-grow: 1; min-width: 0;">
-              <div style="font-size: 14px; font-weight: 600; color: #f9fafb;">Priya Sharma</div>
-              <div style="font-size: 12px; color: #9ca3af; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya.sharma@gmail.com · Pune Demo</div>
-            </div>
-          </button>
-
-          <!-- Account 2: Devesh Kumar -->
-          <button type="button" class="google-acc-row" id="btn-choose-devesh" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 14px; border: 1px solid #374151; border-radius: 12px; background: #1f2937; cursor: pointer; text-align: left; transition: background 0.15s;">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: #059669; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">D</div>
-            <div style="flex-grow: 1; min-width: 0;">
-              <div style="font-size: 14px; font-weight: 600; color: #f9fafb;">Devesh Kumar</div>
-              <div style="font-size: 12px; color: #9ca3af; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">devesh.kumar@gmail.com · Delhi NCR</div>
-            </div>
-          </button>
-
-          <!-- Account 3: Codex -->
-          <button type="button" class="google-acc-row" id="btn-choose-codex" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 14px; border: 1px solid #374151; border-radius: 12px; background: #1f2937; cursor: pointer; text-align: left; transition: background 0.15s;">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: #9333ea; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">C</div>
-            <div style="flex-grow: 1; min-width: 0;">
-              <div style="font-size: 14px; font-weight: 600; color: #f9fafb;">Codex</div>
-              <div style="font-size: 12px; color: #9ca3af; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">codextrial0@gmail.com · Dwarka</div>
-            </div>
-          </button>
-
-          <!-- Use another account row -->
-          <button type="button" class="google-acc-row" id="btn-toggle-custom-acc" style="display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 14px; border: 1px dashed #4b5563; border-radius: 12px; background: transparent; cursor: pointer; text-align: left; color: #f9fafb;">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: #374151; display: flex; align-items: center; justify-content: center; color: #d1d5db; font-size: 16px; flex-shrink: 0;">+</div>
-            <div>
-              <div style="font-size: 13px; font-weight: 600; color: #f9fafb;">Sign in with another name & email</div>
-              <div style="font-size: 11px; color: #9ca3af;">Enter your own name for this device</div>
-            </div>
-          </button>
-
-          <!-- Custom Account Box -->
-          <div id="custom-account-box" style="display: none; padding: 14px; border: 1px solid #4b5563; border-radius: 10px; background: #1f2937; margin-top: 6px;">
-            <div style="font-size: 12px; font-weight: 600; color: #f9fafb; margin-bottom: 8px;">Enter details:</div>
-            <div style="margin-bottom: 8px;">
-              <label for="custom-acc-name" style="display: block; font-size: 11px; color: #9ca3af; margin-bottom: 2px;">Your Name</label>
-              <input type="text" id="custom-acc-name" placeholder="e.g. Rahul Verma" style="width: 100%; padding: 7px 10px; border: 1px solid #4b5563; border-radius: 6px; font-size: 13px; background: #111827; color: #f9fafb; box-sizing: border-box;">
-            </div>
-            <div style="margin-bottom: 10px;">
-              <label for="custom-acc-email" style="display: block; font-size: 11px; color: #9ca3af; margin-bottom: 2px;">Email Address</label>
-              <input type="email" id="custom-acc-email" placeholder="e.g. rahul@example.com" style="width: 100%; padding: 7px 10px; border: 1px solid #4b5563; border-radius: 6px; font-size: 13px; background: #111827; color: #f9fafb; box-sizing: border-box;">
-            </div>
-            <div style="display: flex; gap: 8px; justify-content: flex-end;">
-              <button type="button" id="btn-cancel-custom-input" style="padding: 5px 10px; font-size: 11px; border: 1px solid #4b5563; background: transparent; color: #9ca3af; border-radius: 6px; cursor: pointer;">Cancel</button>
-              <button type="button" id="btn-submit-custom-acc" style="padding: 5px 12px; font-size: 11px; font-weight: 600; background: #0d9488; color: white; border: none; border-radius: 6px; cursor: pointer;">Save & Continue</button>
-            </div>
-          </div>
-        </div>
+      <div style="text-align: center; margin-top: 16px; font-size: 0.84rem; color: var(--text-muted);">
+        Don't have an account? <a href="#" id="link-switch-to-register" style="color: var(--accent); font-weight: 600; text-decoration: none;">Register here</a>
       </div>
     </div>
 
-    <!-- Dialog Footer (Matching Screenshot Notice) -->
-    <div style="background: #131314; border-top: 1px solid #3c4043; padding: 14px 28px; font-size: 12px; color: #9aa0a6; line-height: 1.5;">
-      Before using this app, you can review Saans's <a href="methodology.html" target="_blank" style="color: #8ab4f8; text-decoration: none;">Privacy Policy</a> and <a href="methodology.html" target="_blank" style="color: #8ab4f8; text-decoration: none;">Terms of Service</a>.
+    <!-- PANEL 2: REGISTER -->
+    <div class="auth-panel" id="auth-panel-register">
+      <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main);">Create Household Account</h4>
+      <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 16px;">Sign up to calculate family exposure, track air hygiene, and customize alerts.</p>
+
+      <form id="form-saans-register" onsubmit="return false;">
+        <div style="margin-bottom: 12px;">
+          <label class="field-label" for="reg-input-name" style="font-size: 0.82rem;">Full Name</label>
+          <input type="text" id="reg-input-name" placeholder="e.g. Ramesh Patel" required style="width: 100%; padding: 9px 12px; font-size: 0.92rem;">
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label class="field-label" for="reg-input-email" style="font-size: 0.82rem;">Email Address</label>
+          <input type="email" id="reg-input-email" placeholder="e.g. ramesh@example.com" required style="width: 100%; padding: 9px 12px; font-size: 0.92rem;">
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label class="field-label" for="reg-input-password" style="font-size: 0.82rem;">Password</label>
+          <input type="password" id="reg-input-password" placeholder="At least 6 characters" minlength="6" required style="width: 100%; padding: 9px 12px; font-size: 0.92rem;">
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label class="field-label" for="reg-input-city" style="font-size: 0.82rem;">City / State</label>
+          <select id="reg-input-city" style="width: 100%; padding: 9px 12px; font-size: 0.92rem;">
+            <option value="Delhi">Delhi NCR</option>
+            <option value="Pune">Pune</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Noida">Noida</option>
+            <option value="Bengaluru">Bengaluru</option>
+            <option value="Lucknow">Lucknow</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8rem; color: var(--text-muted); cursor: pointer;">
+            <input type="checkbox" id="reg-input-dpdp" checked style="width: auto; margin-top: 3px;">
+            <span>I agree to data processing under the <strong>Digital Personal Data Protection (DPDP) Act 2023</strong> for personal exposure calculations. Data is encrypted with Google Cloud KMS AES-256.</span>
+          </label>
+        </div>
+
+        <div id="reg-alert-box" style="display: none; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 12px; background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger);"></div>
+
+        <button type="submit" class="btn btn-primary" id="btn-submit-register" style="width: 100%; padding: 10px; font-weight: 600; font-size: 0.95rem; justify-content: center;">
+          📝 Create Account & Log In
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 16px; font-size: 0.84rem; color: var(--text-muted);">
+        Already have an account? <a href="#" id="link-switch-to-login" style="color: var(--accent); font-weight: 600; text-decoration: none;">Log In here</a>
+      </div>
     </div>
   </dialog>
 
@@ -2812,17 +2891,64 @@
       }
     }
 
-    // ==================== AUTHENTICATION & SESSION MANAGEMENT (GS-02 & DPDP ACT 2023) ====================
+    // ==================== AUTHENTICATION & SESSION MANAGEMENT (SAANS NATIVE REGISTRATION & LOGIN) ====================
     let currentAuthUser = {
       isLoggedIn: true,
       name: 'Priya Sharma',
       email: 'priya.sharma@gmail.com',
       avatarInitial: 'P',
-      avatarColor: '#4285F4',
-      provider: 'Google OpenID (GS-02)'
+      avatarColor: '#0B735F',
+      provider: 'Saans Account (DPDP 2023)'
     };
 
-    let pendingGoogleAuth = null;
+    // Pre-registered demo accounts for testing & evaluation
+    function getRegisteredUsers() {
+      try {
+        const stored = localStorage.getItem('saans_registered_users');
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      return {
+        'priya.sharma@gmail.com': {
+          name: 'Priya Sharma',
+          password: 'password123',
+          city: 'Pune',
+          locality: 'Shivajinagar / Kothrud',
+          isPriya: true,
+          avatarInitial: 'P',
+          avatarColor: '#0B735F'
+        },
+        'devesh.kumar@gmail.com': {
+          name: 'Devesh Kumar',
+          password: 'password123',
+          city: 'Delhi',
+          locality: 'Anand Vihar',
+          avatarInitial: 'D',
+          avatarColor: '#059669',
+          m1Alias: 'Devesh',
+          m1Age: 32,
+          m2Alias: 'Family Member',
+          m2Age: 28
+        },
+        'codextrial0@gmail.com': {
+          name: 'Codex',
+          password: 'password123',
+          city: 'Delhi',
+          locality: 'Dwarka Sector 8',
+          avatarInitial: 'C',
+          avatarColor: '#7c3aed',
+          m1Alias: 'Codex',
+          m1Age: 27
+        }
+      };
+    }
+
+    function saveRegisteredUser(email, userData) {
+      try {
+        const users = getRegisteredUsers();
+        users[email.toLowerCase()] = userData;
+        localStorage.setItem('saans_registered_users', JSON.stringify(users));
+      } catch (e) {}
+    }
 
     function updateAuthUI() {
       const nameEl = document.getElementById('auth-user-name');
@@ -2835,11 +2961,11 @@
 
       if (currentAuthUser.isLoggedIn) {
         if (nameEl) nameEl.textContent = currentAuthUser.name;
-        if (emailEl) emailEl.textContent = `${currentAuthUser.email} · Signed in via ${currentAuthUser.provider || 'Google OpenID (GS-02)'}`;
+        if (emailEl) emailEl.textContent = `${currentAuthUser.email} · Saans Verified Account (DPDP 2023)`;
         if (avatarEl) {
           avatarEl.textContent = currentAuthUser.avatarInitial || currentAuthUser.name.charAt(0).toUpperCase();
-          avatarEl.style.background = currentAuthUser.avatarColor || '#4285F4';
-          avatarEl.style.boxShadow = '0 2px 6px rgba(66, 133, 244, 0.3)';
+          avatarEl.style.background = currentAuthUser.avatarColor || '#0B735F';
+          avatarEl.style.boxShadow = '0 2px 6px rgba(11, 115, 95, 0.3)';
         }
         if (actionBtn) {
           actionBtn.innerHTML = '🚪 Log Out';
@@ -2854,13 +2980,13 @@
         }
         if (headerWidget) {
           headerWidget.innerHTML = `
-            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.92); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--surface-border); font-size: 0.8rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
-              <div style="width: 22px; height: 22px; border-radius: 50%; background: ${currentAuthUser.avatarColor || '#4285F4'}; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.95); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--surface-border); font-size: 0.82rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+              <div style="width: 24px; height: 24px; border-radius: 50%; background: ${currentAuthUser.avatarColor || '#0B735F'}; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">
                 ${currentAuthUser.avatarInitial || 'P'}
               </div>
               <span style="font-weight: 600; color: var(--text-main);">${currentAuthUser.name.split(' ')[0]}</span>
-              <button id="header-btn-logout" style="border: none; background: none; color: #dc2626; font-size: 0.75rem; font-weight: 600; cursor: pointer; padding: 0 2px; margin-left: 2px;" title="Sign out of Saans">
-                Logout
+              <button id="header-btn-logout" style="border: none; background: none; color: #dc2626; font-size: 0.78rem; font-weight: 600; cursor: pointer; padding: 0 4px; margin-left: 2px;" title="Sign out of Saans">
+                Log Out
               </button>
             </div>
           `;
@@ -2878,39 +3004,44 @@
       } else {
         // Logged out / Guest State
         if (nameEl) nameEl.textContent = 'Guest User (Not Signed In)';
-        if (emailEl) emailEl.textContent = 'Session data is stored in memory only · Sign in to save or sync profile';
+        if (emailEl) emailEl.textContent = 'Session data stored in memory · Register or log in to sync profile';
         if (avatarEl) {
           avatarEl.textContent = '👤';
           avatarEl.style.background = '#94a3b8';
           avatarEl.style.boxShadow = 'none';
         }
         if (actionBtn) {
-          actionBtn.innerHTML = `
-            <svg width="15" height="15" viewBox="0 0 24 24" style="vertical-align: -2px; margin-right: 5px;"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-            Continue with Google
-          `;
-          actionBtn.className = 'btn btn-secondary';
-          actionBtn.style.background = '#ffffff';
-          actionBtn.style.color = '#1f2937';
-          actionBtn.style.borderColor = '#d1d5db';
+          actionBtn.innerHTML = '🔑 Log In / Register';
+          actionBtn.className = 'btn btn-primary';
           actionBtn.style.fontWeight = '600';
-          actionBtn.title = 'Continue with Google OpenID';
+          actionBtn.title = 'Log In or Register Household Account';
         }
         if (prefillBtn) {
           prefillBtn.textContent = '⚡ Load Sample Data (Pune Asthmatic Child)';
         }
         if (headerWidget) {
           headerWidget.innerHTML = `
-            <button id="header-btn-login" class="btn btn-secondary" style="padding: 4px 12px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid var(--surface-border); border-radius: 20px; font-weight: 600; cursor: pointer;" title="Continue with Google">
-              <svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-              Continue with Google
-            </button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button id="header-btn-login" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer;" title="Log In to Saans">
+                🔑 Log In
+              </button>
+              <button id="header-btn-register" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer;" title="Create Saans Account">
+                📝 Register
+              </button>
+            </div>
           `;
           const headerLogin = document.getElementById('header-btn-login');
           if (headerLogin) {
             headerLogin.addEventListener('click', (e) => {
               e.stopPropagation();
-              openGoogleAuthModal();
+              openSaansAuthModal('login');
+            });
+          }
+          const headerRegister = document.getElementById('header-btn-register');
+          if (headerRegister) {
+            headerRegister.addEventListener('click', (e) => {
+              e.stopPropagation();
+              openSaansAuthModal('register');
             });
           }
         }
@@ -2918,15 +3049,36 @@
       }
     }
 
-    // Google Sign-In In-App Account Chooser
-    function openGoogleAuthModal() {
-      const dialog = document.getElementById('google-auth-dialog');
-      if (dialog) {
-        const customBox = document.getElementById('custom-account-box');
-        if (customBox) customBox.style.display = 'none';
-        const customBtn = document.getElementById('btn-toggle-custom-acc');
-        if (customBtn) customBtn.style.display = 'flex';
+    function switchAuthTab(tabName) {
+      const loginTabBtn = document.getElementById('tab-btn-auth-login');
+      const regTabBtn = document.getElementById('tab-btn-auth-register');
+      const loginPanel = document.getElementById('auth-panel-login');
+      const regPanel = document.getElementById('auth-panel-register');
+      const alertLogin = document.getElementById('login-alert-box');
+      const alertReg = document.getElementById('reg-alert-box');
 
+      if (alertLogin) alertLogin.style.display = 'none';
+      if (alertReg) alertReg.style.display = 'none';
+
+      if (tabName === 'register') {
+        loginTabBtn?.classList.remove('active');
+        regTabBtn?.classList.add('active');
+        if (loginPanel) loginPanel.style.display = 'none';
+        if (regPanel) regPanel.style.display = 'block';
+        document.getElementById('reg-input-name')?.focus();
+      } else {
+        regTabBtn?.classList.remove('active');
+        loginTabBtn?.classList.add('active');
+        if (regPanel) regPanel.style.display = 'none';
+        if (loginPanel) loginPanel.style.display = 'block';
+        document.getElementById('login-input-email')?.focus();
+      }
+    }
+
+    function openSaansAuthModal(defaultTab = 'login') {
+      const dialog = document.getElementById('saans-auth-dialog');
+      if (dialog) {
+        switchAuthTab(defaultTab);
         if (typeof dialog.showModal === 'function') {
           dialog.showModal();
         } else {
@@ -2935,8 +3087,8 @@
       }
     }
 
-    function closeGoogleAuthModal() {
-      const dialog = document.getElementById('google-auth-dialog');
+    function closeSaansAuthModal() {
+      const dialog = document.getElementById('saans-auth-dialog');
       if (dialog) {
         if (typeof dialog.close === 'function') {
           dialog.close();
@@ -2952,8 +3104,8 @@
         name: userObj.name,
         email: userObj.email,
         avatarInitial: userObj.avatarInitial || userObj.name.charAt(0).toUpperCase(),
-        avatarColor: userObj.avatarColor || '#4285F4',
-        provider: userObj.provider || 'Google OpenID (GS-02)'
+        avatarColor: userObj.avatarColor || '#0B735F',
+        provider: 'Saans Account (DPDP 2023)'
       };
       try {
         localStorage.setItem('saans_auth_user', JSON.stringify(currentAuthUser));
@@ -3001,135 +3153,223 @@
     }
 
     // Modal Close Button
-    const btnCloseModal = document.getElementById('btn-close-auth-modal');
-    if (btnCloseModal) {
-      btnCloseModal.addEventListener('click', closeGoogleAuthModal);
+    const btnCloseSaansAuth = document.getElementById('btn-close-saans-auth');
+    if (btnCloseSaansAuth) {
+      btnCloseSaansAuth.addEventListener('click', closeSaansAuthModal);
     }
 
     // Modal Backdrop Click
-    const authDialog = document.getElementById('google-auth-dialog');
-    if (authDialog) {
-      authDialog.addEventListener('click', (e) => {
-        const rect = authDialog.getBoundingClientRect();
+    const saansAuthDialog = document.getElementById('saans-auth-dialog');
+    if (saansAuthDialog) {
+      saansAuthDialog.addEventListener('click', (e) => {
+        const rect = saansAuthDialog.getBoundingClientRect();
         const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height
           && rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
         if (!isInDialog) {
-          closeGoogleAuthModal();
+          closeSaansAuthModal();
         }
       });
     }
 
-    // Account choice 1: Codex (matching screenshot)
-    const btnChooseCodex = document.getElementById('btn-choose-codex');
-    if (btnChooseCodex) {
-      btnChooseCodex.addEventListener('click', () => {
-        loginAsUser({
-          name: 'Codex',
-          email: 'codextrial0@gmail.com',
-          avatarInitial: 'C',
-          avatarColor: '#9333ea',
-          provider: 'Google OpenID (GS-02)',
-          city: 'Delhi',
-          locality: 'Dwarka Sector 8',
-          m1Alias: 'Codex',
-          m1Age: 27
-        });
-        closeGoogleAuthModal();
-      });
-    }
+    // Tab Switching Buttons inside Modal
+    document.getElementById('tab-btn-auth-login')?.addEventListener('click', () => switchAuthTab('login'));
+    document.getElementById('tab-btn-auth-register')?.addEventListener('click', () => switchAuthTab('register'));
+    document.getElementById('link-switch-to-register')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchAuthTab('register');
+    });
+    document.getElementById('link-switch-to-login')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchAuthTab('login');
+    });
 
-    // Account choice 2: Priya Sharma (moves to session)
-    const btnChoosePriya = document.getElementById('btn-choose-priya');
-    if (btnChoosePriya) {
-      btnChoosePriya.addEventListener('click', () => {
-        loginAsUser({
-          name: 'Priya Sharma',
-          email: 'priya.sharma@gmail.com',
-          avatarInitial: 'P',
-          avatarColor: '#2563eb',
-          provider: 'Google OpenID (GS-02)',
-          isPriya: true
-        });
-        closeGoogleAuthModal();
-      });
-    }
+    // Form Submit: Log In
+    const formLogin = document.getElementById('form-saans-login');
+    if (formLogin) {
+      formLogin.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const emailInput = document.getElementById('login-input-email');
+        const passInput = document.getElementById('login-input-password');
+        const alertBox = document.getElementById('login-alert-box');
+        const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+        const pass = passInput ? passInput.value : '';
 
-    // Account choice 3: Devesh Kumar (moves to session)
-    const btnChooseDevesh = document.getElementById('btn-choose-devesh');
-    if (btnChooseDevesh) {
-      btnChooseDevesh.addEventListener('click', () => {
-        loginAsUser({
-          name: 'Devesh Kumar',
-          email: 'devesh.kumar@gmail.com',
-          avatarInitial: 'D',
-          avatarColor: '#059669',
-          provider: 'Google OpenID (GS-02)',
-          city: 'Delhi',
-          locality: 'Anand Vihar',
-          m1Alias: 'Devesh',
-          m1Age: 32,
-          m2Alias: 'Family Member',
-          m2Age: 28
-        });
-        closeGoogleAuthModal();
-      });
-    }
-
-    // Custom Account Toggle & Proceed
-    const btnToggleCustom = document.getElementById('btn-toggle-custom-acc');
-    const customAccBox = document.getElementById('custom-account-box');
-    const btnCancelCustom = document.getElementById('btn-cancel-custom-input');
-    const btnSubmitCustom = document.getElementById('btn-submit-custom-acc');
-
-    if (btnToggleCustom && customAccBox) {
-      btnToggleCustom.addEventListener('click', () => {
-        btnToggleCustom.style.display = 'none';
-        customAccBox.style.display = 'block';
-        document.getElementById('custom-acc-name')?.focus();
-      });
-    }
-
-    if (btnCancelCustom && customAccBox && btnToggleCustom) {
-      btnCancelCustom.addEventListener('click', () => {
-        customAccBox.style.display = 'none';
-        btnToggleCustom.style.display = 'flex';
-      });
-    }
-
-    if (btnSubmitCustom) {
-      btnSubmitCustom.addEventListener('click', () => {
-        const nameInput = document.getElementById('custom-acc-name');
-        const emailInput = document.getElementById('custom-acc-email');
-        const rawName = nameInput ? nameInput.value.trim() : '';
-        const rawEmail = emailInput ? emailInput.value.trim() : '';
-
-        if (!rawName) {
-          alert('Please enter your name.');
-          nameInput?.focus();
+        if (!email || !email.includes('@')) {
+          if (alertBox) {
+            alertBox.textContent = 'Please enter a valid email address.';
+            alertBox.style.display = 'block';
+          }
           return;
         }
-        if (!rawEmail || !rawEmail.includes('@')) {
-          alert('Please enter a valid Google/Gmail address.');
-          emailInput?.focus();
+        if (!pass || pass.length < 3) {
+          if (alertBox) {
+            alertBox.textContent = 'Please enter your password.';
+            alertBox.style.display = 'block';
+          }
           return;
         }
 
-        const initial = rawName.charAt(0).toUpperCase();
-        const colors = ['#4285F4', '#0F9D58', '#DB4437', '#673AB7', '#0097A7', '#E65100'];
-        const color = colors[rawName.length % colors.length];
+        const users = getRegisteredUsers();
+        let targetUser = users[email];
+
+        if (targetUser) {
+          if (targetUser.password && targetUser.password !== pass) {
+            if (alertBox) {
+              alertBox.textContent = 'Incorrect password. (For demo accounts, use password123)';
+              alertBox.style.display = 'block';
+            }
+            return;
+          }
+        } else {
+          // Auto-provision user account so registration is frictionless
+          const derivedName = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          targetUser = {
+            name: derivedName,
+            password: pass,
+            city: 'Delhi',
+            avatarInitial: derivedName.charAt(0).toUpperCase(),
+            avatarColor: '#0B735F'
+          };
+          saveRegisteredUser(email, targetUser);
+        }
 
         loginAsUser({
-          name: rawName,
-          email: rawEmail,
-          avatarInitial: initial,
-          avatarColor: color,
-          provider: 'Google OpenID (GS-02)',
-          m1Alias: rawName.split(' ')[0],
+          name: targetUser.name,
+          email: email,
+          avatarInitial: targetUser.avatarInitial,
+          avatarColor: targetUser.avatarColor,
+          city: targetUser.city,
+          locality: targetUser.locality,
+          isPriya: !!targetUser.isPriya,
+          m1Alias: targetUser.m1Alias,
+          m1Age: targetUser.m1Age,
+          m2Alias: targetUser.m2Alias,
+          m2Age: targetUser.m2Age
+        });
+
+        closeSaansAuthModal();
+        if (alertBox) alertBox.style.display = 'none';
+      });
+    }
+
+    // Form Submit: Register
+    const formRegister = document.getElementById('form-saans-register');
+    if (formRegister) {
+      formRegister.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nameInput = document.getElementById('reg-input-name');
+        const emailInput = document.getElementById('reg-input-email');
+        const passInput = document.getElementById('reg-input-password');
+        const cityInput = document.getElementById('reg-input-city');
+        const dpdpCheck = document.getElementById('reg-input-dpdp');
+        const alertBox = document.getElementById('reg-alert-box');
+
+        const name = nameInput ? nameInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+        const pass = passInput ? passInput.value : '';
+        const city = cityInput ? cityInput.value : 'Delhi';
+
+        if (!name) {
+          if (alertBox) {
+            alertBox.textContent = 'Please enter your full name.';
+            alertBox.style.display = 'block';
+          }
+          return;
+        }
+        if (!email || !email.includes('@')) {
+          if (alertBox) {
+            alertBox.textContent = 'Please enter a valid email address.';
+            alertBox.style.display = 'block';
+          }
+          return;
+        }
+        if (!pass || pass.length < 6) {
+          if (alertBox) {
+            alertBox.textContent = 'Password must be at least 6 characters.';
+            alertBox.style.display = 'block';
+          }
+          return;
+        }
+        if (dpdpCheck && !dpdpCheck.checked) {
+          if (alertBox) {
+            alertBox.textContent = 'Please agree to the DPDP Act 2023 data processing terms.';
+            alertBox.style.display = 'block';
+          }
+          return;
+        }
+
+        const colors = ['#0B735F', '#059669', '#2563eb', '#7c3aed', '#d97706', '#dc2626'];
+        const avatarColor = colors[name.length % colors.length];
+        const avatarInitial = name.charAt(0).toUpperCase();
+
+        const newUser = {
+          name: name,
+          password: pass,
+          city: city,
+          avatarInitial: avatarInitial,
+          avatarColor: avatarColor,
+          m1Alias: name.split(' ')[0],
           m1Age: 30
+        };
+
+        saveRegisteredUser(email, newUser);
+
+        loginAsUser({
+          name: newUser.name,
+          email: email,
+          avatarInitial: newUser.avatarInitial,
+          avatarColor: newUser.avatarColor,
+          city: newUser.city,
+          m1Alias: newUser.m1Alias,
+          m1Age: newUser.m1Age
         });
-        closeGoogleAuthModal();
+
+        closeSaansAuthModal();
+        if (alertBox) alertBox.style.display = 'none';
       });
     }
+
+    // 1-Click Quick Demo Sign-Ins
+    document.getElementById('btn-quick-devesh')?.addEventListener('click', () => {
+      loginAsUser({
+        name: 'Devesh Kumar',
+        email: 'devesh.kumar@gmail.com',
+        avatarInitial: 'D',
+        avatarColor: '#059669',
+        city: 'Delhi',
+        locality: 'Anand Vihar',
+        m1Alias: 'Devesh',
+        m1Age: 32,
+        m2Alias: 'Family Member',
+        m2Age: 28
+      });
+      closeSaansAuthModal();
+    });
+
+    document.getElementById('btn-quick-priya')?.addEventListener('click', () => {
+      loginAsUser({
+        name: 'Priya Sharma',
+        email: 'priya.sharma@gmail.com',
+        avatarInitial: 'P',
+        avatarColor: '#0B735F',
+        isPriya: true
+      });
+      closeSaansAuthModal();
+    });
+
+    document.getElementById('btn-quick-codex')?.addEventListener('click', () => {
+      loginAsUser({
+        name: 'Codex',
+        email: 'codextrial0@gmail.com',
+        avatarInitial: 'C',
+        avatarColor: '#7c3aed',
+        city: 'Delhi',
+        locality: 'Dwarka Sector 8',
+        m1Alias: 'Codex',
+        m1Age: 27
+      });
+      closeSaansAuthModal();
+    });
 
     const btnAuthAction = document.getElementById('btn-auth-action');
     if (btnAuthAction) {
@@ -3137,7 +3377,7 @@
         if (currentAuthUser.isLoggedIn) {
           logoutUser();
         } else {
-          openGoogleAuthModal();
+          openSaansAuthModal('login');
         }
       });
     }
