@@ -13,7 +13,10 @@ export type ErrorCode =
   | 'RATE_LIMITED'
   | 'PROVIDER_UNAVAILABLE'
   | 'STALE_DATA'
-  | 'INTERNAL_ERROR';
+  | 'INTERNAL_ERROR'
+  | 'CONSENT_REQUIRED'
+  | 'KMS_ENCRYPT_ERROR'
+  | 'KMS_DECRYPT_ERROR';
 
 export interface AppErrorDetails {
   code: ErrorCode;

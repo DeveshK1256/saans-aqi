@@ -34,3 +34,17 @@
 - **Context:** Raw AQI values without confidence context mislead users, especially when stations are distant, offline, or missing gaseous pollutants.
 - **Decision:** Implement a 4-factor confidence scoring algorithm (data age weight 0.40, station distance weight 0.30, pollutant completeness weight 0.20, provider agreement weight 0.10). Readings older than 180 minutes or scoring below 0.45 automatically trigger `isUnsure: true` and switch UI to conservative protective guidance with transparent explanations.
 - **Consequences:** Prevents false precision and builds user trust during sensor blackouts or regional inversions.
+
+## ADR-006: Google Sign-In & DPDP Act 2023 Explicit Consent Architecture
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Slice A2 introduces authenticated household risk profiling. Under India's Digital Personal Data Protection (DPDP) Act 2023, health-adjacent data requires explicit opt-in consent, purpose limitation, right to data portability (export), and right to erasure (deletion).
+- **Decision:** Authenticate users via Google Sign-In (OpenID Connect / `GS-02`) with zero passwords stored locally. Enforce an explicit DPDP consent gate before any household profile is persisted. Implement `/api/household/export` and `DELETE /api/household` for full compliance.
+- **Consequences:** Satisfies statutory requirements for Indian data privacy while maintaining seamless single-click user onboarding.
+
+## ADR-007: Cloud KMS Field-Level Envelope Encryption for Sensitive Health Flags
+- **Status:** Accepted
+- **Date:** 2026-11-19
+- **Context:** Storing sensitive category flags (e.g., asthma, pregnancy, cardiovascular conditions) in plaintext database columns creates substantial privacy risks during data dumps or unauthorized access.
+- **Decision:** Implement Google Cloud KMS envelope encryption (`GS-12`, `SEC-20`) using authenticated AES-256-GCM. Sensitive fields are serialized into an authenticated envelope (`kms:{version}:{iv}:{ciphertext}:{authTag}`) before persistence. The database stores only ciphertext; decryption occurs transiently in memory for the verified owner.
+- **Consequences:** Guarantees zero plaintext leakage at rest. Any ciphertext tampering causes GCM authentication failure and rejects processing.
