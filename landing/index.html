@@ -1405,15 +1405,19 @@
             <div class="member-card" style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 16px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <span style="font-weight: 700; font-size: 0.95rem;">👤 Member 1 (Primary Earner)</span>
-                <span style="font-size: 0.8rem; background: #FFFFFF; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--surface-border);">Adult · 34 yrs</span>
+                <span style="font-size: 0.8rem; background: #FFFFFF; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--surface-border);" id="m1-badge-display">Adult · 34 yrs</span>
               </div>
-              <div class="grid-2">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
                 <div>
-                  <label class="field-label" style="font-size: 0.82rem;">Alias</label>
+                  <label class="field-label" style="font-size: 0.82rem;" for="m1-alias">Alias</label>
                   <input type="text" id="m1-alias" value="Priya" style="padding: 6px 10px; font-size: 0.88rem;">
                 </div>
                 <div>
-                  <label class="field-label" style="font-size: 0.82rem;">Commute Mode</label>
+                  <label class="field-label" style="font-size: 0.82rem;" for="m1-age">Age (Years)</label>
+                  <input type="number" id="m1-age" min="0" max="115" value="34" style="padding: 6px 10px; font-size: 0.88rem;">
+                </div>
+                <div>
+                  <label class="field-label" style="font-size: 0.82rem;" for="m1-commute">Commute Mode</label>
                   <select id="m1-commute" style="padding: 6px 10px; font-size: 0.88rem;">
                     <option value="bike_scooter" selected>Motorcycle / Scooter (30 min)</option>
                     <option value="metro_train">Metro / AC Train</option>
@@ -1434,15 +1438,19 @@
             <div class="member-card" style="background: #FDF9F3; border: 1px solid #F0E6D2; border-radius: var(--radius-md); padding: 14px 16px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <span style="font-weight: 700; font-size: 0.95rem; color: #8C5503;">🧒 Member 2 (Child — Most Vulnerable)</span>
-                <span style="font-size: 0.8rem; background: #FFFFFF; color: #8C5503; padding: 2px 8px; border-radius: 10px; border: 1px solid #E4CE9E;">Child · 6 yrs</span>
+                <span style="font-size: 0.8rem; background: #FFFFFF; color: #8C5503; padding: 2px 8px; border-radius: 10px; border: 1px solid #E4CE9E;" id="m2-badge-display">Child · 6 yrs</span>
               </div>
-              <div class="grid-2">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
                 <div>
-                  <label class="field-label" style="font-size: 0.82rem;">Alias</label>
+                  <label class="field-label" style="font-size: 0.82rem;" for="m2-alias">Alias</label>
                   <input type="text" id="m2-alias" value="Aarav (Child)" style="padding: 6px 10px; font-size: 0.88rem;">
                 </div>
                 <div>
-                  <label class="field-label" style="font-size: 0.82rem;">School Commute</label>
+                  <label class="field-label" style="font-size: 0.82rem;" for="m2-age">Age (Years)</label>
+                  <input type="number" id="m2-age" min="0" max="115" value="6" style="padding: 6px 10px; font-size: 0.88rem;">
+                </div>
+                <div>
+                  <label class="field-label" style="font-size: 0.82rem;" for="m2-commute">School Commute</label>
                   <select id="m2-commute" style="padding: 6px 10px; font-size: 0.88rem;">
                     <option value="bike_scooter" selected>Pillion on Bike / Scooter (15 min)</option>
                     <option value="bus">School Bus</option>
@@ -2652,6 +2660,35 @@
 
     let savedHouseholdState = null;
 
+    function getAgeGroup(age) {
+      if (isNaN(age) || age < 0) return 'adult';
+      if (age <= 1) return 'infant';
+      if (age <= 4) return 'toddler';
+      if (age <= 17) return 'child';
+      if (age >= 60) return 'elderly';
+      return 'adult';
+    }
+
+    function updateMemberAgeBadges() {
+      const m1AgeInput = document.getElementById('m1-age');
+      const m1Badge = document.getElementById('m1-badge-display');
+      if (m1Badge) {
+        const val = m1AgeInput ? parseInt(m1AgeInput.value, 10) : 34;
+        const age = isNaN(val) ? 34 : val;
+        const grp = getAgeGroup(age);
+        m1Badge.textContent = `${grp.charAt(0).toUpperCase() + grp.slice(1)} · ${age} yrs`;
+      }
+
+      const m2AgeInput = document.getElementById('m2-age');
+      const m2Badge = document.getElementById('m2-badge-display');
+      if (m2Badge) {
+        const val = m2AgeInput ? parseInt(m2AgeInput.value, 10) : 6;
+        const age = isNaN(val) ? 6 : val;
+        const grp = getAgeGroup(age);
+        m2Badge.textContent = `${grp.charAt(0).toUpperCase() + grp.slice(1)} · ${age} yrs`;
+      }
+    }
+
     function applyPriyaDefaults() {
       document.getElementById('hh-city').value = 'Pune';
       document.getElementById('hh-locality').value = 'Shivajinagar / Kothrud';
@@ -2665,14 +2702,17 @@
       document.getElementById('hh-pets').checked = false;
 
       document.getElementById('m1-alias').value = 'Priya';
+      if (document.getElementById('m1-age')) document.getElementById('m1-age').value = 34;
       document.getElementById('m1-commute').value = 'bike_scooter';
       document.getElementById('m1-asthma').checked = false;
 
       document.getElementById('m2-alias').value = 'Aarav (Child)';
+      if (document.getElementById('m2-age')) document.getElementById('m2-age').value = 6;
       document.getElementById('m2-commute').value = 'bike_scooter';
       document.getElementById('m2-asthma').checked = true;
 
       document.getElementById('hh-consent-check').checked = true;
+      updateMemberAgeBadges();
     }
 
     const btnPrefillPriya = document.getElementById('btn-prefill-priya');
@@ -2698,6 +2738,11 @@
       const m1Encrypted = generateKmsCiphertext(m1Flags);
       const m2Encrypted = generateKmsCiphertext(m2Flags);
 
+      const m1AgeVal = parseInt(document.getElementById('m1-age')?.value, 10);
+      const m1Age = isNaN(m1AgeVal) ? 34 : m1AgeVal;
+      const m2AgeVal = parseInt(document.getElementById('m2-age')?.value, 10);
+      const m2Age = isNaN(m2AgeVal) ? 6 : m2AgeVal;
+
       savedHouseholdState = {
         id: 'hh_pune_priya_2026',
         userId: 'usr_priya_pune',
@@ -2715,8 +2760,8 @@
           {
             id: 'mem_priya_adult',
             nameAlias: document.getElementById('m1-alias').value,
-            ageGroup: 'adult',
-            ageYears: 34,
+            ageGroup: getAgeGroup(m1Age),
+            ageYears: m1Age,
             encryptedHealthFlags: m1Encrypted,
             healthFlagsDecrypted: m1Flags,
             commuteMode: document.getElementById('m1-commute').value
@@ -2724,8 +2769,8 @@
           {
             id: 'mem_child_aarav',
             nameAlias: document.getElementById('m2-alias').value,
-            ageGroup: 'child',
-            ageYears: 6,
+            ageGroup: getAgeGroup(m2Age),
+            ageYears: m2Age,
             encryptedHealthFlags: m2Encrypted,
             healthFlagsDecrypted: m2Flags,
             commuteMode: document.getElementById('m2-commute').value
@@ -2796,11 +2841,15 @@
       const pets = document.getElementById('hh-pets')?.checked ? 'Yes (Furry Pets)' : 'None';
 
       const m1Alias = document.getElementById('m1-alias')?.value || 'Priya';
+      const m1Age = document.getElementById('m1-age')?.value || '34';
+      const m1Grp = getAgeGroup(parseInt(m1Age, 10));
       const m1CommuteElem = document.getElementById('m1-commute');
       const m1Commute = m1CommuteElem ? (m1CommuteElem.options[m1CommuteElem.selectedIndex]?.text || m1CommuteElem.value) : 'Motorcycle / Scooter';
       const m1Asthma = document.getElementById('m1-asthma')?.checked ? 'Yes (Asthma / Respiratory)' : 'No Chronic Condition';
 
       const m2Alias = document.getElementById('m2-alias')?.value || 'Aarav (Child)';
+      const m2Age = document.getElementById('m2-age')?.value || '6';
+      const m2Grp = getAgeGroup(parseInt(m2Age, 10));
       const m2CommuteElem = document.getElementById('m2-commute');
       const m2Commute = m2CommuteElem ? (m2CommuteElem.options[m2CommuteElem.selectedIndex]?.text || m2CommuteElem.value) : 'Pillion on Bike';
       const m2Asthma = document.getElementById('m2-asthma')?.checked ? 'Active Asthma / High Vulnerability' : 'No Chronic Condition';
@@ -2999,8 +3048,14 @@
       const m1Alias = document.getElementById('m1-alias');
       if (m1Alias) m1Alias.value = '';
 
+      const m1Age = document.getElementById('m1-age');
+      if (m1Age) m1Age.value = '';
+
       const m2Alias = document.getElementById('m2-alias');
       if (m2Alias) m2Alias.value = '';
+
+      const m2Age = document.getElementById('m2-age');
+      if (m2Age) m2Age.value = '';
 
       // 2. Select dropdowns (reset to first option)
       const city = document.getElementById('hh-city');
@@ -3051,9 +3106,23 @@
         preview.textContent = `// Database storage empty. All household data permanently purged.`;
       }
 
-      // Update vulnerable member indicator
+      // Update member age badges and vulnerable member indicator
+      updateMemberAgeBadges();
+
       const recVuln = document.getElementById('rec-target-vulnerable');
       if (recVuln) recVuln.textContent = 'Household Profile Cleared';
+    }
+
+    // Attach real-time listeners for member age inputs
+    const m1AgeInput = document.getElementById('m1-age');
+    if (m1AgeInput) {
+      m1AgeInput.addEventListener('input', updateMemberAgeBadges);
+      m1AgeInput.addEventListener('change', updateMemberAgeBadges);
+    }
+    const m2AgeInput = document.getElementById('m2-age');
+    if (m2AgeInput) {
+      m2AgeInput.addEventListener('input', updateMemberAgeBadges);
+      m2AgeInput.addEventListener('change', updateMemberAgeBadges);
     }
 
     const btnDeleteHh = document.getElementById('btn-delete-household');
