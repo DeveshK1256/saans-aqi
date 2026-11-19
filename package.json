@@ -13,7 +13,9 @@
     "test:watch": "vitest",
     "test:unit": "vitest run tests/unit/",
     "test:schema": "vitest run tests/schema/",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "criteria": "node scripts/criteria.js A0",
+    "smoke": "vitest run tests/unit/ 2>&1"
   },
   "dependencies": {
     "next": "^14.2.0",
