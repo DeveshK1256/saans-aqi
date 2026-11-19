@@ -34,10 +34,48 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 24px 28px;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 16px;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 448px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Centered Google Accounts Card */
+    .signin-card {
+      width: 100%;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 28px;
+      padding: 36px 36px 32px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0;
+        justify-content: flex-start;
+      }
+      .signin-card {
+        border: none;
+        border-radius: 0;
+        padding: 28px 20px 24px;
+        box-shadow: none;
+        min-height: 100vh;
+      }
+      .page-footer {
+        padding: 12px 20px 24px !important;
+      }
     }
 
     /* Top Google Header */
@@ -329,6 +367,7 @@
       height: 3px;
       overflow: hidden;
       display: none;
+      z-index: 9999;
     }
     .progress-bar-indeterminate {
       width: 100%;
@@ -348,6 +387,24 @@
       margin-top: 6px;
       display: none;
     }
+
+    /* Page Footer (Google Global Footer) */
+    .page-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .page-footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    .page-footer a:hover {
+      color: var(--text-heading);
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -357,131 +414,146 @@
     <div class="progress-bar-indeterminate"></div>
   </div>
 
-  <div>
-    <!-- Top Google Header -->
-    <div class="google-header">
-      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-        <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-      </svg>
-      <span class="google-header-text">Sign in with Google</span>
+  <div class="page-wrapper">
+    <!-- Centered Card Container -->
+    <div class="signin-card">
+      <!-- Top Google Header -->
+      <div class="google-header">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <span class="google-header-text">Sign in with Google</span>
+      </div>
+
+      <!-- VIEW 1: Choose Account Screen (Matching Screenshot Exactly) -->
+      <div id="view-choose">
+        <!-- App Badge Icon (Saans) -->
+        <div class="app-badge">
+          <span class="app-badge-icon">सां</span>
+        </div>
+
+        <!-- Main Heading -->
+        <h1 class="title">Choose an account</h1>
+        <p class="subtitle">to continue to <a href="index.html" class="link">Saans (सांस)</a></p>
+
+        <!-- Account List -->
+        <div class="account-list">
+          <!-- Account 1: Codex (from user's screenshot) -->
+          <button type="button" class="account-item" id="btn-acc-codex">
+            <div class="account-avatar" style="background-color: #9333ea;">C</div>
+            <div class="account-info">
+              <div class="account-name">Codex</div>
+              <div class="account-email">codextrial0@gmail.com</div>
+            </div>
+          </button>
+
+          <!-- Account 2: Devesh Kumar -->
+          <button type="button" class="account-item" id="btn-acc-devesh">
+            <div class="account-avatar" style="background-color: #059669;">D</div>
+            <div class="account-info">
+              <div class="account-name">Devesh Kumar</div>
+              <div class="account-email">devesh.kumar@gmail.com</div>
+            </div>
+          </button>
+
+          <!-- Account 3: Priya Sharma -->
+          <button type="button" class="account-item" id="btn-acc-priya">
+            <div class="account-avatar" style="background-color: #2563eb;">P</div>
+            <div class="account-info">
+              <div class="account-name">Priya Sharma</div>
+              <div class="account-email">priya.sharma@gmail.com</div>
+            </div>
+          </button>
+
+          <!-- Use Another Account Row -->
+          <button type="button" class="use-another-row" id="btn-use-another">
+            <div class="use-another-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div class="use-another-text">Use another account</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW 2: Enter Email for Custom Account -->
+      <div id="view-email" style="display: none;">
+        <!-- App Badge Icon (Saans) -->
+        <div class="app-badge">
+          <span class="app-badge-icon">सां</span>
+        </div>
+
+        <h1 class="title">Sign in</h1>
+        <p class="subtitle">to continue to <a href="index.html" class="link">Saans (सांस)</a></p>
+
+        <div class="field-group">
+          <label for="custom-name-input" class="field-label">Your Name</label>
+          <input type="text" id="custom-name-input" class="input-field" placeholder="Full name">
+        </div>
+
+        <div class="field-group">
+          <label for="custom-email-input" class="field-label">Email or phone</label>
+          <input type="email" id="custom-email-input" class="input-field" placeholder="Google email or Gmail">
+          <div class="error-msg" id="email-error">Enter a valid Google email address</div>
+        </div>
+
+        <div class="actions-row">
+          <button type="button" class="btn-text" id="btn-email-back">← Back to accounts</button>
+          <button type="button" class="btn-primary" id="btn-email-next">Next</button>
+        </div>
+      </div>
+
+      <!-- VIEW 3: Password Verification Step -->
+      <div id="view-password" style="display: none;">
+        <!-- Account Chip with Back button -->
+        <div class="chip-account" id="btn-pwd-back" title="Switch account">
+          <div class="chip-avatar" id="pwd-avatar">C</div>
+          <div class="chip-email" id="pwd-email">codextrial0@gmail.com</div>
+          <div class="chip-arrow">▼</div>
+        </div>
+
+        <h1 class="title" id="pwd-welcome">Welcome</h1>
+        <p class="subtitle">To continue to Saans, enter your Google account password</p>
+
+        <div class="field-group">
+          <input type="password" id="pwd-input" class="input-field" placeholder="Enter your password" autocomplete="current-password">
+          <div class="error-msg" id="pwd-error">Please enter your password to verify</div>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="chk-show-pwd">
+          <span>Show password</span>
+        </label>
+
+        <div class="actions-row">
+          <button type="button" class="btn-text" id="btn-forgot-pwd" onclick="alert('Demo notice: For Saans Challenge 6 authentication, enter any test password to complete secure sign-in.');">Forgot password?</button>
+          <button type="button" class="btn-primary" id="btn-pwd-submit">Next</button>
+        </div>
+      </div>
+
+      <!-- Footer Notice inside Card (Matching Screenshot Exactly) -->
+      <footer class="footer-notice">
+        Before using this app, you can review Saans's <a href="methodology.html" target="_blank" class="link">Privacy Policy</a> and <a href="methodology.html" target="_blank" class="link">Terms of Service</a>.
+      </footer>
     </div>
 
-    <!-- VIEW 1: Choose Account Screen (Matching Screenshot Exactly) -->
-    <div id="view-choose">
-      <!-- App Badge Icon (Saans) -->
-      <div class="app-badge">
-        <span class="app-badge-icon">सां</span>
+    <!-- Outer Page Footer (Standard Google Desktop Footer) -->
+    <div class="page-footer">
+      <div>
+        <span style="cursor: pointer;">English (United States) ▾</span>
       </div>
-
-      <!-- Main Heading -->
-      <h1 class="title">Choose an account</h1>
-      <p class="subtitle">to continue to <a href="index.html" target="_blank">Saans (सांस)</a></p>
-
-      <!-- Account List -->
-      <div class="account-list">
-        <!-- Account 1: Codex (from user's screenshot) -->
-        <button type="button" class="account-item" id="btn-acc-codex">
-          <div class="account-avatar" style="background-color: #9333ea;">C</div>
-          <div class="account-info">
-            <div class="account-name">Codex</div>
-            <div class="account-email">codextrial0@gmail.com</div>
-          </div>
-        </button>
-
-        <!-- Account 2: Devesh Kumar -->
-        <button type="button" class="account-item" id="btn-acc-devesh">
-          <div class="account-avatar" style="background-color: #059669;">D</div>
-          <div class="account-info">
-            <div class="account-name">Devesh Kumar</div>
-            <div class="account-email">devesh.kumar@gmail.com</div>
-          </div>
-        </button>
-
-        <!-- Account 3: Priya Sharma -->
-        <button type="button" class="account-item" id="btn-acc-priya">
-          <div class="account-avatar" style="background-color: #2563eb;">P</div>
-          <div class="account-info">
-            <div class="account-name">Priya Sharma</div>
-            <div class="account-email">priya.sharma@gmail.com</div>
-          </div>
-        </button>
-
-        <!-- Use Another Account Row -->
-        <button type="button" class="use-another-row" id="btn-use-another">
-          <div class="use-another-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </div>
-          <div class="use-another-text">Use another account</div>
-        </button>
-      </div>
-    </div>
-
-    <!-- VIEW 2: Enter Email for Custom Account -->
-    <div id="view-email" style="display: none;">
-      <!-- App Badge Icon (Saans) -->
-      <div class="app-badge">
-        <span class="app-badge-icon">सां</span>
-      </div>
-
-      <h1 class="title">Sign in</h1>
-      <p class="subtitle">to continue to <a href="index.html" target="_blank">Saans (सांस)</a></p>
-
-      <div class="field-group">
-        <label for="custom-name-input" class="field-label">Your Name</label>
-        <input type="text" id="custom-name-input" class="input-field" placeholder="Full name">
-      </div>
-
-      <div class="field-group">
-        <label for="custom-email-input" class="field-label">Email or phone</label>
-        <input type="email" id="custom-email-input" class="input-field" placeholder="Google email or Gmail">
-        <div class="error-msg" id="email-error">Enter a valid Google email address</div>
-      </div>
-
-      <div class="actions-row">
-        <button type="button" class="btn-text" id="btn-email-back">← Back to accounts</button>
-        <button type="button" class="btn-primary" id="btn-email-next">Next</button>
-      </div>
-    </div>
-
-    <!-- VIEW 3: Password Verification Step -->
-    <div id="view-password" style="display: none;">
-      <!-- Account Chip with Back button -->
-      <div class="chip-account" id="btn-pwd-back" title="Switch account">
-        <div class="chip-avatar" id="pwd-avatar">C</div>
-        <div class="chip-email" id="pwd-email">codextrial0@gmail.com</div>
-        <div class="chip-arrow">▼</div>
-      </div>
-
-      <h1 class="title" id="pwd-welcome">Welcome</h1>
-      <p class="subtitle">To continue to Saans, enter your Google account password</p>
-
-      <div class="field-group">
-        <input type="password" id="pwd-input" class="input-field" placeholder="Enter your password" autocomplete="current-password">
-        <div class="error-msg" id="pwd-error">Please enter your password to verify</div>
-      </div>
-
-      <label class="checkbox-row">
-        <input type="checkbox" id="chk-show-pwd">
-        <span>Show password</span>
-      </label>
-
-      <div class="actions-row">
-        <button type="button" class="btn-text" id="btn-forgot-pwd" onclick="alert('Demo notice: For Saans Challenge 6 authentication, enter any test password to complete secure sign-in.');">Forgot password?</button>
-        <button type="button" class="btn-primary" id="btn-pwd-submit">Next</button>
+      <div style="display: flex; gap: 16px;">
+        <a href="https://support.google.com/accounts" target="_blank">Help</a>
+        <a href="methodology.html" target="_blank">Privacy</a>
+        <a href="methodology.html" target="_blank">Terms</a>
       </div>
     </div>
   </div>
-
-  <!-- Footer Notice (Matching Screenshot Exactly) -->
-  <footer class="footer-notice">
-    Before using this app, you can review Saans's <a href="methodology.html" target="_blank" class="link">Privacy Policy</a> and <a href="methodology.html" target="_blank" class="link">Terms of Service</a>.
-  </footer>
 
   <script>
     let activeAccount = null;
@@ -611,25 +683,37 @@
       bar.style.display = 'block';
 
       setTimeout(() => {
-        // Send message to parent/opener window
-        if (window.opener && !window.opener.closed) {
-          window.opener.postMessage({
-            type: 'SAANS_GOOGLE_AUTH',
-            user: activeAccount
-          }, '*');
-        } else {
-          try {
-            localStorage.setItem('saans_auth_user', JSON.stringify({
-              isLoggedIn: true,
-              ...activeAccount
-            }));
-            localStorage.removeItem('saans_profile_deleted');
-          } catch (e) {}
-        }
+        // Save user session to localStorage
+        try {
+          localStorage.setItem('saans_auth_user', JSON.stringify({
+            isLoggedIn: true,
+            ...activeAccount
+          }));
+          localStorage.removeItem('saans_profile_deleted');
+        } catch (e) {}
 
-        setTimeout(() => {
-          window.close();
-        }, 300);
+        // 1. If in popup window with opener:
+        if (window.opener && !window.opener.closed) {
+          try {
+            window.opener.postMessage({
+              type: 'SAANS_GOOGLE_AUTH',
+              user: activeAccount
+            }, '*');
+          } catch (e) {}
+          setTimeout(() => {
+            window.close();
+          }, 300);
+        } else {
+          // 2. Redirect flow (direct page redirect back to Saans)
+          btn.textContent = 'Redirecting to Saans...';
+          const urlParams = new URLSearchParams(window.location.search);
+          const rawRedirect = urlParams.get('redirect') || 'index.html';
+          const sep = rawRedirect.includes('?') ? '&' : '?';
+          const finalRedirect = rawRedirect + sep + 'auth=success';
+          setTimeout(() => {
+            window.location.href = finalRedirect;
+          }, 350);
+        }
       }, 450);
     }
 

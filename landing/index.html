@@ -2968,52 +2968,19 @@
       }
     }
 
-    // Google Sign-In Handlers (Popup Window & In-Page Modal Fallback)
+    // Google Sign-In Direct Redirect Handler (Redirects to Google Sign-In Page)
     function openGoogleAuthModal() {
-      // 1. Attempt real Google Accounts popup window centered on screen
-      const width = 460;
-      const height = 680;
-      const left = Math.max(0, Math.round(window.screenX + (window.outerWidth - width) / 2));
-      const top = Math.max(0, Math.round(window.screenY + (window.outerHeight - height) / 2));
+      const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = 'google-signin.html?redirect=' + returnUrl;
+    }
 
-      try {
-        const popup = window.open('google-signin.html', 'google_signin_popup', `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes`);
-        if (popup && !popup.closed) {
-          popup.focus();
-          return;
-        }
-      } catch (e) {
-        console.warn('Popup blocked by browser, opening in-page modal', e);
-      }
-
-      // 2. Fallback to in-page dark-mode dialog
+    function closeGoogleAuthModal() {
       const dialog = document.getElementById('google-auth-dialog');
       if (dialog) {
-        // Reset to Step 1
-        const stepChoose = document.getElementById('google-auth-step-choose');
-        const stepPassword = document.getElementById('google-auth-step-password');
-        if (stepChoose) stepChoose.style.display = 'block';
-        if (stepPassword) stepPassword.style.display = 'none';
-
-        const customBox = document.getElementById('custom-account-box');
-        if (customBox) customBox.style.display = 'none';
-        const customBtn = document.getElementById('btn-toggle-custom-acc');
-        if (customBtn) customBtn.style.display = 'flex';
-
-        const pwdInput = document.getElementById('google-acc-password');
-        if (pwdInput) {
-          pwdInput.value = '';
-          pwdInput.type = 'password';
-        }
-        const pwdErr = document.getElementById('google-pwd-error');
-        if (pwdErr) pwdErr.style.display = 'none';
-        const chkShow = document.getElementById('chk-show-password');
-        if (chkShow) chkShow.checked = false;
-        
-        if (typeof dialog.showModal === 'function') {
-          dialog.showModal();
+        if (typeof dialog.close === 'function') {
+          dialog.close();
         } else {
-          dialog.setAttribute('open', 'true');
+          dialog.removeAttribute('open');
         }
       }
     }
@@ -4056,6 +4023,14 @@
     renderMyths('all', '');
     updateDIYCalc();
 
+    // Check for Google OAuth redirect success callback
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasAuthSuccess = urlParams.get('auth') === 'success';
+    if (hasAuthSuccess) {
+      const cleanUrl = window.location.pathname + (window.location.hash || '');
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+
     // Check localStorage state on startup
     const isProfileDeleted = (() => {
       try { return localStorage.getItem('saans_profile_deleted') === 'true'; } catch (e) { return false; }
@@ -4068,13 +4043,33 @@
       } catch (e) { return null; }
     })();
 
-    if (isProfileDeleted) {
+    if (isProfileDeleted && !hasAuthSuccess) {
       currentAuthUser = { isLoggedIn: false };
       clearHouseholdForm();
     } else if (savedAuthUser && savedAuthUser.isLoggedIn) {
       currentAuthUser = savedAuthUser;
-      if (currentAuthUser.name.toLowerCase().includes('priya')) {
+      if (currentAuthUser.isPriya || currentAuthUser.name.toLowerCase().includes('priya')) {
         applyPriyaDefaults();
+        saveHouseholdProfile();
+      } else {
+        const m1Alias = document.getElementById('m1-alias');
+        if (m1Alias && currentAuthUser.m1Alias) m1Alias.value = currentAuthUser.m1Alias;
+        const m1Age = document.getElementById('m1-age');
+        if (m1Age && currentAuthUser.m1Age) m1Age.value = currentAuthUser.m1Age;
+        if (currentAuthUser.city) {
+          const cityEl = document.getElementById('hh-city');
+          if (cityEl) cityEl.value = currentAuthUser.city;
+        }
+        if (currentAuthUser.locality) {
+          const locEl = document.getElementById('hh-locality');
+          if (locEl) locEl.value = currentAuthUser.locality;
+        }
+        const m2Alias = document.getElementById('m2-alias');
+        if (m2Alias && currentAuthUser.m2Alias) m2Alias.value = currentAuthUser.m2Alias;
+        const m2Age = document.getElementById('m2-age');
+        if (m2Age && currentAuthUser.m2Age) m2Age.value = currentAuthUser.m2Age;
+        document.getElementById('hh-consent-check').checked = true;
+        updateMemberAgeBadges();
         saveHouseholdProfile();
       }
     } else {
