@@ -1830,6 +1830,330 @@
       border-color: var(--surface-border);
       color: var(--text-faint);
     }
+
+    /* ==================== MULTI-STATION & WIND RADAR ==================== */
+    .station-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 14px 0;
+    }
+
+    .station-pill {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .station-pill:hover {
+      border-color: var(--accent);
+      background: var(--surface-subtle);
+    }
+
+    .station-pill.active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .station-meteo-panel {
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) 90px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .meteo-metric {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meteo-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .meteo-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+
+    .meteo-sub {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .wind-compass-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #wind-compass-canvas {
+      width: 64px;
+      height: 64px;
+      display: block;
+    }
+
+    /* ==================== 24-HOUR DIURNAL SCRUBBER ==================== */
+    .diurnal-card {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 22px 0;
+    }
+
+    .diurnal-canvas-wrap {
+      width: 100%;
+      height: 180px;
+      position: relative;
+      background: var(--surface-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    #diurnal-curve-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .diurnal-presets {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .diurnal-preset-btn {
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.76rem;
+      border: 1px solid var(--surface-border);
+      background: var(--surface-bg);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .diurnal-preset-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .diurnal-preset-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .diurnal-slider {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .diurnal-telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--surface-border);
+    }
+
+    .diurnal-telemetry-item {
+      background: var(--surface-subtle);
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--surface-border);
+    }
+
+    .telemetry-lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .telemetry-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+
+    .telemetry-sub {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .badge-diurnal-live {
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #EAF4EE;
+      color: #1B7837;
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid #C4E2CF;
+    }
+
+    /* ==================== COMMUTE ROUTE PLANNER ==================== */
+    .commute-planner-card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .commute-mode-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+
+    .commute-mode-btn {
+      padding: 7px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--surface-border);
+      background: var(--surface-card);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .commute-mode-btn:hover {
+      border-color: var(--accent);
+      background: var(--surface-bg);
+    }
+
+    .commute-mode-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ==================== TOAST & NOTIFICATIONS ==================== */
+    #saans-toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .saans-toast {
+      pointer-events: auto;
+      min-width: 300px;
+      max-width: 400px;
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
+      padding: 12px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    @keyframes toastSlideIn {
+      from { transform: translateX(110%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .notif-badge-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      border-radius: 10px;
+      min-width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    /* ==================== CLEAN PRINT STYLES ==================== */
+    @media print {
+      header, nav, .tab-btn, footer, #header-auth-widget, #theme-toggle-btn,
+      #notif-toggle-btn, #dev-switch-outage, .btn, #btn-export-passport,
+      .diurnal-presets, .diurnal-slider, #saans-toast-container {
+        display: none !important;
+      }
+
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 11pt !important;
+      }
+
+      .container, main {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      dialog#saans-passport-dialog {
+        display: block !important;
+        position: static !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .passport-page {
+        page-break-after: always;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1844,13 +2168,22 @@
             <span>Evidence-Based Urban Air Quality Assistant</span>
           </div>
         </a>
-        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           <div class="badge-live" id="live-indicator">
             <span>Delhi NCR · CPCB AQI 342</span>
           </div>
           <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle theme mode" title="Switch between Light and Dark mode">
             <span id="theme-toggle-icon"><svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span>
             <span id="theme-toggle-text">Dark</span>
+          </button>
+          <button id="notif-toggle-btn" class="theme-toggle-btn" aria-label="Notification Center" title="Air Quality Alerts & Notification Settings" style="position: relative;">
+            <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+            <span id="notif-badge" class="notif-badge-count">1</span>
+            <span style="font-size: 0.82rem; font-weight: 600;">Alerts</span>
+          </button>
+          <button id="btn-open-passport-header" class="theme-toggle-btn" aria-label="Export Clean Air Passport" title="Export Printable Household Air Passport">
+            <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span style="font-size: 0.82rem; font-weight: 600;">Passport</span>
           </button>
           <div id="header-auth-widget"></div>
         </div>
@@ -1932,6 +2265,47 @@
           </div>
         </div>
 
+        <!-- Hyperlocal Multi-Station CAAQMS Grid & Micro-Meteorology Radar -->
+        <div id="multi-station-section" style="margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+            <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+              Continuous Ambient Air Quality Monitoring Stations (CAAQMS)
+            </div>
+            <span style="font-size: 0.78rem; color: var(--accent); font-weight: 600;" id="station-count-label">6 Live Stations in Region</span>
+          </div>
+          <div class="station-pills-row" id="station-pills-container">
+            <!-- Dynamic station pills injected here -->
+          </div>
+
+          <!-- Micro-Meteorology & Atmospheric Dispersion Panel -->
+          <div class="station-meteo-panel" id="station-meteo-panel">
+            <div class="meteo-metric">
+              <div class="meteo-label">Wind Velocity</div>
+              <div class="meteo-val" id="meteo-wind-speed">1.4 m/s</div>
+              <div class="meteo-sub" id="meteo-wind-scale">Light Drift · Calm</div>
+            </div>
+            <div class="meteo-metric">
+              <div class="meteo-label">Wind Direction</div>
+              <div class="meteo-val" id="meteo-wind-dir">290° WNW</div>
+              <div class="meteo-sub">Indo-Gangetic Air Corridor</div>
+            </div>
+            <div class="meteo-metric">
+              <div class="meteo-label">Boundary Layer (zi)</div>
+              <div class="meteo-val" id="meteo-pbl-height">240 m</div>
+              <div class="meteo-sub" id="meteo-inversion-badge">⚠️ Severe Inversion</div>
+            </div>
+            <div class="meteo-metric">
+              <div class="meteo-label">Ventilation Index (Vc)</div>
+              <div class="meteo-val" id="meteo-vc-val">336 m²/s</div>
+              <div class="meteo-sub" id="meteo-vc-status" style="color: var(--danger); font-weight: 600;">Stagnant (&lt;2000 m²/s)</div>
+            </div>
+            <div class="wind-compass-box">
+              <canvas id="wind-compass-canvas" width="64" height="64" aria-label="Wind Vector Compass"></canvas>
+              <div style="font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 2px;">Aerodynamic Vector</div>
+            </div>
+          </div>
+        </div>
+
         <!-- Ingestion Provider & Dev Outage Switch (Slice A1) -->
         <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
           <div>
@@ -2005,37 +2379,96 @@
           <span style="font-size: 0.78rem; color: var(--text-faint);">Method: CPCB 2014 Standard Linear Interpolation</span>
         </div>
 
+        <!-- Interactive 24-Hour Diurnal Inversion Scrubber & Convective Curve -->
+        <div class="diurnal-card" id="diurnal-scrubber-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span>📈 24-Hour Diurnal Pollution & Inversion Scrubber</span>
+                <span class="badge-diurnal-live" id="diurnal-active-badge">Active Diurnal Curve</span>
+              </h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 3px 0 0 0;">
+                Drag the time scrubber to inspect solar convective mixing, nocturnal boundary layer collapse, and optimal ventilation windows.
+              </p>
+            </div>
+            <!-- Quick Time Presets -->
+            <div class="diurnal-presets">
+              <button type="button" class="diurnal-preset-btn active" data-hour="now" id="btn-diurnal-now">Now (Real-Time)</button>
+              <button type="button" class="diurnal-preset-btn" data-hour="7">07:00 AM (Inversion Peak)</button>
+              <button type="button" class="diurnal-preset-btn" data-hour="14">02:00 PM (Best Window)</button>
+              <button type="button" class="diurnal-preset-btn" data-hour="20">08:00 PM (Traffic Spike)</button>
+            </div>
+          </div>
+
+          <!-- Diurnal Canvas Curve -->
+          <div class="diurnal-canvas-wrap">
+            <canvas id="diurnal-curve-canvas" width="900" height="180" aria-label="24-Hour Diurnal Air Quality Curve"></canvas>
+          </div>
+
+          <!-- Time Slider -->
+          <div style="margin-top: 14px; display: flex; align-items: center; gap: 14px;">
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); min-width: 45px;">00:00</span>
+            <input type="range" id="diurnal-time-slider" min="0" max="23.5" step="0.5" value="14" class="diurnal-slider" style="flex: 1;" aria-label="Scrub hour of the day">
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); min-width: 45px; text-align: right;">23:59</span>
+          </div>
+
+          <!-- Live Scrubbed Telemetry & Advice Card -->
+          <div class="diurnal-telemetry-grid">
+            <div class="diurnal-telemetry-item">
+              <div class="telemetry-lbl">Scrubbed Time</div>
+              <div class="telemetry-val" id="scrub-time-display">14:00 (02:00 PM)</div>
+              <div class="telemetry-sub" id="scrub-solar-state">Peak Solar Convection</div>
+            </div>
+            <div class="diurnal-telemetry-item">
+              <div class="telemetry-lbl">Boundary Layer (zi)</div>
+              <div class="telemetry-val" id="scrub-pbl-val">1,620 m</div>
+              <div class="telemetry-sub" style="color: var(--accent); font-weight: 600;">Deep Convective Plume</div>
+            </div>
+            <div class="diurnal-telemetry-item">
+              <div class="telemetry-lbl">Predicted Surface PM2.5</div>
+              <div class="telemetry-val" id="scrub-pm25-val">98 µg/m³</div>
+              <div class="telemetry-sub" id="scrub-pm25-delta" style="color: var(--success); font-weight: 600;">-49% vs Morning Peak</div>
+            </div>
+            <div class="diurnal-telemetry-item" style="grid-column: 1 / -1;">
+              <div class="telemetry-lbl">Recommended Physical Hygiene Action</div>
+              <div id="scrub-action-text" style="font-size: 0.88rem; font-weight: 600; color: var(--text-main); margin-top: 2px;">
+                ✅ <strong>Safe 20-min cross-ventilation window is active!</strong> Open opposite windows now to flush out indoor CO₂ and cooking VOCs, then reseal before dusk (17:30).
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 24-Hour Routine Plan -->
         <h3 style="font-size: 1.05rem; margin-bottom: 12px; font-weight: 700;">🕒 24-Hour Air Hygiene Schedule for Today</h3>
         <div class="timeline">
-          <div class="timeline-item" style="border-left: 4px solid var(--danger);">
-            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--danger);">MORNING</span></div>
+          <div class="timeline-item">
+            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--danger); font-weight: 700;">MORNING</span></div>
             <div class="timeline-content">
-              <span class="timeline-badge" style="background: var(--danger-light); color: var(--danger);">🚨 Ground Inversion Peak</span>
+              <span class="timeline-badge" style="background: var(--danger-light); color: var(--danger);">Ground Inversion Peak</span>
               <p><strong>Keep all windows strictly sealed.</strong> Cold overnight air traps ground emissions. Strictly avoid morning jogs or outdoor exercise. School children must wear airtight N95/FFP2 masks during commute.</p>
             </div>
           </div>
 
-          <div class="timeline-item" style="border-left: 4px solid var(--success);">
-            <div class="timeline-time">12:30 – 15:00<br><span style="font-size: 0.75rem; color: var(--success);">AFTERNOON</span></div>
+          <div class="timeline-item">
+            <div class="timeline-time">12:30 – 15:00<br><span style="font-size: 0.75rem; color: var(--success); font-weight: 700;">AFTERNOON</span></div>
             <div class="timeline-content">
-              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">🌤️ Best Ventilation Window</span>
+              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">Best Ventilation Window</span>
               <p><strong>Safest time to ventilate.</strong> Solar heating breaks inversion layer and wind speeds increase. Open cross-windows for 15–20 minutes to flush out CO₂ and indoor cooking gases, then reseal before dusk.</p>
             </div>
           </div>
 
-          <div class="timeline-item" style="border-left: 4px solid var(--warning);">
-            <div class="timeline-time">18:00 – 21:30<br><span style="font-size: 0.75rem; color: var(--warning);">EVENING</span></div>
+          <div class="timeline-item">
+            <div class="timeline-time">18:00 – 21:30<br><span style="font-size: 0.75rem; color: var(--warning); font-weight: 700;">EVENING</span></div>
             <div class="timeline-content">
-              <span class="timeline-badge" style="background: var(--warning-light); color: var(--warning);">⚠️ Evening Traffic Spike</span>
+              <span class="timeline-badge" style="background: var(--warning-light); color: var(--warning);">Evening Traffic Spike</span>
               <p>Reseal home completely. Ambient particulate levels surge due to evening traffic and falling temperatures. Run kitchen chimney or exhaust during cooking.</p>
             </div>
           </div>
 
-          <div class="timeline-item" style="border-left: 4px solid var(--accent);">
-            <div class="timeline-time">22:00 – 06:00<br><span style="font-size: 0.75rem; color: var(--accent);">NIGHT</span></div>
+          <div class="timeline-item">
+            <div class="timeline-time">22:00 – 06:00<br><span style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">NIGHT</span></div>
             <div class="timeline-content">
-              <span class="timeline-badge" style="background: var(--accent-light); color: var(--accent);">🌙 Bedroom Air Cleaning</span>
+              <span class="timeline-badge" style="background: var(--accent-light); color: var(--accent);">Bedroom Air Cleaning</span>
               <p>Keep bedroom door shut. Run DIY or HEPA purifier in the bedroom overnight. You spend ~8 continuous hours breathing here; bedroom filtration cuts daily dose by up to 50%.</p>
             </div>
           </div>
@@ -2116,14 +2549,50 @@
         <div style="margin-top: 28px; border-top: 1px dashed var(--surface-border); padding-top: 20px;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
             <div>
-              <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">🚴 vs 🚇 Cleaner-Route Commute Comparison (F21, GS-08)</h3>
+              <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">🚴 vs 🚇 Interactive Commute Dose & Cleaner-Route Calculator (F21, GS-08)</h3>
               <p style="font-size: 0.84rem; color: var(--text-muted); margin: 3px 0 0 0;">
-                Compare inhaled toxic particulate dose and emissions avoided along alternate Google Routes corridors.
+                Calculate your exact inhaled toxic particulate mass and compare transit modes across urban corridors.
               </p>
             </div>
             <span style="font-size: 0.78rem; font-weight: 700; background: #EAF4EE; color: #1B7837; padding: 4px 10px; border-radius: 20px;">
               🗺️ Google Routes & Air View+ Integration
             </span>
+          </div>
+
+          <!-- Interactive Commute Inputs Card -->
+          <div class="commute-planner-card">
+            <div class="grid-2" style="margin-bottom: 10px;">
+              <div>
+                <label class="field-label" for="commute-corridor-select" style="font-size: 0.8rem;">Select Urban Commute Corridor</label>
+                <select id="commute-corridor-select" style="width: 100%; padding: 8px 12px; font-size: 0.88rem;">
+                  <option value="corridor_1" selected>Anand Vihar to Connaught Place (14.2 km · Outer Ring Rd)</option>
+                  <option value="corridor_2">Dwarka Sec-8 to Cyber City Gurugram (21.5 km · Expressway)</option>
+                  <option value="corridor_3">Noida Sec-62 to Nehru Place (18.4 km · Kalindi Kunj)</option>
+                  <option value="corridor_4">Kothrud to Hinjawadi Phase 1 Pune (16.8 km · Bypass)</option>
+                  <option value="corridor_5">Bandra West to Nariman Point Mumbai (19.2 km · Coastal)</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="commute-time-select" style="font-size: 0.8rem;">Departure Timing (Diurnal Multiplier)</label>
+                <select id="commute-time-select" style="width: 100%; padding: 8px 12px; font-size: 0.88rem;">
+                  <option value="morning_peak" selected>Morning Rush 08:30 AM (Inversion Trapping · 1.35x Dose)</option>
+                  <option value="midday">Afternoon 14:00 PM (Convective Cleansing · 0.65x Dose)</option>
+                  <option value="evening_peak">Evening Peak 19:30 PM (Traffic Surge · 1.45x Dose)</option>
+                  <option value="late_night">Late Night 22:30 PM (Cooling Compression · 1.10x Dose)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <div class="field-label" style="font-size: 0.8rem; margin-bottom: 4px;">Select Primary Commute Transport Mode:</div>
+              <div class="commute-mode-pills" id="commute-mode-pills">
+                <button type="button" class="commute-mode-btn active" data-mode="bike">🛵 Motorbike / Auto (1.8x plume)</button>
+                <button type="button" class="commute-mode-btn" data-mode="car">🚗 Standard AC Cab (1.0x)</button>
+                <button type="button" class="commute-mode-btn" data-mode="car_hepa">🚙 HEPA Cabin Cab (0.45x)</button>
+                <button type="button" class="commute-mode-btn" data-mode="metro">🚇 Filtered Metro Rail (0.35x)</button>
+                <button type="button" class="commute-mode-btn" data-mode="bicycle">🚲 Cycling / Walking (1.6x vent)</button>
+              </div>
+            </div>
           </div>
 
           <div class="route-comparison-grid" id="route-comparison-container">
@@ -2288,6 +2757,10 @@
             </div>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-secondary" id="btn-export-passport-tab" style="background: var(--surface-card); color: var(--text-main); border-color: var(--surface-border); display: inline-flex; align-items: center; gap: 6px;" title="Export structured medical & action passport as printable PDF">
+              <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span>Export Air Passport</span>
+            </button>
             <button class="btn btn-secondary" id="btn-prefill-priya" style="background: var(--accent-light); color: var(--accent); border-color: var(--accent); display: inline-flex; align-items: center; gap: 6px;" title="Populate form with Pune asthmatic child benchmark scenario">
               <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               <span>Load Sample Profile</span>
@@ -3014,6 +3487,171 @@
     </div>
   </dialog>
 
+  <!-- ==================== SMART NOTIFICATION CENTER MODAL ==================== -->
+  <dialog id="saans-notif-dialog" aria-labelledby="saans-notif-title" style="max-width: 480px; width: 92%; border: 1px solid var(--surface-border); border-radius: var(--radius-lg); background: var(--surface-card); color: var(--text-main); box-shadow: 0 20px 60px rgba(0,0,0,0.25); padding: 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--surface-border);">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <svg class="saans-btn-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <h3 id="saans-notif-title" style="margin: 0; font-size: 1.05rem; font-weight: 700;">Smart Air Notification Center</h3>
+      </div>
+      <button type="button" id="btn-close-notif" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); line-height: 1;" aria-label="Close dialog">&times;</button>
+    </div>
+
+    <div style="padding: 18px 20px;">
+      <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0 0 16px 0;">
+        Configure evidence-based air hygiene reminders based on diurnal boundary layer inversions and CPCB thresholds.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem;">
+          <input type="checkbox" id="notif-pref-threshold" checked style="width: auto; margin-top: 3px;">
+          <div>
+            <strong>Severe AQI Spike Alert (&gt;250 NAQI)</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Triggers when local station detects severe particulate concentration.</div>
+          </div>
+        </label>
+
+        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem;">
+          <input type="checkbox" id="notif-pref-morning" checked style="width: auto; margin-top: 3px;">
+          <div>
+            <strong>Morning Inversion Commute Briefing (06:30 AM)</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Daily reminder before school drops and morning jogs when overnight trapping peaks.</div>
+          </div>
+        </label>
+
+        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem;">
+          <input type="checkbox" id="notif-pref-vent" checked style="width: auto; margin-top: 3px;">
+          <div>
+            <strong>Afternoon Safe Ventilation Window Alert (13:00 PM)</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Notifies when solar convective plumes open the safe 20-minute cross-ventilation window.</div>
+          </div>
+        </label>
+
+        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem;">
+          <input type="checkbox" id="notif-pref-stagnation" checked style="width: auto; margin-top: 3px;">
+          <div>
+            <strong>Emergency Atmospheric Stagnation Warning</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Triggers when wind drops &lt;1.5 m/s and boundary layer drops &lt;300m.</div>
+          </div>
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="btn btn-secondary" id="btn-trigger-test-toast" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+          <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Send Test Alert</span>
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-save-notif-prefs" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>Save Preferences</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== CLEAN AIR HOUSEHOLD ACTION PASSPORT MODAL ==================== -->
+  <dialog id="saans-passport-dialog" aria-labelledby="saans-passport-title" style="max-width: 780px; width: 95%; border: 1px solid var(--surface-border); border-radius: var(--radius-lg); background: var(--surface-card); color: var(--text-main); box-shadow: 0 24px 72px rgba(0,0,0,0.3); padding: 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--surface-border); background: var(--surface-subtle);" class="no-print">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="brand-icon" style="width: 28px; height: 28px; font-size: 0.95rem; border-radius: 6px;">सां</div>
+        <h3 id="saans-passport-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Household Clean Air Action Passport</h3>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn btn-primary" id="btn-print-passport" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; font-size: 0.85rem;">
+          <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+          <span>Print / Save as PDF</span>
+        </button>
+        <button type="button" id="btn-close-passport" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); line-height: 1;" aria-label="Close dialog">&times;</button>
+      </div>
+    </div>
+
+    <div style="padding: 24px 28px; max-height: 80vh; overflow-y: auto;" id="passport-content-body">
+      <!-- Passport printable header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--text-main); padding-bottom: 14px; margin-bottom: 20px;">
+        <div>
+          <h2 style="font-size: 1.4rem; font-weight: 800; margin: 0; color: var(--text-main); letter-spacing: -0.01em;">SAANS (सांस) · HOUSEHOLD AIR HEALTH PASSPORT</h2>
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Official Physical Mass-Balance Audit & Clinical Exposure Plan</div>
+        </div>
+        <div style="text-align: right; font-size: 0.8rem; color: var(--text-muted);">
+          <div>Date: <strong id="passport-date-val">21 Nov 2026</strong></div>
+          <div>Household ID: <strong id="passport-hh-id">HH-PUNE-7402</strong></div>
+          <div>Compliance: <strong>DPDP Act 2023 Encrypted</strong></div>
+        </div>
+      </div>
+
+      <!-- Passport Grid 1: Household & Exposure Summary -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+        <div style="border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: 14px; background: var(--surface-subtle);">
+          <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Household Census</div>
+          <div style="font-size: 0.9rem;" id="passport-census-text">
+            <strong>Adults:</strong> 2 · <strong>Children:</strong> 1 (Age 6) · <strong>Seniors:</strong> 0<br>
+            <strong>Vulnerabilities:</strong> Pediatric Asthma (Flags encrypted at rest)<br>
+            <strong>Home Envelope:</strong> 2BHK Apartment (~75 m²), Medium Sealing
+          </div>
+        </div>
+        <div style="border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: 14px; background: var(--surface-subtle);">
+          <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Exposure & Dose Targets</div>
+          <div style="font-size: 0.9rem;" id="passport-exposure-targets">
+            <strong>Baseline Inhaled Dose:</strong> 112.4 µg/day PM2.5 (≈5.1 cigs)<br>
+            <strong>Target Under Saans Plan:</strong> 28.1 µg/day PM2.5 (≈1.3 cigs)<br>
+            <span style="color: var(--accent); font-weight: 700;">Protection Factor: 75.0% Exposure Reduction</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Passport Section: Daily Air Hygiene Protocol -->
+      <div style="margin-bottom: 20px;">
+        <h4 style="font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 8px 0; color: var(--text-main);">Daily Diurnal Hygiene Rules</h4>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.84rem;">
+          <thead>
+            <tr style="background: var(--surface-subtle); border-bottom: 1px solid var(--surface-border); text-align: left;">
+              <th style="padding: 8px 10px;">Window</th>
+              <th style="padding: 8px 10px;">Atmospheric State</th>
+              <th style="padding: 8px 10px;">Required Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--surface-border);">
+              <td style="padding: 8px 10px; font-weight: 700;">06:00 – 10:00</td>
+              <td style="padding: 8px 10px; color: var(--danger); font-weight: 600;">Ground Inversion Trapping</td>
+              <td style="padding: 8px 10px;">Keep windows strictly sealed. No outdoor exercise. School commute requires N95/FFP2 mask.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--surface-border);">
+              <td style="padding: 8px 10px; font-weight: 700;">12:30 – 15:00</td>
+              <td style="padding: 8px 10px; color: var(--success); font-weight: 600;">Convective Mixing</td>
+              <td style="padding: 8px 10px;">Safe 20-min cross-ventilation window. Air out cooking VOCs and CO₂, then reseal.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--surface-border);">
+              <td style="padding: 8px 10px; font-weight: 700;">18:00 – 21:30</td>
+              <td style="padding: 8px 10px; color: var(--warning); font-weight: 600;">Evening Traffic Surge</td>
+              <td style="padding: 8px 10px;">Reseal home completely. Run kitchen exhaust hood during dinner preparation.</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 10px; font-weight: 700;">22:00 – 06:00</td>
+              <td style="padding: 8px 10px; color: var(--accent); font-weight: 600;">Nocturnal Boundary Collapse</td>
+              <td style="padding: 8px 10px;">Run bedroom air purifier on medium/high continuously with bedroom door shut.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Passport Section: Clinical Reference & Emergency Guardrails -->
+      <div style="border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: 14px; background: var(--surface-bg);">
+        <h4 style="font-size: 0.9rem; font-weight: 700; margin: 0 0 6px 0; color: var(--danger);">Clinical Red-Flag Guardrails for Sensitive Members</h4>
+        <p style="font-size: 0.82rem; margin: 0 0 6px 0; color: var(--text-muted);">
+          If an asthmatic child or COPD senior exhibits <strong>subcostal chest retractions</strong>, <strong>inability to speak full sentences in one breath</strong>, or <strong>SpO₂ &lt; 92%</strong>:
+        </p>
+        <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-main);">
+          1. Administer prescribed reliever inhaler (Salbutamol 100mcg with spacer) immediately.<br>
+          2. Move member to sealed clean bedroom with purifier on Turbo.<br>
+          3. If breathing distress persists &gt; 15 mins, call 108 / 112 or proceed to pediatric emergency.
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== FLOATING NOTIFICATION TOAST CONTAINER ==================== -->
+  <div id="saans-toast-container" aria-live="polite" aria-atomic="true"></div>
+
   <footer>
     <div class="container">
       <p>
@@ -3045,6 +3683,34 @@
     var roomCanvas = null;
     var roomCtx = null;
     var roomParticles = [];
+
+    // --- Boundary Layer Physical Model for 24-Hour Diurnal Dynamics ---
+    const DIURNAL_PBL_DATA = {
+      0:  { pbl: 190, y: 26, dT: '+5.6 °C', pm: 210, indoor: 24, mix: 'Suppressed (5%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -25, sunX: 0, fogDark: 0x0c1322, fogLight: 0xc4ccd8 },
+      1:  { pbl: 180, y: 24, dT: '+5.8 °C', pm: 218, indoor: 25, mix: 'Suppressed (4%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -35, sunX: 15, fogDark: 0x0a101e, fogLight: 0xbcc5d2 },
+      2:  { pbl: 175, y: 23, dT: '+6.0 °C', pm: 225, indoor: 26, mix: 'Suppressed (3%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -45, sunX: 25, fogDark: 0x080e1a, fogLight: 0xb5bfcc },
+      3:  { pbl: 170, y: 22, dT: '+6.2 °C', pm: 230, indoor: 26, mix: 'Suppressed (3%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -50, sunX: 35, fogDark: 0x080c16, fogLight: 0xb0bac7 },
+      4:  { pbl: 165, y: 22, dT: '+6.4 °C', pm: 238, indoor: 27, mix: 'Suppressed (2%)', status: 'Pre-Dawn Minimum PBL', statusColor: 'var(--danger)', sunY: -40, sunX: 45, fogDark: 0x090d18, fogLight: 0xb0bac7 },
+      5:  { pbl: 170, y: 23, dT: '+6.1 °C', pm: 245, indoor: 28, mix: 'Suppressed (4%)', status: 'Coldest Ground Pool', statusColor: 'var(--danger)', sunY: -20, sunX: 55, fogDark: 0x141624, fogLight: 0xb8c0cd },
+      6:  { pbl: 190, y: 26, dT: '+5.8 °C', pm: 255, indoor: 29, mix: 'Suppressed (6%)', status: 'Dawn Surface Stagnation', statusColor: 'var(--danger)', sunY: -2, sunX: 65, fogDark: 0x242025, fogLight: 0xc8b8a8 },
+      7:  { pbl: 220, y: 30, dT: '+5.2 °C', pm: 268, indoor: 30, mix: 'Suppressed (8% Max)', status: 'Morning Rush & Capped Inversion', statusColor: 'var(--danger)', sunY: 15, sunX: 75, fogDark: 0x2e2520, fogLight: 0xd8c2b0 },
+      8:  { pbl: 290, y: 38, dT: '+3.9 °C', pm: 235, indoor: 26, mix: 'Nascent Convection (18%)', status: 'Early Solar Heating', statusColor: '#c27803', sunY: 35, sunX: 80, fogDark: 0x332f2c, fogLight: 0xded2c4 },
+      9:  { pbl: 420, y: 54, dT: '+2.1 °C', pm: 185, indoor: 21, mix: 'Convective Rising (34%)', status: 'Lid Uplift Beginning', statusColor: '#c27803', sunY: 55, sunX: 70, fogDark: 0x343a42, fogLight: 0xd6e0ec },
+      10: { pbl: 680, y: 86, dT: '+0.4 °C', pm: 135, indoor: 16, mix: 'Moderate Convection (52%)', status: 'Inversion Breached', statusColor: 'var(--success)', sunY: 75, sunX: 55, fogDark: 0x2d3e52, fogLight: 0xcfe0f2 },
+      11: { pbl: 1050, y: 130, dT: '-1.4 °C', pm: 92, indoor: 12, mix: 'Active Mixing (75%)', status: 'Strong Atmospheric Dilution', statusColor: 'var(--success)', sunY: 90, sunX: 35, fogDark: 0x284768, fogLight: 0xc5def7 },
+      12: { pbl: 1380, y: 170, dT: '-2.8 °C', pm: 68, indoor: 9, mix: 'Peak Convective Mixing (90%)', status: 'Uncapped Convective Boundary', statusColor: 'var(--success)', sunY: 100, sunX: 10, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
+      13: { pbl: 1520, y: 185, dT: '-3.2 °C', pm: 55, indoor: 7, mix: 'Maximum Dilution (96%)', status: 'Full Boundary Layer Cleansing', statusColor: 'var(--success)', sunY: 98, sunX: -15, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
+      14: { pbl: 1650, y: 195, dT: '-3.5 °C', pm: 52, indoor: 7, mix: 'Peak Convective Cleansing (100%)', status: 'Maximum Convective Cleansing', statusColor: 'var(--success)', sunY: 92, sunX: -35, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
+      15: { pbl: 1580, y: 190, dT: '-3.0 °C', pm: 58, indoor: 8, mix: 'Strong Convection (92%)', status: 'Optimal Outdoor Ventilation', statusColor: 'var(--success)', sunY: 80, sunX: -55, fogDark: 0x25476f, fogLight: 0xc4dcf5 },
+      16: { pbl: 1350, y: 165, dT: '-1.8 °C', pm: 74, indoor: 10, mix: 'Active Mixing (78%)', status: 'Solar Heating Weakening', statusColor: 'var(--success)', sunY: 65, sunX: -70, fogDark: 0x2c4360, fogLight: 0xcbd8ea },
+      17: { pbl: 980, y: 120, dT: '-0.2 °C', pm: 108, indoor: 14, mix: 'Subsiding Convection (50%)', status: 'Late Afternoon Cooling', statusColor: '#c27803', sunY: 42, sunX: -80, fogDark: 0x323a48, fogLight: 0xd2d2d8 },
+      18: { pbl: 620, y: 78, dT: '+1.6 °C', pm: 152, indoor: 18, mix: 'Rapid Surface Cooling (28%)', status: 'Inversion Reform Commences', statusColor: '#c27803', sunY: 20, sunX: -85, fogDark: 0x342928, fogLight: 0xd6c2be },
+      19: { pbl: 380, y: 48, dT: '+3.4 °C', pm: 198, indoor: 22, mix: 'Weak Mixing (14%)', status: 'Evening Traffic Surge & Trapping', statusColor: 'var(--danger)', sunY: 4, sunX: -88, fogDark: 0x281d22, fogLight: 0xccb2b2 },
+      20: { pbl: 300, y: 38, dT: '+4.2 °C', pm: 220, indoor: 25, mix: 'Suppressed (9%)', status: 'Shallow Capping Inversion', statusColor: 'var(--danger)', sunY: -10, sunX: -80, fogDark: 0x1a1624, fogLight: 0xc2becc },
+      21: { pbl: 250, y: 32, dT: '+4.8 °C', pm: 215, indoor: 24, mix: 'Suppressed (7%)', status: 'Radiative Inversion Established', statusColor: 'var(--danger)', sunY: -20, sunX: -65, fogDark: 0x141422, fogLight: 0xb8b8c8 },
+      22: { pbl: 220, y: 28, dT: '+5.1 °C', pm: 210, indoor: 23, mix: 'Suppressed (6%)', status: 'Cold Nocturnal Air Drainage', statusColor: 'var(--danger)', sunY: -30, sunX: -45, fogDark: 0x101220, fogLight: 0xb2b4c2 },
+      23: { pbl: 200, y: 26, dT: '+5.4 °C', pm: 205, indoor: 23, mix: 'Suppressed (5%)', status: 'Midnight Stagnation Pool', statusColor: 'var(--danger)', sunY: -35, sunX: -20, fogDark: 0x0c111e, fogLight: 0xacafbd }
+    };
 
     // --- Data: Cities & Hyperlocal Air Quality Feed (Slice A1) ---
     const CITIES = {
@@ -3416,10 +4082,21 @@
       // Re-render recommendations, forecast planner and cleaner route (Slice A4)
       renderRecommendations();
       renderForecastPlanner(cityKey);
-      renderCleanerRoute(cityKey);
+      if (typeof renderCleanerRoute === 'function') {
+        renderCleanerRoute(cityKey);
+      }
+      if (typeof renderDiurnalCurve === 'function') {
+        renderDiurnalCurve();
+      }
     }
 
-    citySelect.addEventListener('change', updateCityAQI);
+    citySelect.addEventListener('change', () => {
+      activeStationId = null;
+      if (typeof renderStationPills === 'function') {
+        renderStationPills(citySelect.value);
+      }
+      updateCityAQI();
+    });
     if (devSwitch) devSwitch.addEventListener('change', updateCityAQI);
 
     // Geolocation "Use My Location" Handler
@@ -5061,95 +5738,746 @@
       `).join('');
     }
 
+    // ==================== MULTI-STATION CAAQMS REGISTRY & WIND VECTOR RADAR ====================
+    const CITY_STATIONS = {
+      delhi: [
+        { id: 'dl_av', name: 'Anand Vihar', agency: 'DPCC', aqi: 355, pm25: 198, pm10: 320, no2: 65, so2: 21, co: 1.8, o3: 48, windSpeed: 1.2, windDir: 290, windDirText: 'WNW', pbl: 230, temp: 21, rh: 68 },
+        { id: 'dl_dw', name: 'Dwarka Sector 8', agency: 'DPCC', aqi: 285, pm25: 154, pm10: 245, no2: 48, so2: 14, co: 1.3, o3: 38, windSpeed: 1.8, windDir: 305, windDirText: 'NW', pbl: 310, temp: 22, rh: 62 },
+        { id: 'dl_pb', name: 'Punjabi Bagh', agency: 'DPCC', aqi: 315, pm25: 178, pm10: 280, no2: 56, so2: 17, co: 1.5, o3: 42, windSpeed: 1.4, windDir: 285, windDirText: 'WNW', pbl: 260, temp: 21.5, rh: 65 },
+        { id: 'dl_ito', name: 'ITO Central', agency: 'CPCB', aqi: 330, pm25: 188, pm10: 295, no2: 62, so2: 19, co: 1.7, o3: 45, windSpeed: 1.3, windDir: 295, windDirText: 'WNW', pbl: 250, temp: 22, rh: 64 },
+        { id: 'dl_lr', name: 'Lodhi Road', agency: 'IMD', aqi: 245, pm25: 128, pm10: 195, no2: 42, so2: 12, co: 1.1, o3: 35, windSpeed: 2.1, windDir: 310, windDirText: 'NW', pbl: 380, temp: 22.5, rh: 59 },
+        { id: 'dl_rk', name: 'R K Puram', agency: 'DPCC', aqi: 310, pm25: 174, pm10: 275, no2: 54, so2: 16, co: 1.4, o3: 40, windSpeed: 1.5, windDir: 290, windDirText: 'WNW', pbl: 270, temp: 22.2, rh: 63 }
+      ],
+      dwarka: [
+        { id: 'dw_s8', name: 'Dwarka Sector 8', agency: 'DPCC', aqi: 280, pm25: 154, pm10: 245, no2: 48, so2: 14, co: 1.3, o3: 38, windSpeed: 1.8, windDir: 300, windDirText: 'WNW', pbl: 310, temp: 22, rh: 62 },
+        { id: 'dw_igi', name: 'IGI Airport T3', agency: 'IMD', aqi: 260, pm25: 138, pm10: 220, no2: 45, so2: 13, co: 1.2, o3: 36, windSpeed: 2.3, windDir: 315, windDirText: 'NW', pbl: 350, temp: 23, rh: 58 },
+        { id: 'dw_naj', name: 'Najafgarh Drain Rd', agency: 'DPCC', aqi: 295, pm25: 166, pm10: 260, no2: 50, so2: 15, co: 1.4, o3: 39, windSpeed: 1.6, windDir: 295, windDirText: 'WNW', pbl: 290, temp: 21.8, rh: 64 }
+      ],
+      noida: [
+        { id: 'no_62', name: 'Sector 62 Institutional', agency: 'UPPCB', aqi: 360, pm25: 218, pm10: 345, no2: 64, so2: 22, co: 1.9, o3: 46, windSpeed: 1.1, windDir: 280, windDirText: 'W', pbl: 220, temp: 20.8, rh: 70 },
+        { id: 'no_125', name: 'Sector 125 Expressway', agency: 'UPPCB', aqi: 340, pm25: 196, pm10: 315, no2: 60, so2: 20, co: 1.7, o3: 44, windSpeed: 1.3, windDir: 285, windDirText: 'WNW', pbl: 250, temp: 21.2, rh: 67 },
+        { id: 'no_1', name: 'Sector 1 DND Flyway', agency: 'UPPCB', aqi: 375, pm25: 232, pm10: 360, no2: 68, so2: 24, co: 2.1, o3: 49, windSpeed: 0.9, windDir: 275, windDirText: 'W', pbl: 195, temp: 20.5, rh: 72 }
+      ],
+      gurgaon: [
+        { id: 'gg_cc', name: 'Cyber City DLF Phase 2', agency: 'HSPCB', aqi: 305, pm25: 172, pm10: 268, no2: 52, so2: 16, co: 1.4, o3: 40, windSpeed: 1.6, windDir: 300, windDirText: 'WNW', pbl: 300, temp: 22.4, rh: 61 },
+        { id: 'gg_vs', name: 'Vikas Sadan Sector 11', agency: 'HSPCB', aqi: 320, pm25: 184, pm10: 285, no2: 55, so2: 18, co: 1.5, o3: 42, windSpeed: 1.4, windDir: 295, windDirText: 'WNW', pbl: 275, temp: 22.1, rh: 63 },
+        { id: 'gg_gp', name: 'Gwal Pahari (TERI Gram)', agency: 'IMD', aqi: 230, pm25: 118, pm10: 180, no2: 38, so2: 11, co: 0.9, o3: 33, windSpeed: 2.4, windDir: 310, windDirText: 'NW', pbl: 420, temp: 23.0, rh: 55 }
+      ],
+      pune: [
+        { id: 'pu_sj', name: 'Shivajinagar', agency: 'MPCB / SAFAR', aqi: 145, pm25: 58, pm10: 105, no2: 36, so2: 12, co: 0.9, o3: 34, windSpeed: 2.4, windDir: 260, windDirText: 'W', pbl: 680, temp: 24.5, rh: 54 },
+        { id: 'pu_kt', name: 'Kothrud Paud Road', agency: 'SAFAR', aqi: 130, pm25: 48, pm10: 92, no2: 32, so2: 10, co: 0.8, o3: 31, windSpeed: 2.6, windDir: 255, windDirText: 'WSW', pbl: 720, temp: 25.0, rh: 52 },
+        { id: 'pu_hd', name: 'Hadapsar Industrial', agency: 'MPCB', aqi: 168, pm25: 74, pm10: 132, no2: 44, so2: 16, co: 1.2, o3: 38, windSpeed: 2.1, windDir: 270, windDirText: 'W', pbl: 640, temp: 24.8, rh: 56 },
+        { id: 'pu_kj', name: 'Katraj Snake Park', agency: 'SAFAR', aqi: 122, pm25: 42, pm10: 82, no2: 28, so2: 9, co: 0.7, o3: 29, windSpeed: 2.8, windDir: 250, windDirText: 'WSW', pbl: 760, temp: 24.2, rh: 53 },
+        { id: 'pu_lh', name: 'Lohegaon Airport', agency: 'IMD', aqi: 138, pm25: 52, pm10: 98, no2: 34, so2: 11, co: 0.8, o3: 32, windSpeed: 2.7, windDir: 265, windDirText: 'W', pbl: 700, temp: 25.2, rh: 51 }
+      ],
+      mumbai: [
+        { id: 'mu_bkc', name: 'Bandra-Kurla Complex', agency: 'MPCB', aqi: 160, pm25: 72, pm10: 128, no2: 44, so2: 15, co: 1.1, o3: 38, windSpeed: 3.2, windDir: 240, windDirText: 'WSW', pbl: 580, temp: 27.5, rh: 72 },
+        { id: 'mu_col', name: 'Colaba Navy Nagar', agency: 'IMD', aqi: 95, pm25: 34, pm10: 64, no2: 25, so2: 8, co: 0.6, o3: 26, windSpeed: 4.1, windDir: 235, windDirText: 'SW', pbl: 720, temp: 27.0, rh: 78 },
+        { id: 'mu_chm', name: 'Chembur East', agency: 'MPCB', aqi: 185, pm25: 90, pm10: 154, no2: 52, so2: 22, co: 1.4, o3: 42, windSpeed: 2.8, windDir: 245, windDirText: 'WSW', pbl: 520, temp: 28.0, rh: 70 },
+        { id: 'mu_and', name: 'Andheri East SEEPZ', agency: 'MPCB', aqi: 152, pm25: 66, pm10: 120, no2: 42, so2: 14, co: 1.0, o3: 36, windSpeed: 3.0, windDir: 250, windDirText: 'WSW', pbl: 600, temp: 27.8, rh: 74 }
+      ],
+      lucknow: [
+        { id: 'lk_gm', name: 'Gomti Nagar', agency: 'UPPCB', aqi: 290, pm25: 162, pm10: 255, no2: 50, so2: 18, co: 1.5, o3: 42, windSpeed: 1.3, windDir: 280, windDirText: 'W', pbl: 310, temp: 21.0, rh: 66 },
+        { id: 'lk_tk', name: 'Talkatora Industrial', agency: 'UPPCB', aqi: 340, pm25: 198, pm10: 310, no2: 62, so2: 24, co: 1.8, o3: 46, windSpeed: 1.1, windDir: 275, windDirText: 'W', pbl: 260, temp: 20.6, rh: 69 },
+        { id: 'lk_lb', name: 'Lalbagh Central', agency: 'UPPCB', aqi: 315, pm25: 178, pm10: 280, no2: 56, so2: 19, co: 1.6, o3: 44, windSpeed: 1.2, windDir: 285, windDirText: 'WNW', pbl: 280, temp: 20.9, rh: 67 }
+      ],
+      patna: [
+        { id: 'pt_mp', name: 'Muradpur', agency: 'BSPCB', aqi: 380, pm25: 235, pm10: 365, no2: 68, so2: 24, co: 2.1, o3: 48, windSpeed: 0.9, windDir: 270, windDirText: 'W', pbl: 210, temp: 20.2, rh: 74 },
+        { id: 'pt_gm', name: 'Gandhi Maidan', agency: 'BSPCB', aqi: 365, pm25: 220, pm10: 345, no2: 64, so2: 22, co: 1.9, o3: 46, windSpeed: 1.0, windDir: 275, windDirText: 'W', pbl: 230, temp: 20.4, rh: 72 },
+        { id: 'pt_dn', name: 'Danapur DRDA', agency: 'BSPCB', aqi: 345, pm25: 202, pm10: 320, no2: 58, so2: 20, co: 1.7, o3: 44, windSpeed: 1.2, windDir: 280, windDirText: 'W', pbl: 250, temp: 20.8, rh: 70 }
+      ],
+      kolkata: [
+        { id: 'ko_jd', name: 'Jadavpur University', agency: 'WBPCB', aqi: 215, pm25: 110, pm10: 175, no2: 46, so2: 16, co: 1.2, o3: 36, windSpeed: 1.8, windDir: 220, windDirText: 'SW', pbl: 440, temp: 24.2, rh: 68 },
+        { id: 'ko_vm', name: 'Victoria Memorial', agency: 'WBPCB', aqi: 195, pm25: 98, pm10: 158, no2: 42, so2: 14, co: 1.0, o3: 34, windSpeed: 2.1, windDir: 225, windDirText: 'SW', pbl: 480, temp: 24.5, rh: 67 },
+        { id: 'ko_rb', name: 'Rabindra Bharati Univ', agency: 'WBPCB', aqi: 240, pm25: 126, pm10: 198, no2: 52, so2: 19, co: 1.4, o3: 40, windSpeed: 1.6, windDir: 215, windDirText: 'SSW', pbl: 400, temp: 24.0, rh: 71 }
+      ],
+      bengaluru: [
+        { id: 'bl_btm', name: 'BTM Layout', agency: 'KSPCB', aqi: 80, pm25: 28, pm10: 55, no2: 24, so2: 9, co: 0.6, o3: 28, windSpeed: 3.4, windDir: 250, windDirText: 'WSW', pbl: 950, temp: 23.5, rh: 58 },
+        { id: 'bl_sb', name: 'Silk Board Junction', agency: 'KSPCB', aqi: 118, pm25: 42, pm10: 82, no2: 36, so2: 12, co: 0.9, o3: 32, windSpeed: 2.8, windDir: 255, windDirText: 'WSW', pbl: 880, temp: 23.8, rh: 57 },
+        { id: 'bl_wf', name: 'Whitefield Tech Park', agency: 'KSPCB', aqi: 75, pm25: 25, pm10: 48, no2: 22, so2: 8, co: 0.5, o3: 26, windSpeed: 3.6, windDir: 245, windDirText: 'WSW', pbl: 980, temp: 23.2, rh: 59 }
+      ]
+    };
+
+    let activeStationId = null;
+    let windCompassAnimId = null;
+
+    function renderStationPills(cityKey) {
+      const container = document.getElementById('station-pills-container');
+      const countLabel = document.getElementById('station-count-label');
+      if (!container) return;
+
+      const stations = CITY_STATIONS[cityKey] || CITY_STATIONS.delhi;
+      if (countLabel) {
+        countLabel.textContent = `${stations.length} Live CAAQMS Monitors`;
+      }
+
+      if (!activeStationId || !stations.some(s => s.id === activeStationId)) {
+        activeStationId = stations[0].id;
+      }
+
+      container.innerHTML = stations.map(st => `
+        <button type="button" class="station-pill ${st.id === activeStationId ? 'active' : ''}" data-station-id="${st.id}">
+          <span>${st.name}</span>
+          <span style="font-weight: 700; font-size: 0.76rem; padding: 1px 6px; border-radius: 10px; background: ${st.aqi > 250 ? '#fee2e2' : (st.aqi > 100 ? '#fef3c7' : '#dcfce7')}; color: ${st.aqi > 250 ? '#991b1b' : (st.aqi > 100 ? '#92400e' : '#166534')};">
+            AQI ${st.aqi}
+          </span>
+        </button>
+      `).join('');
+
+      container.querySelectorAll('.station-pill').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const sid = e.currentTarget.getAttribute('data-station-id');
+          selectStation(sid);
+        });
+      });
+
+      updateStationTelemetry();
+    }
+
+    function selectStation(sid) {
+      activeStationId = sid;
+      const cityKey = citySelect ? citySelect.value : 'delhi';
+      const stations = CITY_STATIONS[cityKey] || CITY_STATIONS.delhi;
+      const st = stations.find(s => s.id === sid);
+      if (!st) return;
+
+      document.querySelectorAll('.station-pill').forEach(btn => {
+        if (btn.getAttribute('data-station-id') === sid) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update city primary data with station overrides
+      const cData = CITIES[cityKey] || CITIES.delhi;
+      cData.pollutants = { pm25: st.pm25, pm10: st.pm10, no2: st.no2, so2: st.so2, co: st.co, o3: st.o3 };
+      cData.name = `${st.name}, ${cData.name.split(',')[1] || cityKey.toUpperCase()}`;
+      cData.primaryStation = `CAAQMS #${st.id.toUpperCase()} · ${st.agency} Official Feed`;
+      cData.cigs = parseFloat((st.pm25 / 22.0).toFixed(1));
+
+      updateCityAQI();
+      updateStationTelemetry();
+      renderDiurnalCurve();
+      renderCleanerRoute(cityKey);
+    }
+
+    function updateStationTelemetry() {
+      const cityKey = citySelect ? citySelect.value : 'delhi';
+      const stations = CITY_STATIONS[cityKey] || CITY_STATIONS.delhi;
+      const st = stations.find(s => s.id === activeStationId) || stations[0];
+      if (!st) return;
+
+      const wsEl = document.getElementById('meteo-wind-speed');
+      const wsScale = document.getElementById('meteo-wind-scale');
+      const wdEl = document.getElementById('meteo-wind-dir');
+      const pblEl = document.getElementById('meteo-pbl-height');
+      const invBadge = document.getElementById('meteo-inversion-badge');
+      const vcEl = document.getElementById('meteo-vc-val');
+      const vcStatus = document.getElementById('meteo-vc-status');
+
+      if (wsEl) wsEl.textContent = `${st.windSpeed.toFixed(1)} m/s`;
+      if (wsScale) {
+        wsScale.textContent = st.windSpeed < 1.5 ? 'Calm / Stagnant Drift' : (st.windSpeed < 3.0 ? 'Light Gentle Breeze' : 'Moderate Dispersal Flow');
+      }
+      if (wdEl) wdEl.textContent = `${st.windDir}° ${st.windDirText}`;
+      if (pblEl) pblEl.textContent = `${st.pbl} m`;
+
+      if (invBadge) {
+        if (st.pbl < 300) {
+          invBadge.textContent = '⚠️ Severe Inversion';
+          invBadge.style.color = 'var(--danger)';
+        } else if (st.pbl < 600) {
+          invBadge.textContent = '⚡ Capped Boundary';
+          invBadge.style.color = '#c27803';
+        } else {
+          invBadge.textContent = '🌤️ Convective Cleansing';
+          invBadge.style.color = 'var(--success)';
+        }
+      }
+
+      // Ventilation coefficient = Wind Speed * PBL Height
+      const vc = Math.round(st.windSpeed * st.pbl);
+      if (vcEl) vcEl.textContent = `${vc} m²/s`;
+      if (vcStatus) {
+        if (vc < 2000) {
+          vcStatus.textContent = 'Severe Stagnation (<2000 m²/s)';
+          vcStatus.style.color = 'var(--danger)';
+        } else if (vc < 6000) {
+          vcStatus.textContent = 'Restricted Dispersal (2000-6000)';
+          vcStatus.style.color = '#c27803';
+        } else {
+          vcStatus.textContent = 'Rapid Cleansing (>6000 m²/s)';
+          vcStatus.style.color = 'var(--success)';
+        }
+      }
+
+      drawWindCompass(st.windDir, st.windSpeed);
+    }
+
+    function drawWindCompass(dirDegrees, speed) {
+      const canvas = document.getElementById('wind-compass-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const r = Math.min(cx, cy) - 4;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Compass Ring
+      const isDark = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark';
+      ctx.strokeStyle = isDark ? '#374151' : '#cbd5e1';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Cardinal N marker
+      ctx.font = '700 9px system-ui, sans-serif';
+      ctx.fillStyle = '#ef4444';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('N', cx, cy - r + 3);
+
+      // Rotating Wind Arrow
+      const rad = (dirDegrees - 90) * (Math.PI / 180);
+      const arrowLen = r * 0.72;
+      const tx = cx + Math.cos(rad) * arrowLen;
+      const ty = cy + Math.sin(rad) * arrowLen;
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rad);
+
+      ctx.strokeStyle = '#14b89a';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(-arrowLen * 0.4, 0);
+      ctx.lineTo(arrowLen * 0.75, 0);
+      ctx.stroke();
+
+      // Arrowhead
+      ctx.fillStyle = '#14b89a';
+      ctx.beginPath();
+      ctx.moveTo(arrowLen * 0.75, -5);
+      ctx.lineTo(arrowLen * 0.95, 0);
+      ctx.lineTo(arrowLen * 0.75, 5);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // ==================== 24-HOUR DIURNAL POLLUTION & INVERSION SCRUBBER ====================
+    let diurnalActiveHour = 14;
+
+    function initDiurnalScrubber() {
+      const slider = document.getElementById('diurnal-time-slider');
+      const canvas = document.getElementById('diurnal-curve-canvas');
+      if (!slider || !canvas) return;
+
+      slider.addEventListener('input', (e) => {
+        diurnalActiveHour = parseFloat(e.target.value);
+        updateDiurnalTelemetry();
+        renderDiurnalCurve();
+      });
+
+      // Presets
+      document.querySelectorAll('.diurnal-preset-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.diurnal-preset-btn').forEach(b => b.classList.remove('active'));
+          e.currentTarget.classList.add('active');
+
+          const hVal = e.currentTarget.getAttribute('data-hour');
+          if (hVal === 'now') {
+            const nowHour = new Date().getHours() + (new Date().getMinutes() / 60);
+            diurnalActiveHour = Math.round(nowHour * 2) / 2;
+          } else {
+            diurnalActiveHour = parseFloat(hVal);
+          }
+          slider.value = diurnalActiveHour;
+          updateDiurnalTelemetry();
+          renderDiurnalCurve();
+        });
+      });
+
+      window.addEventListener('resize', renderDiurnalCurve);
+      updateDiurnalTelemetry();
+      renderDiurnalCurve();
+    }
+
+    function updateDiurnalTelemetry() {
+      const hr = Math.floor(diurnalActiveHour);
+      const min = Math.round((diurnalActiveHour - hr) * 60);
+      const timeStr = `${(hr < 10 ? '0' : '') + hr}:${min === 0 ? '00' : '30'}`;
+      const period = hr < 12 ? 'AM' : 'PM';
+      const dispHour = hr % 12 === 0 ? 12 : hr % 12;
+
+      const tEl = document.getElementById('scrub-time-display');
+      if (tEl) tEl.textContent = `${timeStr} (${(dispHour < 10 ? '0' : '') + dispHour}:${min === 0 ? '00' : '30'} ${period})`;
+
+      const pblData = DIURNAL_PBL_DATA[hr] || DIURNAL_PBL_DATA[14];
+      const pblEl = document.getElementById('scrub-pbl-val');
+      if (pblEl) pblEl.textContent = `${pblData.pbl} m`;
+
+      // Estimate current city base PM2.5
+      const cityKey = citySelect ? citySelect.value : 'delhi';
+      const cData = CITIES[cityKey] || CITIES.delhi;
+      const basePM = (cData.pollutants && cData.pollutants.pm25) ? cData.pollutants.pm25 : 180;
+
+      // Diurnal concentration scaling relative to 14:00 convective window
+      const factor = pblData.pm / 268.0; // 268 is morning peak
+      const currentEstPM = Math.round(basePM * factor);
+
+      const pmEl = document.getElementById('scrub-pm25-val');
+      if (pmEl) pmEl.textContent = `${currentEstPM} µg/m³`;
+
+      const deltaEl = document.getElementById('scrub-pm25-delta');
+      if (deltaEl) {
+        const peakPM = Math.round(basePM);
+        const delta = Math.round(((currentEstPM - peakPM) / peakPM) * 100);
+        if (delta < 0) {
+          deltaEl.textContent = `${delta}% vs Morning Inversion Peak`;
+          deltaEl.style.color = 'var(--success)';
+        } else if (delta === 0) {
+          deltaEl.textContent = 'Morning Peak Trapping';
+          deltaEl.style.color = 'var(--danger)';
+        } else {
+          deltaEl.textContent = `+${delta}% vs Baseline`;
+          deltaEl.style.color = 'var(--danger)';
+        }
+      }
+
+      const solarEl = document.getElementById('scrub-solar-state');
+      if (solarEl) {
+        if (hr >= 11 && hr <= 15) solarEl.textContent = 'Peak Convective Solar Flux (820 W/m²)';
+        else if (hr >= 7 && hr <= 10) solarEl.textContent = 'Nascent Solar Dissolution (350 W/m²)';
+        else if (hr >= 16 && hr <= 18) solarEl.textContent = 'Surface Radiative Cooling';
+        else solarEl.textContent = 'Nocturnal Ground Radiation Loss';
+      }
+
+      const actEl = document.getElementById('scrub-action-text');
+      if (actEl) {
+        if (hr >= 12 && hr <= 15) {
+          actEl.innerHTML = '✅ <strong>Safe 20-min cross-ventilation window is OPEN!</strong> Open opposite windows now to flush out indoor CO₂ and cooking VOCs, then reseal before dusk (17:30).';
+        } else if (hr >= 6 && hr <= 10) {
+          actEl.innerHTML = '🚨 <strong>Severe Ground Inversion Peak.</strong> Keep all windows tightly sealed. Strictly avoid morning jogs and outdoor physical exertion. N95 mask required outdoors.';
+        } else if (hr >= 18 && hr <= 21) {
+          actEl.innerHTML = '⚠️ <strong>Evening Traffic Surge & Trapping.</strong> Ambient particulates surge. Reseal all windows; run kitchen chimney exhaust during cooking.';
+        } else {
+          actEl.innerHTML = '🌙 <strong>Nocturnal Boundary Layer Collapse.</strong> Shut bedroom doors. Run HEPA or DIY purifier in bedroom on medium/high continuously.';
+        }
+      }
+    }
+
+    function renderDiurnalCurve() {
+      const canvas = document.getElementById('diurnal-curve-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width || 800;
+      const h = rect.height || 180;
+      canvas.width = w;
+      canvas.height = h;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const isDark = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark';
+      const padL = 40, padR = 25, padT = 20, padB = 30;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+
+      // Safe ventilation window zone (12:30 to 15:30)
+      const winX1 = padL + (12.5 / 24) * plotW;
+      const winX2 = padL + (15.5 / 24) * plotW;
+      ctx.fillStyle = isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.18)';
+      ctx.fillRect(winX1, padT, winX2 - winX1, plotH);
+
+      ctx.font = '700 10px system-ui, sans-serif';
+      ctx.fillStyle = '#10b981';
+      ctx.fillText('BEST VENTILATION WINDOW', winX1 + 4, padT + 12);
+
+      // Grid Lines
+      ctx.strokeStyle = isDark ? '#1f2937' : '#e2e8f0';
+      ctx.lineWidth = 1;
+      for (let hr = 0; hr <= 24; hr += 3) {
+        const x = padL + (hr / 24) * plotW;
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + plotH);
+        ctx.stroke();
+
+        ctx.font = '600 10px system-ui, sans-serif';
+        ctx.fillStyle = isDark ? '#9ca3af' : '#64748b';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${(hr < 10 ? '0' : '') + hr}:00`, x, padT + plotH + 18);
+      }
+
+      // Draw PM2.5 Diurnal Curve
+      const maxPM = 280;
+      const minPM = 40;
+
+      ctx.beginPath();
+      for (let hr = 0; hr <= 24; hr += 0.5) {
+        const hInt = Math.floor(hr % 24);
+        const data = DIURNAL_PBL_DATA[hInt] || DIURNAL_PBL_DATA[7];
+        const x = padL + (hr / 24) * plotW;
+        const normY = (data.pm - minPM) / (maxPM - minPM);
+        const y = padT + plotH - (normY * plotH);
+
+        if (hr === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+
+      // Gradient Fill under curve
+      const grad = ctx.createLinearGradient(0, padT, 0, padT + plotH);
+      grad.addColorStop(0, isDark ? 'rgba(239, 68, 68, 0.35)' : 'rgba(239, 68, 68, 0.25)');
+      grad.addColorStop(0.5, isDark ? 'rgba(245, 158, 11, 0.22)' : 'rgba(245, 158, 11, 0.18)');
+      grad.addColorStop(1, isDark ? 'rgba(16, 185, 129, 0.05)' : 'rgba(16, 185, 129, 0.05)');
+
+      ctx.lineTo(padL + plotW, padT + plotH);
+      ctx.lineTo(padL, padT + plotH);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Draw stroke
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let hr = 0; hr <= 24; hr += 0.5) {
+        const hInt = Math.floor(hr % 24);
+        const data = DIURNAL_PBL_DATA[hInt] || DIURNAL_PBL_DATA[7];
+        const x = padL + (hr / 24) * plotW;
+        const normY = (data.pm - minPM) / (maxPM - minPM);
+        const y = padT + plotH - (normY * plotH);
+
+        if (hr === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Draw Vertical Scrubber Line at diurnalActiveHour
+      const scrubX = padL + (diurnalActiveHour / 24) * plotW;
+      ctx.strokeStyle = '#14b89a';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(scrubX, padT);
+      ctx.lineTo(scrubX, padT + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Scrubber point on curve
+      const sHInt = Math.floor(diurnalActiveHour % 24);
+      const sData = DIURNAL_PBL_DATA[sHInt] || DIURNAL_PBL_DATA[7];
+      const sY = padT + plotH - (((sData.pm - minPM) / (maxPM - minPM)) * plotH);
+
+      ctx.fillStyle = '#14b89a';
+      ctx.beginPath();
+      ctx.arc(scrubX, sY, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // ==================== INTERACTIVE COMMUTE ROUTE & INHALED DOSE CALCULATOR ====================
+    let activeCommuteMode = 'bike';
+
+    const COMMUTE_CORRIDORS = {
+      corridor_1: { name: 'Anand Vihar to Connaught Place', distKm: 14.2, baseMins: 38, basePM: 240, arterialRatio: 0.85, co2PerKm: 74 },
+      corridor_2: { name: 'Dwarka Sec-8 to Cyber City Gurugram', distKm: 21.5, baseMins: 45, basePM: 220, arterialRatio: 0.90, co2PerKm: 78 },
+      corridor_3: { name: 'Noida Sec-62 to Nehru Place', distKm: 18.4, baseMins: 42, basePM: 250, arterialRatio: 0.88, co2PerKm: 76 },
+      corridor_4: { name: 'Kothrud to Hinjawadi Phase 1 Pune', distKm: 16.8, baseMins: 36, basePM: 110, arterialRatio: 0.80, co2PerKm: 72 },
+      corridor_5: { name: 'Bandra West to Nariman Point Mumbai', distKm: 19.2, baseMins: 40, basePM: 125, arterialRatio: 0.75, co2PerKm: 75 }
+    };
+
+    const COMMUTE_MODES = {
+      bike: { label: 'Two-Wheeler / Auto', exposureMultiplier: 1.8, ve: 0.85, speedFactor: 1.0, co2Factor: 1.0 },
+      car: { label: 'Standard AC Cab', exposureMultiplier: 1.0, ve: 0.75, speedFactor: 0.95, co2Factor: 1.8 },
+      car_hepa: { label: 'HEPA Cabin Cab', exposureMultiplier: 0.45, ve: 0.75, speedFactor: 0.95, co2Factor: 1.8 },
+      metro: { label: 'Filtered Metro Rail', exposureMultiplier: 0.35, ve: 0.80, speedFactor: 1.25, co2Factor: 0.15 },
+      bicycle: { label: 'Bicycle / Walking', exposureMultiplier: 1.4, ve: 2.10, speedFactor: 0.45, co2Factor: 0.0 }
+    };
+
+    const TIME_MULTIPLIERS = {
+      morning_peak: 1.35,
+      midday: 0.65,
+      evening_peak: 1.45,
+      late_night: 1.10
+    };
+
+    function initCommutePlanner() {
+      const corridorSelect = document.getElementById('commute-corridor-select');
+      const timeSelect = document.getElementById('commute-time-select');
+      if (corridorSelect) corridorSelect.addEventListener('change', () => renderCleanerRoute());
+      if (timeSelect) timeSelect.addEventListener('change', () => renderCleanerRoute());
+
+      document.querySelectorAll('.commute-mode-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.commute-mode-btn').forEach(b => b.classList.remove('active'));
+          e.currentTarget.classList.add('active');
+          activeCommuteMode = e.currentTarget.getAttribute('data-mode') || 'bike';
+          renderCleanerRoute();
+        });
+      });
+    }
+
     function renderCleanerRoute(cityKey) {
       const container = document.getElementById('route-comparison-container');
       if (!container) return;
 
-      const isPune = cityKey === 'pune';
-      const routeA = isPune ? {
-        name: 'Arterial Road (Old Mumbai-Pune Hwy)',
-        mode: 'Two-Wheeler (Motorbike/Scooter)',
-        dist: '18.4 km',
-        time: '42 min',
-        ambientPM: '342 µg/m³',
-        transitRatio: '1.8x (Tailpipe Plume)',
-        inhaledDose: '184.2 µg',
-        co2: '1,325 g'
-      } : {
-        name: 'Arterial Highway (Ring Road / Mathura Rd)',
-        mode: 'Two-Wheeler (Motorbike)',
-        dist: '22.0 km',
-        time: '48 min',
-        ambientPM: '410 µg/m³',
-        transitRatio: '1.8x (Heavy Diesel Mix)',
-        inhaledDose: '236.0 µg',
-        co2: '1,584 g'
-      };
+      const corridorKey = document.getElementById('commute-corridor-select')?.value || 'corridor_1';
+      const timeKey = document.getElementById('commute-time-select')?.value || 'morning_peak';
+      const corridor = COMMUTE_CORRIDORS[corridorKey] || COMMUTE_CORRIDORS.corridor_1;
+      const timeMult = TIME_MULTIPLIERS[timeKey] || 1.35;
 
-      const routeB = isPune ? {
-        name: 'Pune Metro Line 1 Corridor + 800m Walk',
-        mode: 'Metro Rail + Pedestrian',
-        dist: '20.1 km',
-        time: '36 min',
-        ambientPM: '342 µg/m³',
-        transitRatio: '0.35x (Filtered AC Coach)',
-        inhaledDose: '62.9 µg',
-        co2: '205 g'
-      } : {
-        name: 'Delhi Metro Yellow Line Corridor + Walk',
-        mode: 'Metro Rail + Pedestrian',
-        dist: '23.5 km',
-        time: '41 min',
-        ambientPM: '410 µg/m³',
-        transitRatio: '0.35x (Air Filtration)',
-        inhaledDose: '78.5 µg',
-        co2: '235 g'
-      };
+      const selModeData = COMMUTE_MODES[activeCommuteMode] || COMMUTE_MODES.bike;
+      const metroData = COMMUTE_MODES.metro;
 
-      const avoidedDose = (parseFloat(routeA.inhaledDose) - parseFloat(routeB.inhaledDose)).toFixed(1);
-      const avoidedCO2 = (parseFloat(routeA.co2) - parseFloat(routeB.co2)).toFixed(0);
+      // Inhaled Dose Math: Dose = (Ambient * TimeMult * ExposureFactor * VE * durationHours)
+      const durationHoursA = (corridor.baseMins / selModeData.speedFactor) / 60;
+      const durationHoursB = (corridor.baseMins / metroData.speedFactor) / 60;
+
+      const doseA = Math.round(corridor.basePM * timeMult * selModeData.exposureMultiplier * selModeData.ve * durationHoursA * 10) / 10;
+      const doseB = Math.round(corridor.basePM * timeMult * metroData.exposureMultiplier * metroData.ve * durationHoursB * 10) / 10;
+
+      const co2A = Math.round(corridor.distKm * corridor.co2PerKm * selModeData.co2Factor);
+      const co2B = Math.round(corridor.distKm * corridor.co2PerKm * metroData.co2Factor);
+
+      const avoidedDose = (doseA - doseB).toFixed(1);
+      const avoidedCO2 = Math.max(0, co2A - co2B);
+      const doseReductionPct = Math.round(((doseA - doseB) / doseA) * 100);
 
       container.innerHTML = `
-        <div class="route-card" style="border-left: 4px solid var(--danger);">
+        <div class="route-card" style="border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 16px; background: var(--surface-bg);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <span style="font-size: 0.76rem; font-weight: 700; background: var(--danger-light); color: var(--danger); padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
-              Route A: Standard Commute
+              Route A: Selected Commute (${selModeData.label})
             </span>
-            <span style="font-size: 0.85rem; font-weight: 700; color: var(--danger);">Inhaled: ${routeA.inhaledDose} PM2.5</span>
+            <span style="font-size: 0.88rem; font-weight: 700; color: var(--danger);">Inhaled: ${doseA} µg PM2.5</span>
           </div>
-          <h4 style="margin: 0 0 6px 0; font-size: 1rem;">${routeA.name}</h4>
+          <h4 style="margin: 0 0 6px 0; font-size: 1rem; color: var(--text-main);">${corridor.name}</h4>
           <div style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 10px;">
-            🛵 Mode: ${routeA.mode}<br>
-            📏 Distance: ${routeA.dist} · ⏱️ Time: ${routeA.time}<br>
-            🌫️ Microenvironment Exposure Factor: <strong>${routeA.transitRatio}</strong>
+            🛵 Mode: <strong>${selModeData.label}</strong><br>
+            📏 Distance: ${corridor.distKm} km · ⏱️ Time: ${Math.round(durationHoursA * 60)} min<br>
+            🌫️ Microenvironment Exposure Factor: <strong>${selModeData.exposureMultiplier}x</strong> · Diurnal Factor: <strong>${timeMult}x</strong>
           </div>
           <div style="font-size: 0.8rem; background: var(--surface-subtle); padding: 6px 10px; border-radius: 4px; color: var(--text-muted);">
-            Emissions: <strong>${routeA.co2} CO₂</strong> (Tailpipe ARAI factor 72 g/km)
+            Emissions: <strong>${co2A} g CO₂</strong> (Tailpipe factor ${Math.round(corridor.co2PerKm * selModeData.co2Factor)} g/km)
           </div>
         </div>
 
-        <div class="route-card cleaner">
+        <div class="route-card cleaner" style="border: 1px solid var(--accent); border-radius: var(--radius-md); padding: 16px; background: var(--accent-light);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 0.76rem; font-weight: 700; background: var(--success-light); color: var(--success); padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
-              Route B: Cleaner Corridor (Recommended)
+            <span style="font-size: 0.76rem; font-weight: 700; background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
+              Route B: Clean Air Corridor (${metroData.label})
             </span>
-            <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent);">Inhaled: ${routeB.inhaledDose} PM2.5</span>
+            <span style="font-size: 0.88rem; font-weight: 700; color: var(--accent);">Inhaled: ${doseB} µg PM2.5</span>
           </div>
-          <h4 style="margin: 0 0 6px 0; font-size: 1rem; color: var(--accent);">${routeB.name}</h4>
+          <h4 style="margin: 0 0 6px 0; font-size: 1rem; color: var(--accent);">${corridor.name.split(' to ')[0]} Corridor + Metro Transit</h4>
           <div style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 10px;">
-            🚇 Mode: ${routeB.mode}<br>
-            📏 Distance: ${routeB.dist} · ⏱️ Time: ${routeB.time} (6 min faster)<br>
-            🛡️ Microenvironment Exposure Factor: <strong>${routeB.transitRatio}</strong> (Sealed AC)
+            🚇 Mode: <strong>${metroData.label}</strong><br>
+            📏 Distance: ${corridor.distKm} km · ⏱️ Time: ${Math.round(durationHoursB * 60)} min (${Math.abs(Math.round((durationHoursA - durationHoursB) * 60))} min ${durationHoursA > durationHoursB ? 'faster' : 'transit'})<br>
+            🛡️ Filtered Coach Factor: <strong>${metroData.exposureMultiplier}x</strong> (HEPA cabin filtration)
           </div>
-          <div style="font-size: 0.8rem; background: #E6F4F0; padding: 6px 10px; border-radius: 4px; color: var(--accent); font-weight: 600;">
-            ✨ Avoids <strong>-${avoidedDose} µg PM2.5</strong> inhaled & cuts <strong>${avoidedCO2} g CO₂</strong> emissions!
+          <div style="font-size: 0.82rem; background: var(--surface-card); padding: 8px 12px; border-radius: 4px; color: var(--accent); font-weight: 700; border: 1px solid var(--surface-border);">
+            ✨ Cuts inhaled toxic dose by <strong>${doseReductionPct}% (-${avoidedDose} µg PM2.5)</strong> & avoids <strong>${avoidedCO2} g CO₂</strong>!
           </div>
         </div>
       `;
     }
 
+    // ==================== SMART NOTIFICATION CENTER & TOAST ENGINE ====================
+    function initNotificationCenter() {
+      const btnNotif = document.getElementById('notif-toggle-btn');
+      const dialog = document.getElementById('saans-notif-dialog');
+      const btnClose = document.getElementById('btn-close-notif');
+      const btnTest = document.getElementById('btn-trigger-test-toast');
+      const btnSave = document.getElementById('btn-save-notif-prefs');
+
+      if (btnNotif && dialog) {
+        btnNotif.addEventListener('click', () => {
+          if (typeof dialog.showModal === 'function') dialog.showModal();
+          else dialog.setAttribute('open', 'true');
+        });
+      }
+
+      if (btnClose && dialog) {
+        btnClose.addEventListener('click', () => {
+          if (typeof dialog.close === 'function') dialog.close();
+          else dialog.removeAttribute('open');
+        });
+      }
+
+      if (btnTest) {
+        btnTest.addEventListener('click', () => {
+          showSaansToast(
+            'Inversion Trapping Alert',
+            'Overnight thermal inversion active. Boundary layer dropping to 240m. Seal windows by 18:00.',
+            'warning'
+          );
+        });
+      }
+
+      if (btnSave && dialog) {
+        btnSave.addEventListener('click', () => {
+          try {
+            const prefs = {
+              threshold: document.getElementById('notif-pref-threshold')?.checked,
+              morning: document.getElementById('notif-pref-morning')?.checked,
+              vent: document.getElementById('notif-pref-vent')?.checked,
+              stagnation: document.getElementById('notif-pref-stagnation')?.checked
+            };
+            localStorage.setItem('saans_notif_prefs', JSON.stringify(prefs));
+          } catch (e) {}
+
+          if (typeof dialog.close === 'function') dialog.close();
+          else dialog.removeAttribute('open');
+
+          showSaansToast('Preferences Saved', 'Air hygiene notifications updated successfully.', 'success');
+        });
+      }
+    }
+
+    function playAudioChime() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12); // A5
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.35);
+      } catch (e) {}
+    }
+
+    function showSaansToast(title, message, type) {
+      const container = document.getElementById('saans-toast-container');
+      if (!container) return;
+
+      playAudioChime();
+
+      const toast = document.createElement('div');
+      toast.className = 'saans-toast';
+      const icon = type === 'warning' ? '⚠️' : (type === 'danger' ? '🚨' : '✨');
+
+      toast.innerHTML = `
+        <div style="font-size: 1.25rem;">${icon}</div>
+        <div style="flex: 1;">
+          <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-main);">${title}</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">${message}</div>
+        </div>
+        <button type="button" style="background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--text-muted); padding: 0 4px;" aria-label="Dismiss">&times;</button>
+      `;
+
+      toast.querySelector('button').addEventListener('click', () => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => toast.remove(), 300);
+      });
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateX(100%)';
+          setTimeout(() => toast.remove(), 300);
+        }
+      }, 4500);
+    }
+
+    // ==================== CLEAN AIR HOUSEHOLD ACTION PASSPORT ENGINE ====================
+    function initPassportEngine() {
+      const btnHeader = document.getElementById('btn-open-passport-header');
+      const btnTab = document.getElementById('btn-export-passport-tab');
+      const dialog = document.getElementById('saans-passport-dialog');
+      const btnClose = document.getElementById('btn-close-passport');
+      const btnPrint = document.getElementById('btn-print-passport');
+
+      function openPassport() {
+        populatePassportData();
+        if (typeof dialog.showModal === 'function') dialog.showModal();
+        else dialog.setAttribute('open', 'true');
+      }
+
+      if (btnHeader && dialog) btnHeader.addEventListener('click', openPassport);
+      if (btnTab && dialog) btnTab.addEventListener('click', openPassport);
+
+      if (btnClose && dialog) {
+        btnClose.addEventListener('click', () => {
+          if (typeof dialog.close === 'function') dialog.close();
+          else dialog.removeAttribute('open');
+        });
+      }
+
+      if (btnPrint) {
+        btnPrint.addEventListener('click', () => {
+          window.print();
+        });
+      }
+    }
+
+    function populatePassportData() {
+      const dateEl = document.getElementById('passport-date-val');
+      if (dateEl) {
+        const d = new Date();
+        dateEl.textContent = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      }
+
+      const cityKey = citySelect ? citySelect.value : 'delhi';
+      const cData = CITIES[cityKey] || CITIES.delhi;
+
+      const censusEl = document.getElementById('passport-census-text');
+      if (censusEl) {
+        censusEl.innerHTML = `
+          <strong>Location:</strong> ${cData.name}<br>
+          <strong>Adults:</strong> 2 · <strong>Children:</strong> 1 (Age 6) · <strong>Seniors:</strong> 0<br>
+          <strong>Vulnerabilities:</strong> Pediatric Asthma Risk (DPDP Encrypted KMS-AES-256)<br>
+          <strong>Living Envelope:</strong> 2BHK Apartment (~75 m²), Weatherstripped Seals
+        `;
+      }
+
+      const targetEl = document.getElementById('passport-exposure-targets');
+      if (targetEl) {
+        const basePM = cData.pollutants ? cData.pollutants.pm25 : 180;
+        const baselineDose = Math.round(basePM * 0.8 * 0.75 * 10) / 10;
+        const planDose = Math.round(baselineDose * 0.25 * 10) / 10;
+        targetEl.innerHTML = `
+          <strong>Baseline Inhaled Dose:</strong> ${baselineDose} µg/day PM2.5 (≈${(baselineDose / 22).toFixed(1)} cigs)<br>
+          <strong>Target Under Saans Protocol:</strong> ${planDose} µg/day PM2.5 (≈${(planDose / 22).toFixed(1)} cigs)<br>
+          <span style="color: var(--accent); font-weight: 700;">Protection Factor: 75.0% Exposure Reduction</span>
+        `;
+      }
+    }
+
+    function initWindCompass() {
+      const cityKey = citySelect ? citySelect.value : 'delhi';
+      const stations = CITY_STATIONS[cityKey] || CITY_STATIONS.delhi;
+      const st = stations.find(s => s.id === activeStationId) || stations[0];
+      if (st) drawWindCompass(st.windDir, st.windSpeed);
+    }
+
     // Initial renders
     updateCityAQI();
+    renderStationPills('delhi');
+    initWindCompass();
+    initDiurnalScrubber();
+    initCommutePlanner();
+    initNotificationCenter();
+    initPassportEngine();
     calculateDose();
     renderMyths('all', '');
     updateDIYCalc();
@@ -5246,33 +6574,6 @@
 
     let camTargetPos = null;
     let camTargetLook = null;
-
-    const DIURNAL_PBL_DATA = {
-      0:  { pbl: 190, y: 26, dT: '+5.6 °C', pm: 210, indoor: 24, mix: 'Suppressed (5%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -25, sunX: 0, fogDark: 0x0c1322, fogLight: 0xc4ccd8 },
-      1:  { pbl: 180, y: 24, dT: '+5.8 °C', pm: 218, indoor: 25, mix: 'Suppressed (4%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -35, sunX: 15, fogDark: 0x0a101e, fogLight: 0xbcc5d2 },
-      2:  { pbl: 175, y: 23, dT: '+6.0 °C', pm: 225, indoor: 26, mix: 'Suppressed (3%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -45, sunX: 25, fogDark: 0x080e1a, fogLight: 0xb5bfcc },
-      3:  { pbl: 170, y: 22, dT: '+6.2 °C', pm: 230, indoor: 26, mix: 'Suppressed (3%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -50, sunX: 35, fogDark: 0x080c16, fogLight: 0xb0bac7 },
-      4:  { pbl: 165, y: 22, dT: '+6.4 °C', pm: 238, indoor: 27, mix: 'Suppressed (2%)', status: 'Pre-Dawn Minimum PBL', statusColor: 'var(--danger)', sunY: -40, sunX: 45, fogDark: 0x090d18, fogLight: 0xb0bac7 },
-      5:  { pbl: 170, y: 23, dT: '+6.1 °C', pm: 245, indoor: 28, mix: 'Suppressed (4%)', status: 'Coldest Ground Pool', statusColor: 'var(--danger)', sunY: -20, sunX: 55, fogDark: 0x141624, fogLight: 0xb8c0cd },
-      6:  { pbl: 190, y: 26, dT: '+5.8 °C', pm: 255, indoor: 29, mix: 'Suppressed (6%)', status: 'Dawn Surface Stagnation', statusColor: 'var(--danger)', sunY: -2, sunX: 65, fogDark: 0x242025, fogLight: 0xc8b8a8 },
-      7:  { pbl: 220, y: 30, dT: '+5.2 °C', pm: 268, indoor: 30, mix: 'Suppressed (8% Max)', status: 'Morning Rush & Capped Inversion', statusColor: 'var(--danger)', sunY: 15, sunX: 75, fogDark: 0x2e2520, fogLight: 0xd8c2b0 },
-      8:  { pbl: 290, y: 38, dT: '+3.9 °C', pm: 235, indoor: 26, mix: 'Nascent Convection (18%)', status: 'Early Solar Heating', statusColor: '#c27803', sunY: 35, sunX: 80, fogDark: 0x332f2c, fogLight: 0xded2c4 },
-      9:  { pbl: 420, y: 54, dT: '+2.1 °C', pm: 185, indoor: 21, mix: 'Convective Rising (34%)', status: 'Lid Uplift Beginning', statusColor: '#c27803', sunY: 55, sunX: 70, fogDark: 0x343a42, fogLight: 0xd6e0ec },
-      10: { pbl: 680, y: 86, dT: '+0.4 °C', pm: 135, indoor: 16, mix: 'Moderate Convection (52%)', status: 'Inversion Breached', statusColor: 'var(--success)', sunY: 75, sunX: 55, fogDark: 0x2d3e52, fogLight: 0xcfe0f2 },
-      11: { pbl: 1050, y: 130, dT: '-1.4 °C', pm: 92, indoor: 12, mix: 'Active Mixing (75%)', status: 'Strong Atmospheric Dilution', statusColor: 'var(--success)', sunY: 90, sunX: 35, fogDark: 0x284768, fogLight: 0xc5def7 },
-      12: { pbl: 1380, y: 170, dT: '-2.8 °C', pm: 68, indoor: 9, mix: 'Peak Convective Mixing (90%)', status: 'Uncapped Convective Boundary', statusColor: 'var(--success)', sunY: 100, sunX: 10, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
-      13: { pbl: 1520, y: 185, dT: '-3.2 °C', pm: 55, indoor: 7, mix: 'Maximum Dilution (96%)', status: 'Full Boundary Layer Cleansing', statusColor: 'var(--success)', sunY: 98, sunX: -15, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
-      14: { pbl: 1650, y: 195, dT: '-3.5 °C', pm: 52, indoor: 7, mix: 'Peak Convective Cleansing (100%)', status: 'Maximum Convective Cleansing', statusColor: 'var(--success)', sunY: 92, sunX: -35, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
-      15: { pbl: 1580, y: 190, dT: '-3.0 °C', pm: 58, indoor: 8, mix: 'Strong Convection (92%)', status: 'Optimal Outdoor Ventilation', statusColor: 'var(--success)', sunY: 80, sunX: -55, fogDark: 0x25476f, fogLight: 0xc4dcf5 },
-      16: { pbl: 1350, y: 165, dT: '-1.8 °C', pm: 74, indoor: 10, mix: 'Active Mixing (78%)', status: 'Solar Heating Weakening', statusColor: 'var(--success)', sunY: 65, sunX: -70, fogDark: 0x2c4360, fogLight: 0xcbd8ea },
-      17: { pbl: 980, y: 120, dT: '-0.2 °C', pm: 108, indoor: 14, mix: 'Subsiding Convection (50%)', status: 'Late Afternoon Cooling', statusColor: '#c27803', sunY: 42, sunX: -80, fogDark: 0x323a48, fogLight: 0xd2d2d8 },
-      18: { pbl: 620, y: 78, dT: '+1.6 °C', pm: 152, indoor: 18, mix: 'Rapid Surface Cooling (28%)', status: 'Inversion Reform Commences', statusColor: '#c27803', sunY: 20, sunX: -85, fogDark: 0x342928, fogLight: 0xd6c2be },
-      19: { pbl: 380, y: 48, dT: '+3.4 °C', pm: 198, indoor: 22, mix: 'Weak Mixing (14%)', status: 'Evening Traffic Surge & Trapping', statusColor: 'var(--danger)', sunY: 4, sunX: -88, fogDark: 0x281d22, fogLight: 0xccb2b2 },
-      20: { pbl: 300, y: 38, dT: '+4.2 °C', pm: 220, indoor: 25, mix: 'Suppressed (9%)', status: 'Shallow Capping Inversion', statusColor: 'var(--danger)', sunY: -10, sunX: -80, fogDark: 0x1a1624, fogLight: 0xc2becc },
-      21: { pbl: 250, y: 32, dT: '+4.8 °C', pm: 215, indoor: 24, mix: 'Suppressed (7%)', status: 'Radiative Inversion Established', statusColor: 'var(--danger)', sunY: -20, sunX: -65, fogDark: 0x141422, fogLight: 0xb8b8c8 },
-      22: { pbl: 220, y: 28, dT: '+5.1 °C', pm: 210, indoor: 23, mix: 'Suppressed (6%)', status: 'Cold Nocturnal Air Drainage', statusColor: 'var(--danger)', sunY: -30, sunX: -45, fogDark: 0x101220, fogLight: 0xb2b4c2 },
-      23: { pbl: 200, y: 26, dT: '+5.4 °C', pm: 205, indoor: 23, mix: 'Suppressed (5%)', status: 'Midnight Stagnation Pool', statusColor: 'var(--danger)', sunY: -35, sunX: -20, fogDark: 0x0c111e, fogLight: 0xacafbd },
-    };
 
     function createProceduralBuildingTexture() {
       const canvas = document.createElement('canvas');
