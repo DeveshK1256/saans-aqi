@@ -215,14 +215,50 @@
       margin-bottom: 10px;
     }
 
-    /* --- Mathematical Display Container --- */
+    /* --- Mathematical Display Container with 3D Micro-Interactions --- */
     .formula-card {
-      background: #FAFCFB;
-      border: 1px solid #CDE2D8;
-      border-left: 4px solid var(--accent);
-      border-radius: var(--radius-sm);
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
       padding: 20px 24px;
       margin: 18px 0 20px;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      will-change: transform;
+    }
+
+    .formula-card:hover {
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+      border-color: var(--accent);
+    }
+
+    .scroll-reveal {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .scroll-reveal.visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    #methodology-bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
     }
 
     .formula-header {
@@ -335,6 +371,7 @@
   </style>
 </head>
 <body>
+  <canvas id="methodology-bg-canvas" aria-hidden="true"></canvas>
   <div class="container">
     <header>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -352,7 +389,7 @@
 
     <main>
       <!-- SECTION 1 -->
-      <section>
+      <section class="scroll-reveal">
         <h2>1. National Air Quality Index (NAQI) — India CPCB Standard</h2>
         <p>Calculated in strict compliance with the Central Pollution Control Board (CPCB) and Ministry of Environment, Forest and Climate Change (MoEFCC) 2014 standard by linear interpolation within each criteria pollutant breakpoint band:</p>
         
@@ -387,9 +424,47 @@
         <p><strong>CPCB Category Bands:</strong> Good (0–50), Satisfactory (51–100), Moderate (101–200), Poor (201–300), Very Poor (301–400), Severe (401–500).</p>
       </section>
 
-      <!-- SECTION 2 -->
-      <section>
-        <h2>2. Single-Zone Indoor Mass Balance Differential Model</h2>
+      <!-- SECTION 2: ATMOSPHERIC INVERSION & BOUNDARY LAYER DYNAMICS -->
+      <section class="scroll-reveal">
+        <h2>2. Atmospheric Boundary Layer (PBL) & Thermal Inversion Modeling</h2>
+        <p>Winter smog stagnation across South Asian river basins is governed by the diurnal evolution of the planetary boundary layer mixing height ($z_{\text{mix}}$). Radiative ground cooling generates strong nocturnal temperature inversions ($dT/dz > 0$) that trap vehicular and industrial particulates beneath a shallow ceiling ($<250\text{ m}$):</p>
+
+        <!-- Interactive 3D Atmospheric Inversion & Boundary Layer Simulator Widget -->
+        <div class="formula-card" style="background: var(--surface-subtle); border: 2px solid var(--accent); margin: 20px 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: inline-block;"></span>
+              <strong style="font-size: 1.05rem;">Interactive 3D Atmospheric Boundary Layer (PBL) & Inversion Simulator</strong>
+            </div>
+            <span style="font-size: 0.8rem; background: var(--accent-light); color: var(--accent); padding: 3px 10px; border-radius: 12px; font-weight: 700;">
+              dT/dz Physical Model
+            </span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;">
+            Drag the altitude scrubber or hover the column to inspect the thermal inversion lid, vertical temperature gradient, and trapped particulate density.
+          </p>
+
+          <div style="position: relative; width: 100%; height: 260px; background: var(--surface-bg); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); overflow: hidden;">
+            <canvas id="meth-pbl-canvas" width="840" height="260" style="width: 100%; height: 100%; display: block;"></canvas>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 260px;">
+              <label for="meth-alt-slider" style="font-size: 0.85rem; font-weight: 600; white-space: nowrap;">Altitude (z):</label>
+              <input type="range" id="meth-alt-slider" min="0" max="2000" step="10" value="220" style="flex: 1;">
+              <span id="meth-alt-label" style="font-size: 0.88rem; font-weight: 700; color: var(--accent); min-width: 60px;">220 m</span>
+            </div>
+            <div style="display: flex; gap: 14px; font-size: 0.82rem; font-weight: 600;">
+              <div>Gradient (dT/dz): <span id="meth-grad-label" style="color: #ef4444;">+5.2 °C (Inversion Lid)</span></div>
+              <div>PM2.5: <span id="meth-pm-label" style="color: #ef4444;">268 µg/m³</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3 -->
+      <section class="scroll-reveal">
+        <h2>3. Single-Zone Indoor Mass Balance Differential Model</h2>
         <p>Urban families spend 70–90% of their day indoors. Indoor air quality is modeled using the classical physical mass balance differential equation (Nazaroff, W. W., 2004, <em>Indoor particle dynamics</em>):</p>
         
         <div class="formula-card">
@@ -429,9 +504,9 @@
         </div>
       </section>
 
-      <!-- SECTION 3 -->
-      <section>
-        <h2>3. Personal Daily Inhaled Dose Model</h2>
+      <!-- SECTION 4 -->
+      <section class="scroll-reveal">
+        <h2>4. Personal Daily Inhaled Dose Model</h2>
         <p>Physical particulate mass deposited in human airways is computed by integrating microenvironmental concentrations with activity-specific volumetric inhalation rates (US EPA Exposure Factors Handbook, 2011, Chapter 6):</p>
         
         <div class="formula-card">
@@ -458,9 +533,9 @@
         </div>
       </section>
 
-      <!-- SECTION 4 -->
-      <section>
-        <h2>4. What-If Simulator & Two-Way Community Impact</h2>
+      <!-- SECTION 5 -->
+      <section class="scroll-reveal">
+        <h2>5. What-If Simulator & Two-Way Community Impact</h2>
         
         <div class="formula-card">
           <div class="formula-header">Equation 8: Personal Avoided Dose & Strict Zero-Change Invariant</div>
@@ -485,9 +560,9 @@
         </div>
       </section>
 
-      <!-- SECTION 5 -->
-      <section>
-        <h2>5. Parameter Registry & Authoritative Citations</h2>
+      <!-- SECTION 6 -->
+      <section class="scroll-reveal">
+        <h2>6. Parameter Registry & Authoritative Citations</h2>
         <p>All constants are externally sourced from peer-reviewed literature or official regulatory bodies. Zero hardcoded numbers in business logic.</p>
         <table>
           <thead>
@@ -574,9 +649,9 @@
         </table>
       </section>
 
-      <!-- SECTION 6 -->
-      <section>
-        <h2>6. Relatable Communication Units & Mandatory Caveat</h2>
+      <!-- SECTION 7 -->
+      <section class="scroll-reveal">
+        <h2>7. Relatable Communication Units & Mandatory Caveat</h2>
         <div class="caveat-box">
           <strong>Mandatory Scientific Caveat (Part 3.4 & SCI-06):</strong><br>
           Cigarette equivalence is derived using Berkeley Earth's empirical conversion rule (22 µg/m³ 24h average PM2.5 ≈ 1 cigarette). This comparison is deployed strictly as an intuitive risk communication metaphor for the public. Ambient urban air pollution differs fundamentally from directly inhaled cigarette smoke in chemical speciation, absence of heavy tobacco pyrolysis products, particle morphology, and physiological deposition mechanics. <em>It must never be presented as a medical diagnosis or clinical prognosis.</em>
@@ -634,7 +709,272 @@
       } else {
         window.addEventListener('load', renderMath);
       }
+
+      // Initialize Animation & 3D Micro-Interactions
+      initScrollReveal();
+      init3DCardTilt();
+      initMethodologyDust();
+      initPBLSimulator();
     });
+
+    // ==================== 1. SCROLL REVEAL OBSERVER ====================
+    function initScrollReveal() {
+      const reveals = document.querySelectorAll('.scroll-reveal');
+      if (!('IntersectionObserver' in window)) {
+        reveals.forEach(el => el.classList.add('visible'));
+        return;
+      }
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      reveals.forEach(el => obs.observe(el));
+    }
+
+    // ==================== 2. 3D CARD TILT MICRO-INTERACTIONS ====================
+    function init3DCardTilt() {
+      const cards = document.querySelectorAll('.formula-card, .axiom-box');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const cX = rect.width / 2;
+          const cY = rect.height / 2;
+          const rotX = ((y - cY) / cY) * -4;
+          const rotY = ((x - cX) / cX) * 4;
+          card.style.transform = `perspective(900px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translate3d(0, -2px, 0)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    }
+
+    // ==================== 3. ATMOSPHERIC DUST BACKGROUND CANVAS ====================
+    function initMethodologyDust() {
+      const canvas = document.getElementById('methodology-bg-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      for (let i = 0; i < 45; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: Math.random() * 0.4 + 0.1,
+          radius: Math.random() * 2.2 + 0.8,
+          alpha: Math.random() * 0.35 + 0.15
+        });
+      }
+
+      function loop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        ctx.fillStyle = isDark ? '#38bdf8' : '#007A5A';
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y -= p.vy; // gentle upward thermal drift
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.globalAlpha = p.alpha;
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1.0;
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    }
+
+    // ==================== 4. INTERACTIVE 3D ATMOSPHERIC INVERSION & PBL SIMULATOR ====================
+    function initPBLSimulator() {
+      const canvas = document.getElementById('meth-pbl-canvas');
+      const slider = document.getElementById('meth-alt-slider');
+      const altLabel = document.getElementById('meth-alt-label');
+      const gradLabel = document.getElementById('meth-grad-label');
+      const pmLabel = document.getElementById('meth-pm-label');
+      if (!canvas || !slider) return;
+      const ctx = canvas.getContext('2d');
+
+      let currentAlt = 220; // meters
+      let particles = [];
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          yNorm: Math.pow(Math.random(), 2.2), // heavily near ground
+          vx: (Math.random() - 0.5) * 0.7,
+          vy: (Math.random() - 0.5) * 0.3,
+          radius: Math.random() * 2.6 + 1.2
+        });
+      }
+
+      function getAtmosphericState(alt) {
+        if (alt < 220) {
+          const ratio = alt / 220;
+          return {
+            temp: (14.2 + ratio * 5.2).toFixed(1),
+            grad: '+5.2 °C (Inversion Lid)',
+            gradColor: '#ef4444',
+            pm: Math.round(268 - ratio * 45),
+            pmColor: '#ef4444',
+            layer: 'Ground Inversion Trapping Zone (dT/dz > 0)'
+          };
+        } else if (alt < 1400) {
+          const ratio = (alt - 220) / (1400 - 220);
+          return {
+            temp: (19.4 - ratio * 9.8).toFixed(1),
+            grad: '-6.5 °C/km (Dry Adiabatic)',
+            gradColor: '#c27803',
+            pm: Math.round(223 - ratio * 175),
+            pmColor: '#c27803',
+            layer: 'Convective Mixing Troposphere (dT/dz < 0)'
+          };
+        } else {
+          const ratio = (alt - 1400) / 600;
+          return {
+            temp: (9.6 - ratio * 4.2).toFixed(1),
+            grad: '-9.8 °C/km (Environmental Lapse)',
+            gradColor: '#10b981',
+            pm: Math.max(12, Math.round(48 - ratio * 32)),
+            pmColor: '#10b981',
+            layer: 'Free Clean Troposphere (Unconstrained Background)'
+          };
+        }
+      }
+
+      function updateReadout(alt) {
+        currentAlt = alt;
+        const state = getAtmosphericState(alt);
+        if (altLabel) altLabel.textContent = `${alt} m`;
+        if (gradLabel) {
+          gradLabel.textContent = `${state.grad} · ${state.temp} °C`;
+          gradLabel.style.color = state.gradColor;
+        }
+        if (pmLabel) {
+          pmLabel.textContent = `${state.pm} µg/m³ · ${state.layer}`;
+          pmLabel.style.color = state.pmColor;
+        }
+      }
+
+      slider.addEventListener('input', (e) => {
+        updateReadout(parseInt(e.target.value, 10));
+      });
+
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const y = e.clientY - rect.top;
+        const normY = 1 - Math.min(Math.max(y / rect.height, 0), 1);
+        const alt = Math.round(normY * 2000);
+        slider.value = alt;
+        updateReadout(alt);
+      });
+
+      updateReadout(220);
+
+      function render() {
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const now = performance.now() * 0.002;
+
+        const lidY = h * (1 - 220 / 2000);
+
+        // Ground Layer
+        const groundGrad = ctx.createLinearGradient(0, h, 0, lidY);
+        if (isDark) {
+          groundGrad.addColorStop(0, 'rgba(239, 68, 68, 0.22)');
+          groundGrad.addColorStop(1, 'rgba(245, 158, 11, 0.12)');
+        } else {
+          groundGrad.addColorStop(0, 'rgba(239, 68, 68, 0.12)');
+          groundGrad.addColorStop(1, 'rgba(245, 158, 11, 0.06)');
+        }
+        ctx.fillStyle = groundGrad;
+        ctx.fillRect(0, lidY, w, h - lidY);
+
+        // Free Troposphere (above lid)
+        const skyGrad = ctx.createLinearGradient(0, lidY, 0, 0);
+        if (isDark) {
+          skyGrad.addColorStop(0, 'rgba(56, 189, 248, 0.05)');
+          skyGrad.addColorStop(1, 'rgba(56, 189, 248, 0.18)');
+        } else {
+          skyGrad.addColorStop(0, 'rgba(0, 122, 90, 0.03)');
+          skyGrad.addColorStop(1, 'rgba(0, 122, 90, 0.12)');
+        }
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, w, lidY);
+
+        // Inversion Boundary Wave Line
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let x = 0; x <= w; x += 10) {
+          const wave = Math.sin(x * 0.03 + now * 2) * 4.5 + Math.cos(x * 0.015 + now * 1.5) * 2.5;
+          const y = lidY + wave;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        ctx.font = '700 11px system-ui, sans-serif';
+        ctx.fillStyle = '#0284c7';
+        ctx.fillText('Thermal Inversion Lid (z_mix = 220 m · dT/dz > 0)', 20, lidY - 10);
+
+        // Active altitude cursor line
+        const cursorY = h * (1 - currentAlt / 2000);
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(0, cursorY);
+        ctx.lineTo(w, cursorY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#10b981';
+        ctx.fillText(`Target z = ${currentAlt} m`, w - 130, cursorY - 6);
+
+        // Particles trapped below lid
+        for (let i = 0; i < particles.length; i++) {
+          const pt = particles[i];
+          pt.x += pt.vx;
+          if (pt.x < 0) pt.x = w;
+          if (pt.x > w) pt.x = 0;
+
+          const py = h - pt.yNorm * (h - lidY);
+          ctx.beginPath();
+          ctx.arc(pt.x, py, pt.radius, 0, Math.PI * 2);
+          ctx.fillStyle = py > lidY ? '#ef4444' : '#10b981';
+          ctx.globalAlpha = 0.6;
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1.0;
+
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+    }
   </script>
 </body>
 </html>
