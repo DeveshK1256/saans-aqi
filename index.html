@@ -10,6 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
   <!-- Client-Side PDF Generator for Household Reports (DPDP Act 2023) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- 3D WebGL Visualization Engine (Three.js & OrbitControls) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script>
     (function() {
       try {
@@ -1110,6 +1113,212 @@
     .switch input:checked + .slider { background-color: var(--accent); }
     .switch input:checked + .slider::before { transform: translateX(22px); }
 
+    /* --- 3D Atmospheric Inversion & Scene Styles --- */
+    .scene-controls-bar {
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+    .control-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .control-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .preset-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .time-preset-btn, .cam-preset-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .time-preset-btn:hover, .cam-preset-btn:hover {
+      background: var(--surface-border);
+    }
+    .time-preset-btn.active, .cam-preset-btn.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+    }
+    .toggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-label input[type="checkbox"] {
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+    }
+    .scene-3d-viewport-container {
+      position: relative;
+      width: 100%;
+      height: 580px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: #0b110f;
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    }
+    #scene-3d-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    #scene-3d-canvas:active {
+      cursor: grabbing;
+    }
+    .scene-hud-card {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(14, 18, 16, 0.88);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: #FFFFFF;
+      font-size: 0.82rem;
+      pointer-events: none;
+      z-index: 10;
+      max-width: 320px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+    .hud-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #34D399;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .hud-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34D399;
+      display: inline-block;
+      box-shadow: 0 0 8px #34D399;
+    }
+    .hud-metric-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+    }
+    .hud-label {
+      color: #A3ACA7;
+    }
+    .hud-val {
+      font-weight: 700;
+      color: #F4F6F5;
+      font-family: monospace;
+    }
+    .scene-hud-legend {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(14, 18, 16, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 0.76rem;
+      color: #E2E8F0;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .legend-chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .chip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .chip-red { background: #F87171; box-shadow: 0 0 6px #F87171; }
+    .chip-cyan { background: #38BDF8; box-shadow: 0 0 6px #38BDF8; }
+    .chip-green { background: #34D399; box-shadow: 0 0 6px #34D399; }
+    .scene-hud-instructions {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(14, 18, 16, 0.8);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.74rem;
+      color: #94A3B8;
+      z-index: 10;
+      pointer-events: none;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .info-card {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+    .info-card-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .info-card-text {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .btn-3d-jump {
+      transition: all 0.2s ease;
+    }
+    .btn-3d-jump:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
     /* Footer */
     footer {
       margin-top: 60px;
@@ -1519,6 +1728,10 @@
           <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
           <span>Live AQI & Routine</span>
         </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-3d" id="btn-nav-3d">
+          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          <span>3D Atmosphere & Canopy</span>
+        </button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-household">
           <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <span>Household Profile</span>
@@ -1730,14 +1943,20 @@
 
           <!-- Stagnation Alert Banner -->
           <div id="stagnation-alert-banner" style="background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 16px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 1.5rem;">🚨</span>
-              <div>
-                <strong style="color: #991B1B; font-size: 0.95rem;">Atmospheric Stagnation Warning: Trapped Air Tonight (F22)</strong>
-                <p style="margin: 4px 0 0 0; font-size: 0.84rem; color: #7F1D1D;" id="stagnation-desc">
-                  Surface wind speed is critical at 1.1 m/s (&lt;1.5 m/s threshold) with overnight planetary boundary layer height dropping below 350m. Ground-level vehicular exhaust and biomass emissions cannot disperse. Seal all windows by 18:00.
-                </p>
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 10px; max-width: 680px;">
+                <span style="font-size: 1.5rem;">🚨</span>
+                <div>
+                  <strong style="color: #991B1B; font-size: 0.95rem;">Atmospheric Stagnation Warning: Trapped Air Tonight (F22)</strong>
+                  <p style="margin: 4px 0 0 0; font-size: 0.84rem; color: #7F1D1D;" id="stagnation-desc">
+                    Surface wind speed is critical at 1.1 m/s (&lt;1.5 m/s threshold) with overnight planetary boundary layer height dropping below 350m. Ground-level vehicular exhaust and biomass emissions cannot disperse. Seal all windows by 18:00.
+                  </p>
+                </div>
               </div>
+              <button type="button" class="btn btn-secondary btn-3d-jump" id="btn-jump-3d" style="background: var(--surface-card); border-color: #F87171; color: var(--danger); padding: 7px 14px; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
+                <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                <span>Launch 3D Inversion Simulator →</span>
+              </button>
             </div>
           </div>
 
@@ -1774,6 +1993,145 @@
 
           <div class="route-comparison-grid" id="route-comparison-container">
             <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3D: ATMOSPHERIC INVERSION & CITY CANOPY (3D WEBGL) ==================== -->
+    <div id="tab-3d" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="card-header">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h2 class="card-title">3D Atmospheric Boundary Layer & Urban Inversion Simulator</h2>
+              <p class="card-desc">Interactive 3D physical model of planetary boundary layer (PBL) thermal trapping, urban street canyons, and building indoor-outdoor air exchange.</p>
+            </div>
+            <a href="methodology.html" class="btn-reset" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="View Boundary Layer & Mass Balance Equations">
+              <svg class="saans-btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+              <span>Scientific Equations (F22, F24)</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 3D Controls Bar -->
+        <div class="scene-controls-bar">
+          <!-- Time-of-Day Quick Presets -->
+          <div class="control-row">
+            <span class="control-label">Time of Day (PBL Dynamic Inversion Cycle):</span>
+            <div class="preset-pills">
+              <button type="button" class="time-preset-btn active" data-time="7">07:00 Morning Smog Inversion (Lid &lt; 250m)</button>
+              <button type="button" class="time-preset-btn" data-time="14">14:00 Convective Cleansing (Lid &gt; 1,400m)</button>
+              <button type="button" class="time-preset-btn" data-time="19">19:30 Evening Traffic Peak</button>
+              <button type="button" class="time-preset-btn" data-time="23">23:30 Midnight Stagnation</button>
+            </div>
+          </div>
+
+          <!-- Time Scrubber Slider -->
+          <div class="control-row" style="margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.84rem; margin-bottom: 4px;">
+              <span>Hour Scrubber: <strong id="val-3d-time-label">07:00 AM (Morning Ground Inversion Peak)</strong></span>
+              <span id="val-3d-mixing-status" style="font-weight: 700; color: var(--danger);">Severe Thermal Trapping</span>
+            </div>
+            <input type="range" id="slider-3d-hour" min="0" max="23" value="7" step="1" style="width: 100%;">
+          </div>
+
+          <!-- Layer Toggles & Camera Angle Buttons -->
+          <div class="control-row" style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <label class="toggle-label">
+                <input type="checkbox" id="toggle-3d-lid" checked>
+                <span>Thermal Inversion Lid</span>
+              </label>
+              <label class="toggle-label">
+                <input type="checkbox" id="toggle-3d-particles" checked>
+                <span>PM2.5 Particle Stream</span>
+              </label>
+              <label class="toggle-label">
+                <input type="checkbox" id="toggle-3d-cutaway" checked>
+                <span>Indoor Building Cutaway</span>
+              </label>
+              <label class="toggle-label">
+                <input type="checkbox" id="toggle-3d-purifier" checked>
+                <span>Air Purifier Clean Cone</span>
+              </label>
+            </div>
+
+            <!-- Camera View Presets -->
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">View:</span>
+              <button type="button" class="cam-preset-btn active" id="btn-cam-aerial" title="Aerial overview of urban canopy">Aerial</button>
+              <button type="button" class="cam-preset-btn" id="btn-cam-inversion" title="Side profile showing thermal inversion boundary ceiling">Inversion Lid</button>
+              <button type="button" class="cam-preset-btn" id="btn-cam-street" title="Ground-level street canyon">Street</button>
+              <button type="button" class="cam-preset-btn" id="btn-cam-cutaway" title="Apartment cutaway showing HEPA filter flow">Room Cutaway</button>
+              <button type="button" class="cam-preset-btn" id="btn-cam-reset" title="Reset camera orbit">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D WebGL Canvas Viewport -->
+        <div id="scene-3d-viewport-container" class="scene-3d-viewport-container">
+          <canvas id="scene-3d-canvas"></canvas>
+
+          <!-- Floating Scientific HUD Telemetry (Top-Left) -->
+          <div class="scene-hud-card" id="scene-hud">
+            <div class="hud-header">
+              <span class="hud-dot"></span>
+              <span>Physical Boundary Layer Telemetry</span>
+            </div>
+            <div class="hud-metric-row">
+              <span class="hud-label">PBL Ceiling Altitude (z<sub>mix</sub>):</span>
+              <span class="hud-val" id="hud-pbl-height">220 m</span>
+            </div>
+            <div class="hud-metric-row">
+              <span class="hud-label">Inversion Strength (ΔT):</span>
+              <span class="hud-val" id="hud-inversion-strength">+5.2 °C</span>
+            </div>
+            <div class="hud-metric-row">
+              <span class="hud-label">Trapped Ambient PM2.5:</span>
+              <span class="hud-val" id="hud-pm25-val" style="color: var(--danger);">192 µg/m³ (CPCB)</span>
+            </div>
+            <div class="hud-metric-row">
+              <span class="hud-label">Convective Mixing:</span>
+              <span class="hud-val" id="hud-mixing-rate">Suppressed (8% Max)</span>
+            </div>
+            <div class="hud-metric-row" id="hud-room-row">
+              <span class="hud-label">Apartment Indoor PM2.5:</span>
+              <span class="hud-val" id="hud-indoor-val" style="color: var(--success);">24 µg/m³ (Purifier Active)</span>
+            </div>
+          </div>
+
+          <!-- Bottom Control Guide & Altitudes -->
+          <div class="scene-hud-legend">
+            <div class="legend-chip"><span class="chip-dot chip-red"></span> Trapped Ground Particulates (&gt;150 µg/m³)</div>
+            <div class="legend-chip"><span class="chip-dot chip-cyan"></span> Thermal Inversion Boundary Lid (dT/dz &gt; 0)</div>
+            <div class="legend-chip"><span class="chip-dot chip-green"></span> Indoor Decoupled Clean Zone (CADR Active)</div>
+          </div>
+
+          <div class="scene-hud-instructions">
+            <span>Left drag: Orbit · Right drag: Pan · Scroll: Zoom</span>
+          </div>
+        </div>
+
+        <!-- Physical Deep Dive Cards -->
+        <div class="grid-3" style="margin-top: 24px;">
+          <div class="info-card">
+            <div class="info-card-title">1. The Inversion Ceiling (Why Winter Smog Traps)</div>
+            <p class="info-card-text">
+              During clear winter nights, urban concrete and roads radiate heat into the atmosphere rapidly, creating a cold, dense surface layer. Warmer air aloft acts as a physical ceiling (Planetary Boundary Layer). Emissions cannot penetrate this barrier and pool within the bottom 200–300 meters.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">2. Street Canyon Stratification</div>
+            <p class="info-card-text">
+              Tall buildings along narrow roads create "urban street canyons" that trap heavy vehicular exhaust (NOx, elemental carbon, tire wear). Ground-floor and 1st-floor residents inhale 2.4× higher particulate peaks than residents on higher floors (6th+), who sit above the primary shear layer.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">3. Indoor Decoupling (Nazaroff 2004)</div>
+            <p class="info-card-text">
+              Indoor air quality is governed by the mass balance differential equation: <code>λ = a + k + Q<sub>p</sub>/V</code>. When windows are weather-stripped (low infiltration <code>a</code>) and an air purifier runs (high CADR <code>Q<sub>p</sub></code>), the room decouples from ambient outdoor pollution, reducing inhaled dose by 70–85%.
+            </p>
           </div>
         </div>
       </div>
@@ -2699,7 +3057,30 @@
         tab.setAttribute('aria-selected', 'true');
         const targetPane = document.getElementById(tab.getAttribute('data-tab'));
         if (targetPane) targetPane.classList.add('active');
+
+        if (tab.getAttribute('data-tab') === 'tab-3d') {
+          setTimeout(() => {
+            if (!scene3D) {
+              init3DScene();
+            } else {
+              onWindowResize3D();
+              is3DRunning = true;
+              animate3D();
+            }
+          }, 40);
+        } else {
+          is3DRunning = false;
+        }
       });
+    });
+
+    // Jump to 3D Atmospheric Simulator from Tab 1
+    document.getElementById('btn-jump-3d')?.addEventListener('click', () => {
+      const tab3dBtn = document.getElementById('btn-nav-3d');
+      if (tab3dBtn) {
+        tab3dBtn.click();
+        tab3dBtn.scrollIntoView({ behavior: 'smooth' });
+      }
     });
 
     // --- Tab 1: City Change & AQI Visualizer ---
@@ -3260,6 +3641,15 @@
         btn.classList.add('active');
         renderMyths(btn.getAttribute('data-filter'), document.getElementById('myth-search').value);
       });
+    });
+
+    // Jump to 3D Atmospheric Simulator from Tab 1
+    document.getElementById('btn-jump-3d')?.addEventListener('click', () => {
+      const tab3dBtn = document.getElementById('btn-nav-3d');
+      if (tab3dBtn) {
+        tab3dBtn.click();
+        tab3dBtn.scrollIntoView({ behavior: 'smooth' });
+      }
     });
 
     document.getElementById('myth-search').addEventListener('input', (e) => {
@@ -4603,6 +4993,786 @@
     renderForecastPlanner('delhi');
     renderCleanerRoute('delhi');
 
+    // ==================== 3D ATMOSPHERIC INVERSION & URBAN CANOPY SIMULATOR ====================
+    let scene3D = null;
+    let camera3D = null;
+    let renderer3D = null;
+    let controls3D = null;
+    let is3DRunning = false;
+    let clock3D = null;
+
+    let cityGroup = null;
+    let cutawayGroup = null;
+    let inversionLidMesh = null;
+    let inversionLidWire = null;
+    let purifierConeMesh = null;
+    let purifierGlowMesh = null;
+
+    let particlePoints = null;
+    let particleGeo = null;
+    let particlePositions = null;
+    let particleVelocities = null;
+    let particleBaseColors = null;
+    const NUM_PARTICLES = 1800;
+
+    let sunLight3D = null;
+    let ambientLight3D = null;
+    let hemiLight3D = null;
+
+    let currentLidY = 30;
+    let targetLidY = 30;
+    let activeHour3D = 7;
+
+    let camTargetPos = null;
+    let camTargetLook = null;
+
+    const DIURNAL_PBL_DATA = {
+      0:  { pbl: 190, y: 26, dT: '+5.6 °C', pm: 210, indoor: 24, mix: 'Suppressed (5%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -25, sunX: 0, fogDark: 0x0c1322, fogLight: 0xc4ccd8 },
+      1:  { pbl: 180, y: 24, dT: '+5.8 °C', pm: 218, indoor: 25, mix: 'Suppressed (4%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -35, sunX: 15, fogDark: 0x0a101e, fogLight: 0xbcc5d2 },
+      2:  { pbl: 175, y: 23, dT: '+6.0 °C', pm: 225, indoor: 26, mix: 'Suppressed (3%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -45, sunX: 25, fogDark: 0x080e1a, fogLight: 0xb5bfcc },
+      3:  { pbl: 170, y: 22, dT: '+6.2 °C', pm: 230, indoor: 26, mix: 'Suppressed (3%)', status: 'Severe Ground Inversion', statusColor: 'var(--danger)', sunY: -50, sunX: 35, fogDark: 0x080c16, fogLight: 0xb0bac7 },
+      4:  { pbl: 165, y: 22, dT: '+6.4 °C', pm: 238, indoor: 27, mix: 'Suppressed (2%)', status: 'Pre-Dawn Minimum PBL', statusColor: 'var(--danger)', sunY: -40, sunX: 45, fogDark: 0x090d18, fogLight: 0xb0bac7 },
+      5:  { pbl: 170, y: 23, dT: '+6.1 °C', pm: 245, indoor: 28, mix: 'Suppressed (4%)', status: 'Coldest Ground Pool', statusColor: 'var(--danger)', sunY: -20, sunX: 55, fogDark: 0x141624, fogLight: 0xb8c0cd },
+      6:  { pbl: 190, y: 26, dT: '+5.8 °C', pm: 255, indoor: 29, mix: 'Suppressed (6%)', status: 'Dawn Surface Stagnation', statusColor: 'var(--danger)', sunY: -2, sunX: 65, fogDark: 0x242025, fogLight: 0xc8b8a8 },
+      7:  { pbl: 220, y: 30, dT: '+5.2 °C', pm: 268, indoor: 30, mix: 'Suppressed (8% Max)', status: 'Morning Rush & Capped Inversion', statusColor: 'var(--danger)', sunY: 15, sunX: 75, fogDark: 0x2e2520, fogLight: 0xd8c2b0 },
+      8:  { pbl: 290, y: 38, dT: '+3.9 °C', pm: 235, indoor: 26, mix: 'Nascent Convection (18%)', status: 'Early Solar Heating', statusColor: '#c27803', sunY: 35, sunX: 80, fogDark: 0x332f2c, fogLight: 0xded2c4 },
+      9:  { pbl: 420, y: 54, dT: '+2.1 °C', pm: 185, indoor: 21, mix: 'Convective Rising (34%)', status: 'Lid Uplift Beginning', statusColor: '#c27803', sunY: 55, sunX: 70, fogDark: 0x343a42, fogLight: 0xd6e0ec },
+      10: { pbl: 680, y: 86, dT: '+0.4 °C', pm: 135, indoor: 16, mix: 'Moderate Convection (52%)', status: 'Inversion Breached', statusColor: 'var(--success)', sunY: 75, sunX: 55, fogDark: 0x2d3e52, fogLight: 0xcfe0f2 },
+      11: { pbl: 1050, y: 130, dT: '-1.4 °C', pm: 92, indoor: 12, mix: 'Active Mixing (75%)', status: 'Strong Atmospheric Dilution', statusColor: 'var(--success)', sunY: 90, sunX: 35, fogDark: 0x284768, fogLight: 0xc5def7 },
+      12: { pbl: 1380, y: 170, dT: '-2.8 °C', pm: 68, indoor: 9, mix: 'Peak Convective Mixing (90%)', status: 'Uncapped Convective Boundary', statusColor: 'var(--success)', sunY: 100, sunX: 10, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
+      13: { pbl: 1520, y: 185, dT: '-3.2 °C', pm: 55, indoor: 7, mix: 'Maximum Dilution (96%)', status: 'Full Boundary Layer Cleansing', statusColor: 'var(--success)', sunY: 98, sunX: -15, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
+      14: { pbl: 1650, y: 195, dT: '-3.5 °C', pm: 52, indoor: 7, mix: 'Peak Convective Cleansing (100%)', status: 'Maximum Convective Cleansing', statusColor: 'var(--success)', sunY: 92, sunX: -35, fogDark: 0x224c7a, fogLight: 0xc0dcf9 },
+      15: { pbl: 1580, y: 190, dT: '-3.0 °C', pm: 58, indoor: 8, mix: 'Strong Convection (92%)', status: 'Optimal Outdoor Ventilation', statusColor: 'var(--success)', sunY: 80, sunX: -55, fogDark: 0x25476f, fogLight: 0xc4dcf5 },
+      16: { pbl: 1350, y: 165, dT: '-1.8 °C', pm: 74, indoor: 10, mix: 'Active Mixing (78%)', status: 'Solar Heating Weakening', statusColor: 'var(--success)', sunY: 65, sunX: -70, fogDark: 0x2c4360, fogLight: 0xcbd8ea },
+      17: { pbl: 980, y: 120, dT: '-0.2 °C', pm: 108, indoor: 14, mix: 'Subsiding Convection (50%)', status: 'Late Afternoon Cooling', statusColor: '#c27803', sunY: 42, sunX: -80, fogDark: 0x323a48, fogLight: 0xd2d2d8 },
+      18: { pbl: 620, y: 78, dT: '+1.6 °C', pm: 152, indoor: 18, mix: 'Rapid Surface Cooling (28%)', status: 'Inversion Reform Commences', statusColor: '#c27803', sunY: 20, sunX: -85, fogDark: 0x342928, fogLight: 0xd6c2be },
+      19: { pbl: 380, y: 48, dT: '+3.4 °C', pm: 198, indoor: 22, mix: 'Weak Mixing (14%)', status: 'Evening Traffic Surge & Trapping', statusColor: 'var(--danger)', sunY: 4, sunX: -88, fogDark: 0x281d22, fogLight: 0xccb2b2 },
+      20: { pbl: 300, y: 38, dT: '+4.2 °C', pm: 220, indoor: 25, mix: 'Suppressed (9%)', status: 'Shallow Capping Inversion', statusColor: 'var(--danger)', sunY: -10, sunX: -80, fogDark: 0x1a1624, fogLight: 0xc2becc },
+      21: { pbl: 250, y: 32, dT: '+4.8 °C', pm: 215, indoor: 24, mix: 'Suppressed (7%)', status: 'Radiative Inversion Established', statusColor: 'var(--danger)', sunY: -20, sunX: -65, fogDark: 0x141422, fogLight: 0xb8b8c8 },
+      22: { pbl: 220, y: 28, dT: '+5.1 °C', pm: 210, indoor: 23, mix: 'Suppressed (6%)', status: 'Cold Nocturnal Air Drainage', statusColor: 'var(--danger)', sunY: -30, sunX: -45, fogDark: 0x101220, fogLight: 0xb2b4c2 },
+      23: { pbl: 200, y: 26, dT: '+5.4 °C', pm: 205, indoor: 23, mix: 'Suppressed (5%)', status: 'Midnight Stagnation Pool', statusColor: 'var(--danger)', sunY: -35, sunX: -20, fogDark: 0x0c111e, fogLight: 0xacafbd },
+    };
+
+    function createProceduralBuildingTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 64;
+      canvas.height = 64;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#222831';
+      ctx.fillRect(0, 0, 64, 64);
+
+      // Grid of illuminated windows
+      ctx.fillStyle = '#fce49f';
+      for (let y = 4; y < 60; y += 10) {
+        for (let x = 4; x < 60; x += 10) {
+          if (Math.random() > 0.3) {
+            ctx.fillRect(x, y, 6, 6);
+          }
+        }
+      }
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      return tex;
+    }
+
+    function init3DScene() {
+      const container = document.getElementById('scene-3d-viewport-container');
+      const canvas = document.getElementById('scene-3d-canvas');
+      if (!container || !canvas || typeof THREE === 'undefined') return;
+
+      const width = container.clientWidth || 800;
+      const height = container.clientHeight || 560;
+
+      scene3D = new THREE.Scene();
+      const isDark = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark';
+      const initialFog = isDark ? 0x161c28 : 0xd0d8e2;
+      scene3D.background = new THREE.Color(initialFog);
+      scene3D.fog = new THREE.FogExp2(initialFog, 0.0035);
+
+      camera3D = new THREE.PerspectiveCamera(45, width / height, 1, 1500);
+      camera3D.position.set(110, 125, 150);
+
+      renderer3D = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: false,
+        powerPreference: 'high-performance'
+      });
+      renderer3D.setSize(width, height);
+      renderer3D.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer3D.shadowMap.enabled = true;
+      renderer3D.shadowMap.type = THREE.PCFSoftShadowMap;
+
+      if (typeof THREE.OrbitControls !== 'undefined') {
+        controls3D = new THREE.OrbitControls(camera3D, canvas);
+        controls3D.enableDamping = true;
+        controls3D.dampingFactor = 0.06;
+        controls3D.maxPolarAngle = Math.PI / 2 - 0.04;
+        controls3D.minDistance = 25;
+        controls3D.maxDistance = 420;
+        controls3D.target.set(0, 25, 0);
+      }
+
+      clock3D = new THREE.Clock();
+
+      // Lighting setup
+      ambientLight3D = new THREE.AmbientLight(0xffffff, 0.45);
+      scene3D.add(ambientLight3D);
+
+      hemiLight3D = new THREE.HemisphereLight(0xbad2e8, 0x3d352b, 0.4);
+      scene3D.add(hemiLight3D);
+
+      sunLight3D = new THREE.DirectionalLight(0xfffaed, 0.9);
+      sunLight3D.position.set(75, 45, 50);
+      sunLight3D.castShadow = true;
+      sunLight3D.shadow.mapSize.width = 1024;
+      sunLight3D.shadow.mapSize.height = 1024;
+      sunLight3D.shadow.camera.near = 10;
+      sunLight3D.shadow.camera.far = 400;
+      sunLight3D.shadow.camera.left = -120;
+      sunLight3D.shadow.camera.right = 120;
+      sunLight3D.shadow.camera.top = 120;
+      sunLight3D.shadow.camera.bottom = -120;
+      scene3D.add(sunLight3D);
+
+      // Build Sub-Systems
+      buildGroundAndGrid();
+      buildProceduralCity();
+      buildCutawayApartment();
+      buildInversionLid();
+      buildParticleField();
+      setup3DControls();
+
+      set3DHour(activeHour3D);
+
+      window.addEventListener('resize', onWindowResize3D);
+      is3DRunning = true;
+      animate3D();
+    }
+
+    function buildGroundAndGrid() {
+      // Ground asphalt plane
+      const groundGeo = new THREE.PlaneGeometry(360, 360);
+      const groundMat = new THREE.MeshStandardMaterial({
+        color: 0x1f242d,
+        roughness: 0.92,
+        metalness: 0.08
+      });
+      const ground = new THREE.Mesh(groundGeo, groundMat);
+      ground.rotation.x = -Math.PI / 2;
+      ground.receiveShadow = true;
+      scene3D.add(ground);
+
+      // Road Network / Street Grid Markings
+      const roadGroup = new THREE.Group();
+
+      // Main Avenue along Z axis
+      const roadZGeo = new THREE.PlaneGeometry(24, 340);
+      const roadMat = new THREE.MeshStandardMaterial({ color: 0x141820, roughness: 0.95 });
+      const roadZ = new THREE.Mesh(roadZGeo, roadMat);
+      roadZ.rotation.x = -Math.PI / 2;
+      roadZ.position.y = 0.05;
+      roadGroup.add(roadZ);
+
+      // Cross Avenue along X axis
+      const roadXGeo = new THREE.PlaneGeometry(340, 24);
+      const roadX = new THREE.Mesh(roadXGeo, roadMat);
+      roadX.rotation.x = -Math.PI / 2;
+      roadX.position.y = 0.06;
+      roadGroup.add(roadX);
+
+      // Centerline Dashes
+      const dashMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.65 });
+      for (let i = -160; i < 160; i += 12) {
+        const dashZ = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 6), dashMat);
+        dashZ.rotation.x = -Math.PI / 2;
+        dashZ.position.set(0, 0.08, i);
+        roadGroup.add(dashZ);
+
+        const dashX = new THREE.Mesh(new THREE.PlaneGeometry(6, 0.8), dashMat);
+        dashX.rotation.x = -Math.PI / 2;
+        dashX.position.set(i, 0.08, 0);
+        roadGroup.add(dashX);
+      }
+      scene3D.add(roadGroup);
+    }
+
+    function buildProceduralCity() {
+      cityGroup = new THREE.Group();
+      const winTex = createProceduralBuildingTexture();
+
+      const buildingMat = new THREE.MeshStandardMaterial({
+        color: 0x485262,
+        roughness: 0.6,
+        metalness: 0.25,
+        map: winTex
+      });
+
+      const roofMat = new THREE.MeshStandardMaterial({
+        color: 0x272c35,
+        roughness: 0.9,
+        metalness: 0.1
+      });
+
+      // Procedural layout: 4 city sectors around intersecting 24m avenues
+      // Sector 1: (+X, +Z)
+      // Sector 2: (+X, -Z)
+      // Sector 3: (-X, -Z)
+      // Sector 4: (-X, +Z) -> Front Left (Cutaway room sits here, surrounded by canyon buildings)
+      const buildings = [
+        // Sector 1 (East Block)
+        { x: 35, z: 35, w: 22, d: 20, h: 58 },
+        { x: 68, z: 32, w: 24, d: 24, h: 84 },
+        { x: 35, z: 68, w: 20, d: 22, h: 46 },
+        { x: 72, z: 72, w: 28, d: 26, h: 96 },
+        { x: 110, z: 45, w: 24, d: 22, h: 65 },
+        { x: 110, z: 80, w: 22, d: 26, h: 74 },
+
+        // Sector 2 (North-East Block)
+        { x: 35, z: -35, w: 24, d: 20, h: 72 },
+        { x: 70, z: -35, w: 22, d: 26, h: 90 },
+        { x: 35, z: -70, w: 20, d: 24, h: 52 },
+        { x: 72, z: -75, w: 26, d: 28, h: 105 },
+        { x: 110, z: -40, w: 24, d: 22, h: 60 },
+        { x: 112, z: -80, w: 22, d: 24, h: 68 },
+
+        // Sector 3 (North-West Block)
+        { x: -35, z: -35, w: 22, d: 22, h: 64 },
+        { x: -70, z: -35, w: 26, d: 20, h: 82 },
+        { x: -35, z: -70, w: 20, d: 24, h: 48 },
+        { x: -74, z: -74, w: 28, d: 26, h: 98 },
+        { x: -110, z: -40, w: 22, d: 22, h: 55 },
+        { x: -112, z: -80, w: 24, d: 24, h: 70 },
+
+        // Sector 4 (South-West Block - Surrounds cutaway room at x: -38, z: 28)
+        { x: -72, z: 30, w: 24, d: 22, h: 76 },
+        { x: -38, z: 68, w: 22, d: 22, h: 54 },
+        { x: -74, z: 72, w: 26, d: 26, h: 88 },
+        { x: -110, z: 45, w: 22, d: 24, h: 62 },
+        { x: -112, z: 82, w: 24, d: 24, h: 72 },
+      ];
+
+      buildings.forEach((b, idx) => {
+        const bGeo = new THREE.BoxGeometry(b.w, b.h, b.d);
+        // Scale texture repeat according to building height
+        const materials = [
+          buildingMat, buildingMat, roofMat, roofMat, buildingMat, buildingMat
+        ];
+        const mesh = new THREE.Mesh(bGeo, materials);
+        mesh.position.set(b.x, b.h / 2, b.z);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        cityGroup.add(mesh);
+
+        // Rooftop HVAC / mechanical unit
+        const hvacGeo = new THREE.BoxGeometry(b.w * 0.45, 3.5, b.d * 0.45);
+        const hvacMesh = new THREE.Mesh(hvacGeo, roofMat);
+        hvacMesh.position.set(b.x, b.h + 1.75, b.z);
+        hvacMesh.castShadow = true;
+        cityGroup.add(hvacMesh);
+      });
+
+      scene3D.add(cityGroup);
+    }
+
+    function buildCutawayApartment() {
+      cutawayGroup = new THREE.Group();
+
+      const cx = -38;
+      const cz = 28;
+      const bW = 20;
+      const bD = 20;
+      const baseH = 14; // Floors 1 & 2 solid structure
+      const unitH = 9;  // Floor 3 Cutaway apartment
+      const unitY = baseH + unitH / 2;
+
+      // Solid Lower Floors (Floors 1 & 2)
+      const baseGeo = new THREE.BoxGeometry(bW, baseH, bD);
+      const baseMat = new THREE.MeshStandardMaterial({
+        color: 0x3d4450,
+        roughness: 0.7,
+        metalness: 0.2
+      });
+      const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+      baseMesh.position.set(cx, baseH / 2, cz);
+      baseMesh.castShadow = true;
+      baseMesh.receiveShadow = true;
+      cutawayGroup.add(baseMesh);
+
+      // --- APARTMENT CUTAWAY (Floor 3) ---
+      // Floor Slab (Warm Wood Texture Tone)
+      const floorGeo = new THREE.BoxGeometry(bW, 0.4, bD);
+      const floorMat = new THREE.MeshStandardMaterial({
+        color: 0x7c5e42,
+        roughness: 0.65
+      });
+      const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+      floorMesh.position.set(cx, baseH + 0.2, cz);
+      floorMesh.receiveShadow = true;
+      cutawayGroup.add(floorMesh);
+
+      // Back Wall (+Z side)
+      const backWallGeo = new THREE.BoxGeometry(bW, unitH, 0.5);
+      const wallMat = new THREE.MeshStandardMaterial({
+        color: 0xedeae4,
+        roughness: 0.9
+      });
+      const backWall = new THREE.Mesh(backWallGeo, wallMat);
+      backWall.position.set(cx, unitY, cz + bD / 2 - 0.25);
+      backWall.castShadow = true;
+      backWall.receiveShadow = true;
+      cutawayGroup.add(backWall);
+
+      // Right Wall (+X side)
+      const rightWallGeo = new THREE.BoxGeometry(0.5, unitH, bD);
+      const rightWall = new THREE.Mesh(rightWallGeo, wallMat);
+      rightWall.position.set(cx + bW / 2 - 0.25, unitY, cz);
+      rightWall.castShadow = true;
+      rightWall.receiveShadow = true;
+      cutawayGroup.add(rightWall);
+
+      // Ceiling Slab
+      const ceilGeo = new THREE.BoxGeometry(bW, 0.4, bD);
+      const ceilMesh = new THREE.Mesh(ceilGeo, wallMat);
+      ceilMesh.position.set(cx, baseH + unitH + 0.2, cz);
+      ceilMesh.castShadow = true;
+      cutawayGroup.add(ceilMesh);
+
+      // Decorative Living Room Furniture
+      // Modern Sofa
+      const sofaMat = new THREE.MeshStandardMaterial({ color: 0x324053, roughness: 0.85 });
+      const sofaBase = new THREE.Mesh(new THREE.BoxGeometry(7, 1.4, 3), sofaMat);
+      sofaBase.position.set(cx - 3, baseH + 0.9, cz + 4);
+      sofaBase.castShadow = true;
+      cutawayGroup.add(sofaBase);
+
+      const sofaBack = new THREE.Mesh(new THREE.BoxGeometry(7, 2.2, 0.8), sofaMat);
+      sofaBack.position.set(cx - 3, baseH + 2.0, cz + 5.1);
+      cutawayGroup.add(sofaBack);
+
+      // Coffee Table
+      const tableMat = new THREE.MeshStandardMaterial({ color: 0x222224, roughness: 0.5 });
+      const table = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.8, 2.2), tableMat);
+      table.position.set(cx - 3, baseH + 0.6, cz);
+      table.castShadow = true;
+      cutawayGroup.add(table);
+
+      // Desktop AQI Monitor (Glowing clean green LED)
+      const monitorGeo = new THREE.BoxGeometry(0.6, 0.5, 0.4);
+      const monitorMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+      const monitor = new THREE.Mesh(monitorGeo, monitorMat);
+      monitor.position.set(cx - 2, baseH + 1.25, cz);
+      cutawayGroup.add(monitor);
+
+      // Wall Artwork
+      const artGeo = new THREE.BoxGeometry(5, 2.8, 0.1);
+      const artMat = new THREE.MeshStandardMaterial({ color: 0x264653, roughness: 0.8 });
+      const art = new THREE.Mesh(artGeo, artMat);
+      art.position.set(cx - 3, unitY + 1.2, cz + bD / 2 - 0.55);
+      cutawayGroup.add(art);
+
+      // --- 3D HEPA AIR PURIFIER (Nazaroff Clean Delivery Rate CADR) ---
+      const purifierChassisGeo = new THREE.CylinderGeometry(0.9, 0.9, 2.4, 24);
+      const purifierMat = new THREE.MeshStandardMaterial({
+        color: 0xf5f5f7,
+        roughness: 0.3,
+        metalness: 0.1
+      });
+      const purifier = new THREE.Mesh(purifierChassisGeo, purifierMat);
+      purifier.position.set(cx + 4.5, baseH + 1.4, cz - 1);
+      purifier.castShadow = true;
+      cutawayGroup.add(purifier);
+
+      // Purifier Top Grille / LED Ring
+      const topRingGeo = new THREE.CylinderGeometry(0.85, 0.85, 0.15, 24);
+      const topRingMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4 });
+      const topRing = new THREE.Mesh(topRingGeo, topRingMat);
+      topRing.position.set(cx + 4.5, baseH + 2.65, cz - 1);
+      cutawayGroup.add(topRing);
+
+      // Clean Air Outflow Cone (Volumetric Translucent Flow)
+      const coneGeo = new THREE.ConeGeometry(4.5, 7.5, 24, 1, true);
+      const coneMat = new THREE.MeshBasicMaterial({
+        color: 0x10b981,
+        transparent: true,
+        opacity: 0.28,
+        wireframe: true,
+        side: THREE.DoubleSide
+      });
+      purifierConeMesh = new THREE.Mesh(coneGeo, coneMat);
+      purifierConeMesh.position.set(cx + 4.5, baseH + 6.2, cz - 1);
+      cutawayGroup.add(purifierConeMesh);
+
+      // Subtle volumetric core
+      const glowGeo = new THREE.ConeGeometry(3.2, 6.5, 16, 1, true);
+      const glowMat = new THREE.MeshBasicMaterial({
+        color: 0x34d399,
+        transparent: true,
+        opacity: 0.16,
+        side: THREE.DoubleSide
+      });
+      purifierGlowMesh = new THREE.Mesh(glowGeo, glowMat);
+      purifierGlowMesh.position.set(cx + 4.5, baseH + 5.8, cz - 1);
+      cutawayGroup.add(purifierGlowMesh);
+
+      scene3D.add(cutawayGroup);
+    }
+
+    function buildInversionLid() {
+      // Atmospheric Thermal Inversion Boundary Ceiling
+      const lidGeo = new THREE.PlaneGeometry(350, 350, 24, 24);
+      const lidMat = new THREE.MeshStandardMaterial({
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.32,
+        roughness: 0.3,
+        metalness: 0.1,
+        side: THREE.DoubleSide
+      });
+      inversionLidMesh = new THREE.Mesh(lidGeo, lidMat);
+      inversionLidMesh.rotation.x = -Math.PI / 2;
+      inversionLidMesh.position.y = currentLidY;
+      scene3D.add(inversionLidMesh);
+
+      // Scientific Inversion Wireframe Grid Overlay
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: 0x0284c7,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.25
+      });
+      inversionLidWire = new THREE.Mesh(lidGeo, wireMat);
+      inversionLidWire.rotation.x = -Math.PI / 2;
+      inversionLidWire.position.y = currentLidY + 0.15;
+      scene3D.add(inversionLidWire);
+    }
+
+    function buildParticleField() {
+      particleGeo = new THREE.BufferGeometry();
+      particlePositions = new Float32Array(NUM_PARTICLES * 3);
+      particleVelocities = new Float32Array(NUM_PARTICLES * 3);
+      particleBaseColors = new Float32Array(NUM_PARTICLES * 3);
+
+      for (let i = 0; i < NUM_PARTICLES; i++) {
+        const i3 = i * 3;
+        // Spread evenly across the urban domain
+        particlePositions[i3] = (Math.random() - 0.5) * 320;
+        // Height: heavily concentrated near ground (0 to 30)
+        particlePositions[i3 + 1] = Math.pow(Math.random(), 1.8) * 45 + 0.5;
+        particlePositions[i3 + 2] = (Math.random() - 0.5) * 320;
+
+        // Brownian and street canyon drift velocities
+        particleVelocities[i3] = (Math.random() - 0.5) * 0.18;
+        particleVelocities[i3 + 1] = (Math.random() - 0.5) * 0.12;
+        particleVelocities[i3 + 2] = (Math.random() - 0.5) * 0.18;
+
+        // Morning default colors: dense smog (amber/ochre)
+        particleBaseColors[i3] = 0.92;
+        particleBaseColors[i3 + 1] = 0.45;
+        particleBaseColors[i3 + 2] = 0.15;
+      }
+
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+      particleGeo.setAttribute('color', new THREE.BufferAttribute(particleBaseColors, 3));
+
+      const particleMat = new THREE.PointsMaterial({
+        size: 2.4,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.65,
+        depthWrite: false
+      });
+
+      particlePoints = new THREE.Points(particleGeo, particleMat);
+      scene3D.add(particlePoints);
+    }
+
+    function set3DHour(hour) {
+      activeHour3D = parseInt(hour, 10);
+      const data = DIURNAL_PBL_DATA[activeHour3D] || DIURNAL_PBL_DATA[7];
+      targetLidY = data.y;
+
+      // Update UI elements
+      const slider = document.getElementById('slider-3d-hour');
+      if (slider && parseInt(slider.value, 10) !== activeHour3D) {
+        slider.value = activeHour3D;
+      }
+
+      const timeLabel = document.getElementById('val-3d-time-label');
+      if (timeLabel) {
+        const hrStr = (activeHour3D < 10 ? '0' : '') + activeHour3D + ':00';
+        const period = activeHour3D < 12 ? 'AM' : 'PM';
+        timeLabel.textContent = hrStr + ' ' + period + ' (' + data.status + ')';
+      }
+
+      const mixStatus = document.getElementById('val-3d-mixing-status');
+      if (mixStatus) {
+        mixStatus.textContent = data.status;
+        mixStatus.style.color = data.statusColor;
+      }
+
+      // Update HUD Telemetry
+      const pblEl = document.getElementById('hud-pbl-height');
+      if (pblEl) pblEl.textContent = data.pbl + ' m (z_mix)';
+
+      const dtEl = document.getElementById('hud-inversion-strength');
+      if (dtEl) dtEl.textContent = data.dT;
+
+      const pmEl = document.getElementById('hud-pm25-val');
+      if (pmEl) {
+        pmEl.textContent = data.pm + ' µg/m³ (CPCB)';
+        pmEl.style.color = data.pm > 150 ? 'var(--danger)' : (data.pm > 90 ? '#c27803' : 'var(--success)');
+      }
+
+      const mixEl = document.getElementById('hud-mixing-rate');
+      if (mixEl) mixEl.textContent = data.mix;
+
+      const inEl = document.getElementById('hud-indoor-val');
+      if (inEl) inEl.textContent = data.indoor + ' µg/m³ (Purifier Active)';
+
+      // Highlight active time preset pill
+      document.querySelectorAll('.time-preset-btn').forEach(btn => {
+        const t = parseInt(btn.getAttribute('data-time'), 10);
+        if (t === activeHour3D || (activeHour3D >= t && activeHour3D < t + 2)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update Sky & Lighting
+      if (scene3D && sunLight3D) {
+        const isDark = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark';
+        const fogColor = isDark ? data.fogDark : data.fogLight;
+        scene3D.background.setHex(fogColor);
+        scene3D.fog.color.setHex(fogColor);
+
+        // Adjust sun position
+        sunLight3D.position.set(data.sunX, Math.max(data.sunY, 8), 50);
+        sunLight3D.intensity = data.sunY > 0 ? 0.95 : 0.2;
+        if (ambientLight3D) {
+          ambientLight3D.intensity = data.sunY > 0 ? 0.55 : 0.25;
+        }
+
+        // Adjust Lid Appearance: at midday convective cleansing, lid turns airy sky cyan
+        if (inversionLidMesh) {
+          if (activeHour3D >= 11 && activeHour3D <= 16) {
+            inversionLidMesh.material.color.setHex(0x38bdf8);
+            inversionLidMesh.material.opacity = 0.16;
+          } else {
+            inversionLidMesh.material.color.setHex(0xf59e0b);
+            inversionLidMesh.material.opacity = 0.36;
+          }
+        }
+      }
+    }
+
+    function tweenCameraTo(presetName) {
+      if (!camera3D || !controls3D) return;
+
+      document.querySelectorAll('.cam-preset-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById('btn-cam-' + presetName);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (presetName === 'aerial') {
+        camTargetPos = new THREE.Vector3(125, 145, 170);
+        camTargetLook = new THREE.Vector3(0, 25, 0);
+      } else if (presetName === 'inversion') {
+        camTargetPos = new THREE.Vector3(-15, Math.max(currentLidY + 4, 34), 140);
+        camTargetLook = new THREE.Vector3(0, currentLidY * 0.9, 0);
+      } else if (presetName === 'street') {
+        camTargetPos = new THREE.Vector3(5, 8, 35);
+        camTargetLook = new THREE.Vector3(0, 15, -45);
+      } else if (presetName === 'cutaway') {
+        camTargetPos = new THREE.Vector3(-42, 22, 2);
+        camTargetLook = new THREE.Vector3(-38, 17, 28);
+      } else if (presetName === 'reset') {
+        camTargetPos = new THREE.Vector3(110, 125, 150);
+        camTargetLook = new THREE.Vector3(0, 25, 0);
+        const aerialBtn = document.getElementById('btn-cam-aerial');
+        if (aerialBtn) aerialBtn.classList.add('active');
+      }
+    }
+
+    function setup3DControls() {
+      // Time Presets
+      document.querySelectorAll('.time-preset-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const t = parseInt(e.currentTarget.getAttribute('data-time'), 10);
+          set3DHour(t);
+        });
+      });
+
+      // Hour Slider
+      const slider = document.getElementById('slider-3d-hour');
+      if (slider) {
+        slider.addEventListener('input', (e) => {
+          set3DHour(parseInt(e.target.value, 10));
+        });
+      }
+
+      // Camera Presets
+      document.getElementById('btn-cam-aerial')?.addEventListener('click', () => tweenCameraTo('aerial'));
+      document.getElementById('btn-cam-inversion')?.addEventListener('click', () => tweenCameraTo('inversion'));
+      document.getElementById('btn-cam-street')?.addEventListener('click', () => tweenCameraTo('street'));
+      document.getElementById('btn-cam-cutaway')?.addEventListener('click', () => tweenCameraTo('cutaway'));
+      document.getElementById('btn-cam-reset')?.addEventListener('click', () => tweenCameraTo('reset'));
+
+      // Layer Toggles
+      document.getElementById('toggle-3d-lid')?.addEventListener('change', (e) => {
+        if (inversionLidMesh) inversionLidMesh.visible = e.target.checked;
+        if (inversionLidWire) inversionLidWire.visible = e.target.checked;
+      });
+
+      document.getElementById('toggle-3d-particles')?.addEventListener('change', (e) => {
+        if (particlePoints) particlePoints.visible = e.target.checked;
+      });
+
+      document.getElementById('toggle-3d-cutaway')?.addEventListener('change', (e) => {
+        if (cutawayGroup) cutawayGroup.visible = e.target.checked;
+      });
+
+      document.getElementById('toggle-3d-purifier')?.addEventListener('change', (e) => {
+        if (purifierConeMesh) purifierConeMesh.visible = e.target.checked;
+        if (purifierGlowMesh) purifierGlowMesh.visible = e.target.checked;
+      });
+    }
+
+    function onWindowResize3D() {
+      const container = document.getElementById('scene-3d-viewport-container');
+      if (!container || !renderer3D || !camera3D) return;
+      const width = container.clientWidth || 800;
+      const height = container.clientHeight || 560;
+      camera3D.aspect = width / height;
+      camera3D.updateProjectionMatrix();
+      renderer3D.setSize(width, height);
+    }
+
+    function animate3D() {
+      if (!is3DRunning) return;
+      requestAnimationFrame(animate3D);
+
+      const delta = clock3D ? clock3D.getDelta() : 0.016;
+      const elapsed = clock3D ? clock3D.getElapsedTime() : 0;
+
+      // Smoothly interpolate Inversion Lid Altitude
+      if (inversionLidMesh) {
+        currentLidY += (targetLidY - currentLidY) * 0.08;
+        inversionLidMesh.position.y = currentLidY;
+        if (inversionLidWire) inversionLidWire.position.y = currentLidY + 0.15;
+      }
+
+      // Smooth Camera Tweening
+      if (camTargetPos && camera3D && controls3D) {
+        camera3D.position.lerp(camTargetPos, 0.08);
+        controls3D.target.lerp(camTargetLook, 0.08);
+        if (camera3D.position.distanceTo(camTargetPos) < 0.6) {
+          camTargetPos = null;
+          camTargetLook = null;
+        }
+      }
+
+      // Pulse Air Purifier Clean Air Cone (CADR Flow)
+      if (purifierConeMesh && purifierConeMesh.visible) {
+        const pulse = 1.0 + Math.sin(elapsed * 4.0) * 0.06;
+        purifierConeMesh.scale.set(pulse, 1.0, pulse);
+        if (purifierGlowMesh) {
+          purifierGlowMesh.scale.set(pulse * 0.95, 1.0, pulse * 0.95);
+        }
+      }
+
+      // Atmospheric Particle Dynamics (Brownian + Stagnant Inversion Trapping)
+      if (particlePoints && particlePoints.visible && particleGeo) {
+        const posAttr = particleGeo.attributes.position;
+        const colAttr = particleGeo.attributes.color;
+        const pos = posAttr.array;
+        const col = colAttr.array;
+
+        // Is midday convective cleansing active?
+        const isConvective = activeHour3D >= 11 && activeHour3D <= 16;
+        const effectiveLid = currentLidY;
+
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+          const i3 = i * 3;
+
+          // Brownian drift with street canyon breeze
+          pos[i3] += particleVelocities[i3] + Math.sin(elapsed * 0.6 + pos[i3 + 1] * 0.1) * 0.04;
+          pos[i3 + 1] += particleVelocities[i3 + 1];
+          pos[i3 + 2] += particleVelocities[i3 + 2] + Math.cos(elapsed * 0.5 + pos[i3] * 0.1) * 0.04;
+
+          // Horizontal Boundary Wrapping
+          if (pos[i3] > 165) pos[i3] = -165;
+          if (pos[i3] < -165) pos[i3] = 165;
+          if (pos[i3 + 2] > 165) pos[i3 + 2] = -165;
+          if (pos[i3 + 2] < -165) pos[i3 + 2] = 165;
+
+          // Ground bounce
+          if (pos[i3 + 1] < 0.8) {
+            pos[i3 + 1] = 0.8;
+            particleVelocities[i3 + 1] = Math.abs(particleVelocities[i3 + 1]);
+          }
+
+          // INVERSION LID TRAPPING PHYSICS:
+          // If particle hits the thermal inversion ceiling, it gets reflected down unless convective cleansing opens it
+          if (pos[i3 + 1] > effectiveLid) {
+            if (!isConvective) {
+              pos[i3 + 1] = effectiveLid - 0.2;
+              particleVelocities[i3 + 1] = -Math.abs(particleVelocities[i3 + 1]) * 0.8;
+            } else if (pos[i3 + 1] > 220) {
+              pos[i3 + 1] = 2.0; // Recirculate upwards
+            }
+          }
+
+          // Nazaroff Indoor Apartment Exclusion:
+          // Inside apartment box: x: [-48, -28], z: [18, 38], y: [14, 24]
+          // Filter out 90% of indoor particles
+          if (pos[i3] > -48 && pos[i3] < -28 && pos[i3 + 2] > 18 && pos[i3 + 2] < 38 && pos[i3 + 1] > 14 && pos[i3 + 1] < 24) {
+            if (i % 8 !== 0) {
+              // Displace particle outside the room envelope
+              pos[i3] = -52;
+            }
+          }
+
+          // Dynamic Particle Color by Altitude & Hour
+          if (isConvective) {
+            // Midday Diluted Translucent Sky Blue
+            col[i3] = 0.45;
+            col[i3 + 1] = 0.65;
+            col[i3 + 2] = 0.92;
+          } else {
+            // Morning/Night Ground Trapped Smog: Amber to Dark Red
+            if (pos[i3 + 1] < 18) {
+              col[i3] = 0.88;
+              col[i3 + 1] = 0.22;
+              col[i3 + 2] = 0.12;
+            } else {
+              col[i3] = 0.95;
+              col[i3 + 1] = 0.55;
+              col[i3 + 2] = 0.18;
+            }
+          }
+        }
+
+        posAttr.needsUpdate = true;
+        colAttr.needsUpdate = true;
+      }
+
+      if (controls3D) controls3D.update();
+      if (renderer3D && scene3D && camera3D) {
+        renderer3D.render(scene3D, camera3D);
+      }
+    }
+
+    // Update 3D Scene when Theme Changes
+    function update3DTheme(theme) {
+      if (!scene3D) return;
+      const data = DIURNAL_PBL_DATA[activeHour3D] || DIURNAL_PBL_DATA[7];
+      const fogColor = theme === 'dark' ? data.fogDark : data.fogLight;
+      scene3D.background.setHex(fogColor);
+      scene3D.fog.color.setHex(fogColor);
+    }
+
     // ==================== THEME MANAGEMENT (LIGHT & DARK MODE) ====================
     function getPreferredTheme() {
       try {
@@ -4629,6 +5799,9 @@
       try {
         localStorage.setItem('saans_theme', theme);
       } catch (e) {}
+      if (typeof update3DTheme === 'function') {
+        update3DTheme(theme);
+      }
     }
 
     const currentSavedTheme = getPreferredTheme();
