@@ -221,10 +221,10 @@
       border-color: var(--accent);
     }
 
-    /* --- Tab Content Sections --- */
+    /* --- Tab Content Sections & Staggered 3D Motion --- */
     .tab-pane {
       display: none;
-      animation: fadeIn 0.2s ease-in-out;
+      animation: saansTabEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1);
       margin-top: 28px;
     }
 
@@ -232,12 +232,18 @@
       display: block;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes saansTabEnter {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0) scale(0.992);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
     }
 
-    /* --- Common Cards --- */
+    /* --- Common Cards with 3D Elevation & Micro-Interactions --- */
     .card {
       background: var(--surface-card);
       border: 1px solid var(--surface-border);
@@ -245,6 +251,23 @@
       padding: 24px;
       margin-bottom: 24px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+      will-change: transform, box-shadow;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .card-interactive-3d {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform 0.18s ease-out, box-shadow 0.2s ease;
+      will-change: transform;
+    }
+
+    .card-interactive-3d:hover {
+      box-shadow: 0 12px 32px rgba(0,0,0,0.09);
     }
 
     .card-header {
@@ -386,10 +409,15 @@
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
       }
+      .aqi-particle-canvas, #hh-room-canvas {
+        display: none !important;
+      }
     }
 
-    /* --- AQI Visualizer Card --- */
+    /* --- AQI Visualizer Card & Particle Stage --- */
     .aqi-banner {
+      position: relative;
+      overflow: hidden;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -400,7 +428,29 @@
       background: var(--surface-card);
       border: 2px solid var(--surface-border);
       margin-bottom: 24px;
-      transition: background-color 0.2s ease, border-color 0.2s ease;
+      transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .aqi-banner:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+    }
+
+    .aqi-particle-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      border-radius: var(--radius-lg);
+      z-index: 0;
+      opacity: 0.75;
+    }
+
+    .aqi-banner > * {
+      position: relative;
+      z-index: 1;
     }
 
     .aqi-badge-large {
@@ -411,8 +461,92 @@
 
     .aqi-number {
       font-size: 3.2rem;
-      font-weight: 700;
+      font-weight: 800;
       line-height: 1;
+      position: relative;
+      display: inline-block;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .aqi-number::after {
+      content: '';
+      position: absolute;
+      inset: -5px -8px;
+      border-radius: 8px;
+      border: 2px solid currentColor;
+      opacity: 0.16;
+      pointer-events: none;
+      animation: aqiHaloBreathe 3s infinite ease-in-out;
+    }
+
+    @keyframes aqiHaloBreathe {
+      0%, 100% { transform: scale(1); opacity: 0.12; }
+      50% { transform: scale(1.06); opacity: 0.32; }
+    }
+
+    /* Stagnation Alert Banner Breathing Beacon */
+    .stagnation-alert-banner {
+      animation: severeAlertPulse 3.5s infinite ease-in-out;
+      transition: transform 0.2s ease;
+    }
+
+    @keyframes severeAlertPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.22);
+        border-color: rgba(220, 38, 38, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 16px 2px rgba(220, 38, 38, 0.18);
+        border-color: rgba(220, 38, 38, 0.85);
+      }
+    }
+
+    /* Animated Cleaner Commute Route Dash Flow */
+    .route-flow-line {
+      stroke-dasharray: 6 4;
+      animation: routeDashFlow 2s linear infinite;
+    }
+
+    @keyframes routeDashFlow {
+      to { stroke-dashoffset: -20; }
+    }
+
+    /* What-If Spring Comparison Bars */
+    .dose-comp-bar {
+      transition: width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dose-comp-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      animation: barShine 3s infinite ease-in-out;
+    }
+
+    @keyframes barShine {
+      0% { transform: translateX(-100%); }
+      50%, 100% { transform: translateX(100%); }
+    }
+
+    /* 3D Household Room Ventilation Canvas */
+    .hh-room-canvas-container {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      margin-bottom: 20px;
+    }
+
+    .hh-room-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .aqi-category {
@@ -1816,6 +1950,7 @@
 
         <!-- Large AQI Display -->
         <div class="aqi-banner" id="aqi-card-display">
+          <canvas id="aqi-particle-canvas" class="aqi-particle-canvas" aria-hidden="true"></canvas>
           <div class="aqi-badge-large">
             <div>
               <div class="aqi-number aqi-very-poor" id="val-aqi">342</div>
@@ -2064,6 +2199,7 @@
               <button type="button" class="cam-preset-btn" id="btn-cam-inversion" title="Side profile showing thermal inversion boundary ceiling">Inversion Lid</button>
               <button type="button" class="cam-preset-btn" id="btn-cam-street" title="Ground-level street canyon">Street</button>
               <button type="button" class="cam-preset-btn" id="btn-cam-cutaway" title="Apartment cutaway showing HEPA filter flow">Room Cutaway</button>
+              <button type="button" class="cam-preset-btn" id="btn-cam-orbit" title="Toggle cinematic auto-orbit">Auto-Orbit: Off</button>
               <button type="button" class="cam-preset-btn" id="btn-cam-reset" title="Reset camera orbit">Reset</button>
             </div>
           </div>
@@ -2181,6 +2317,34 @@
         <div class="card-header">
           <h2 class="card-title">Household Risk Profile (2-Minute Onboarding)</h2>
           <p class="card-desc">Personalise exposure modeling and indoor air calculations for your home's microenvironment.</p>
+        </div>
+
+        <!-- Interactive 3D Room Envelope & Ventilation Model -->
+        <div class="card-3d-interactive" style="margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="hud-dot" style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%; display: inline-block;"></span>
+              <strong style="font-size: 0.92rem;">Interactive 3D Room Air Quality Balance Simulator (Nazaroff Model)</strong>
+            </div>
+            <span style="font-size: 0.8rem; color: var(--text-muted); font-family: monospace;">λ = a + k + Q_p / V</span>
+          </div>
+          <div class="hh-room-canvas-container">
+            <canvas id="hh-room-canvas" class="hh-room-canvas" width="800" height="220" aria-label="3D room air exchange visualization"></canvas>
+          </div>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.78rem; color: var(--text-muted); margin-top: -10px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+              <span>Outdoor Infiltration (a: <span id="hh-val-inf-rate">0.8 ACH</span>)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+              <span>HEPA CADR Clean Delivery (<span id="hh-val-cadr-rate">380 m³/h</span>)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #06b6d4; display: inline-block;"></span>
+              <span>Indoor Decoupled Concentration: <strong id="hh-val-indoor-calc" style="color: var(--success);">14 µg/m³</strong></span>
+            </div>
+          </div>
         </div>
 
         <form id="form-household" onsubmit="return false;">
@@ -2861,6 +3025,27 @@
   </footer>
 
   <script>
+    // --- Universal 3D, Particle Simulation & Animation State ---
+    var scene3D = null;
+    var camera3D = null;
+    var renderer3D = null;
+    var controls3D = null;
+    var is3DRunning = false;
+    var clock3D = null;
+    var aqiParticleColor = '#BA2D1F';
+    var isAQIParticlesActive = true;
+    var aqiParticles = [];
+    var aqiParticleAnimId = null;
+    var aqiCanvasEl = null;
+    var aqiCtx = null;
+    var aqiParticleSpeedFactor = 1.2;
+    var aqiMouseX = -999, aqiMouseY = -999;
+    var isRoomVentActive = false;
+    var roomVentAnimId = null;
+    var roomCanvas = null;
+    var roomCtx = null;
+    var roomParticles = [];
+
     // --- Data: Cities & Hyperlocal Air Quality Feed (Slice A1) ---
     const CITIES = {
       delhi: {
@@ -3058,7 +3243,8 @@
         const targetPane = document.getElementById(tab.getAttribute('data-tab'));
         if (targetPane) targetPane.classList.add('active');
 
-        if (tab.getAttribute('data-tab') === 'tab-3d') {
+        const tabId = tab.getAttribute('data-tab');
+        if (tabId === 'tab-3d') {
           setTimeout(() => {
             if (!scene3D) {
               init3DScene();
@@ -3070,6 +3256,16 @@
           }, 40);
         } else {
           is3DRunning = false;
+        }
+
+        if (typeof setAQIParticlesActive === 'function') {
+          setAQIParticlesActive(tabId === 'tab-aqi');
+        }
+
+        if (typeof setRoomVentilationActive === 'function') {
+          setTimeout(() => {
+            setRoomVentilationActive(tabId === 'tab-household');
+          }, 40);
         }
       });
     });
@@ -3132,10 +3328,20 @@
         provLabel.innerHTML = `${data.primaryStation}`;
       }
 
-      // Update Main AQI Banner
+      // Update Main AQI Banner with smooth counter tween
       const valAqi = document.getElementById('val-aqi');
-      valAqi.textContent = overallAqi;
+      if (typeof animateCounter === 'function') {
+        const curAqi = parseInt(valAqi.textContent, 10) || 0;
+        animateCounter(valAqi, curAqi, overallAqi, 450);
+      } else {
+        valAqi.textContent = overallAqi;
+      }
       valAqi.style.color = dominant.color;
+
+      // Update Ambient Particulate Flow Field
+      if (typeof updateAQIParticles === 'function') {
+        updateAQIParticles(overallAqi, dominant.color);
+      }
 
       const catClassMap = {
         'Good': 'bg-aqi-good',
@@ -3427,16 +3633,31 @@
         pmCutMg = 0;
       }
 
-      // 4. Update UI Outputs
+      // 4. Update UI Outputs with Smooth Animated Number Roll
       document.getElementById('res-base-val').textContent = `${(Math.round(baseCent.totalDose * 10) / 10).toFixed(1)} µg`;
       document.getElementById('res-base-range').textContent = `Likely range: ${(Math.round(baseLow.totalDose * 10) / 10).toFixed(1)} – ${(Math.round(baseHigh.totalDose * 10) / 10).toFixed(1)} µg`;
       document.getElementById('res-base-who').innerHTML = `WHO Guideline Ratio: <strong>${baseCent.whoRatio.toFixed(1)}×</strong>`;
 
-      document.getElementById('res-scen-val').textContent = `${(Math.round((isZeroChange ? baseCent.totalDose : scenCent.totalDose) * 10) / 10).toFixed(1)} µg`;
+      const scenEl = document.getElementById('res-scen-val');
+      const targetScenVal = (Math.round((isZeroChange ? baseCent.totalDose : scenCent.totalDose) * 10) / 10);
+      if (typeof animateCounter === 'function') {
+        const curScen = parseFloat(scenEl.textContent) || targetScenVal;
+        animateCounter(scenEl, curScen, targetScenVal, 320, (v) => `${v.toFixed(1)} µg`);
+      } else {
+        scenEl.textContent = `${targetScenVal.toFixed(1)} µg`;
+      }
       document.getElementById('res-scen-range').textContent = `Likely range: ${(Math.round((isZeroChange ? baseLow.totalDose : scenLow.totalDose) * 10) / 10).toFixed(1)} – ${(Math.round((isZeroChange ? baseHigh.totalDose : scenHigh.totalDose) * 10) / 10).toFixed(1)} µg`;
       document.getElementById('res-scen-who').innerHTML = `WHO Guideline Ratio: <strong>${(isZeroChange ? baseCent.whoRatio : scenCent.whoRatio).toFixed(1)}×</strong>`;
 
-      document.getElementById('res-delta-val').textContent = isZeroChange ? `0.0 µg` : `−${deltaCent.toFixed(1)} µg`;
+      const deltaEl = document.getElementById('res-delta-val');
+      if (isZeroChange) {
+        deltaEl.textContent = `0.0 µg`;
+      } else if (typeof animateCounter === 'function') {
+        const curDelta = parseFloat(deltaEl.textContent.replace('−', '').replace(' ', '')) || 0;
+        animateCounter(deltaEl, curDelta, deltaCent, 320, (v) => `−${v.toFixed(1)} µg`);
+      } else {
+        deltaEl.textContent = `−${deltaCent.toFixed(1)} µg`;
+      }
       document.getElementById('res-delta-range').textContent = isZeroChange
         ? `Range: 0.0 – 0.0 µg`
         : `Range: −${deltaLow.toFixed(1)} to −${deltaHigh.toFixed(1)} µg`;
@@ -4994,12 +5215,12 @@
     renderCleanerRoute('delhi');
 
     // ==================== 3D ATMOSPHERIC INVERSION & URBAN CANOPY SIMULATOR ====================
-    let scene3D = null;
-    let camera3D = null;
-    let renderer3D = null;
-    let controls3D = null;
-    let is3DRunning = false;
-    let clock3D = null;
+    scene3D = null;
+    camera3D = null;
+    renderer3D = null;
+    controls3D = null;
+    is3DRunning = false;
+    clock3D = null;
 
     let cityGroup = null;
     let cutawayGroup = null;
@@ -5619,6 +5840,26 @@
       document.getElementById('btn-cam-cutaway')?.addEventListener('click', () => tweenCameraTo('cutaway'));
       document.getElementById('btn-cam-reset')?.addEventListener('click', () => tweenCameraTo('reset'));
 
+      // Cinematic Auto-Orbit Toggle
+      let isAutoOrbiting = false;
+      const btnOrbit = document.getElementById('btn-cam-orbit');
+      if (btnOrbit) {
+        btnOrbit.addEventListener('click', () => {
+          isAutoOrbiting = !isAutoOrbiting;
+          if (controls3D) {
+            controls3D.autoRotate = isAutoOrbiting;
+            controls3D.autoRotateSpeed = 1.0;
+          }
+          if (isAutoOrbiting) {
+            btnOrbit.classList.add('active');
+            btnOrbit.textContent = 'Auto-Orbit: On';
+          } else {
+            btnOrbit.classList.remove('active');
+            btnOrbit.textContent = 'Auto-Orbit: Off';
+          }
+        });
+      }
+
       // Layer Toggles
       document.getElementById('toggle-3d-lid')?.addEventListener('change', (e) => {
         if (inversionLidMesh) inversionLidMesh.visible = e.target.checked;
@@ -5661,6 +5902,18 @@
         currentLidY += (targetLidY - currentLidY) * 0.08;
         inversionLidMesh.position.y = currentLidY;
         if (inversionLidWire) inversionLidWire.position.y = currentLidY + 0.15;
+
+        // Brunt-Väisälä Atmospheric Gravity Waves along Inversion Interface
+        if (inversionLidMesh.geometry && inversionLidMesh.geometry.attributes.position) {
+          const lPos = inversionLidMesh.geometry.attributes.position;
+          const lArr = lPos.array;
+          for (let j = 0; j < lArr.length; j += 3) {
+            const px = lArr[j];
+            const py = lArr[j + 1];
+            lArr[j + 2] = Math.sin(px * 0.035 + elapsed * 1.5) * 1.6 + Math.cos(py * 0.03 + elapsed * 1.2) * 1.2;
+          }
+          lPos.needsUpdate = true;
+        }
       }
 
       // Smooth Camera Tweening
@@ -5771,6 +6024,341 @@
       const fogColor = theme === 'dark' ? data.fogDark : data.fogLight;
       scene3D.background.setHex(fogColor);
       scene3D.fog.color.setHex(fogColor);
+    }
+
+    // ==================== UNIVERSAL ANIMATION & 3D MICRO-INTERACTIONS ENGINE ====================
+
+    // 1. Smooth Numeric Counter Tweening
+    function animateCounter(el, start, end, duration, formatFn) {
+      if (!el) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.textContent = formatFn ? formatFn(end) : end;
+        return;
+      }
+      const startTime = performance.now();
+      const change = end - start;
+
+      function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = start + change * ease;
+        el.textContent = formatFn ? formatFn(current) : Math.round(current);
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = formatFn ? formatFn(end) : end;
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    // 2. Tab 1: Atmospheric Ambient Particulate Canvas
+    aqiParticles = [];
+    aqiParticleAnimId = null;
+    isAQIParticlesActive = true;
+    aqiCanvasEl = null;
+    aqiCtx = null;
+    aqiParticleColor = '#BA2D1F';
+    aqiParticleSpeedFactor = 1.2;
+    aqiMouseX = -999;
+    aqiMouseY = -999;
+
+    function initAQIParticleSystem() {
+      aqiCanvasEl = document.getElementById('aqi-particle-canvas');
+      const banner = document.getElementById('aqi-card-display');
+      if (!aqiCanvasEl || !banner) return;
+      aqiCtx = aqiCanvasEl.getContext('2d');
+
+      function resizeCanvas() {
+        if (!aqiCanvasEl || !banner) return;
+        aqiCanvasEl.width = banner.clientWidth;
+        aqiCanvasEl.height = banner.clientHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Create 55 floating atmospheric particles
+      aqiParticles = [];
+      const count = 55;
+      for (let i = 0; i < count; i++) {
+        aqiParticles.push({
+          x: Math.random() * (aqiCanvasEl.width || 600),
+          y: Math.random() * (aqiCanvasEl.height || 180),
+          vx: (Math.random() - 0.5) * 0.9,
+          vy: (Math.random() - 0.5) * 0.6,
+          radius: Math.random() * 2.8 + 1.2,
+          alpha: Math.random() * 0.45 + 0.2
+        });
+      }
+
+      banner.addEventListener('mousemove', (e) => {
+        const rect = banner.getBoundingClientRect();
+        aqiMouseX = e.clientX - rect.left;
+        aqiMouseY = e.clientY - rect.top;
+      });
+
+      banner.addEventListener('mouseleave', () => {
+        aqiMouseX = -999;
+        aqiMouseY = -999;
+      });
+
+      renderAQIParticles();
+    }
+
+    function updateAQIParticles(aqi, colorHex) {
+      aqiParticleColor = colorHex || '#BA2D1F';
+      if (aqi < 100) aqiParticleSpeedFactor = 0.55;
+      else if (aqi < 200) aqiParticleSpeedFactor = 0.9;
+      else aqiParticleSpeedFactor = 1.45;
+    }
+
+    function setAQIParticlesActive(active) {
+      isAQIParticlesActive = active;
+      if (active && !aqiParticleAnimId) {
+        renderAQIParticles();
+      }
+    }
+
+    function renderAQIParticles() {
+      if (!isAQIParticlesActive || !aqiCtx || !aqiCanvasEl) {
+        aqiParticleAnimId = null;
+        return;
+      }
+
+      const w = aqiCanvasEl.width;
+      const h = aqiCanvasEl.height;
+      aqiCtx.clearRect(0, 0, w, h);
+
+      for (let i = 0; i < aqiParticles.length; i++) {
+        const p = aqiParticles[i];
+        p.x += p.vx * aqiParticleSpeedFactor;
+        p.y += p.vy * aqiParticleSpeedFactor;
+
+        // Aerodynamic mouse displacement
+        if (aqiMouseX > 0 && aqiMouseY > 0) {
+          const dx = p.x - aqiMouseX;
+          const dy = p.y - aqiMouseY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 80) {
+            const force = (80 - dist) / 80;
+            p.x += (dx / dist) * force * 3.5;
+            p.y += (dy / dist) * force * 3.5;
+          }
+        }
+
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
+
+        aqiCtx.beginPath();
+        aqiCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        aqiCtx.fillStyle = aqiParticleColor;
+        aqiCtx.globalAlpha = p.alpha;
+        aqiCtx.fill();
+      }
+      aqiCtx.globalAlpha = 1.0;
+
+      aqiParticleAnimId = requestAnimationFrame(renderAQIParticles);
+    }
+
+    // 3. Tab 3: Interactive 3D Room Envelope Ventilation Simulator
+    isRoomVentActive = false;
+    roomVentAnimId = null;
+    roomCanvas = null;
+    roomCtx = null;
+    roomParticles = [];
+
+    function initRoomVentilationSimulator() {
+      roomCanvas = document.getElementById('hh-room-canvas');
+      if (!roomCanvas) return;
+      roomCtx = roomCanvas.getContext('2d');
+
+      // 60 particles moving through room
+      roomParticles = [];
+      for (let i = 0; i < 60; i++) {
+        roomParticles.push({
+          x: Math.random() * roomCanvas.width,
+          y: Math.random() * roomCanvas.height,
+          vx: Math.random() * 0.8 + 0.3,
+          vy: (Math.random() - 0.5) * 0.4,
+          isClean: Math.random() > 0.6,
+          life: Math.random() * 100
+        });
+      }
+
+      function updateRoomCalcFromForm() {
+        const win = document.getElementById('hh-windows')?.value;
+        let inf = 0.8;
+        if (win === 'weatherstripped') inf = 0.45;
+        else if (win === 'loose_drafty') inf = 1.8;
+
+        const infLabel = document.getElementById('hh-val-inf-rate');
+        if (infLabel) infLabel.textContent = inf + ' ACH';
+
+        const indoorLabel = document.getElementById('hh-val-indoor-calc');
+        const ambient = 180;
+        const vol = 45; // m3
+        const k = 0.24; // deposition
+        const cadr = 380;
+        const lambda = inf + k + (cadr / vol);
+        const cin = Math.round((0.8 * inf * ambient) / lambda);
+        if (indoorLabel) indoorLabel.textContent = cin + ' µg/m³';
+      }
+
+      document.getElementById('hh-windows')?.addEventListener('change', updateRoomCalcFromForm);
+      document.getElementById('hh-home-type')?.addEventListener('change', updateRoomCalcFromForm);
+      updateRoomCalcFromForm();
+
+      if (document.getElementById('tab-household')?.classList.contains('active')) {
+        setRoomVentilationActive(true);
+      }
+    }
+
+    function setRoomVentilationActive(active) {
+      isRoomVentActive = active;
+      if (active) {
+        if (roomCanvas) {
+          const container = roomCanvas.parentElement;
+          roomCanvas.width = (container && container.clientWidth) ? container.clientWidth : 800;
+          roomCanvas.height = (container && container.clientHeight) ? container.clientHeight : 220;
+        }
+        if (!roomVentAnimId) {
+          renderRoomVentilation();
+        }
+      }
+    }
+
+    function renderRoomVentilation() {
+      if (!isRoomVentActive || !roomCtx || !roomCanvas) {
+        roomVentAnimId = null;
+        return;
+      }
+
+      const w = roomCanvas.width;
+      const h = roomCanvas.height;
+      roomCtx.clearRect(0, 0, w, h);
+
+      const isDark = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark';
+
+      // Draw Isometric 3D Room Envelope Outline
+      const rx = 120, ry = 35, rw = w - 240, rh = h - 70;
+
+      // Outdoor area (left)
+      roomCtx.fillStyle = isDark ? 'rgba(239, 68, 68, 0.08)' : 'rgba(239, 68, 68, 0.06)';
+      roomCtx.fillRect(10, 20, 90, h - 40);
+
+      roomCtx.font = '700 11px system-ui, sans-serif';
+      roomCtx.fillStyle = '#ef4444';
+      roomCtx.fillText('OUTDOOR SMOG', 14, 38);
+
+      // Room Floor & Walls (3D isometric perspective)
+      roomCtx.strokeStyle = isDark ? '#374151' : '#cbd5e1';
+      roomCtx.lineWidth = 2;
+      roomCtx.strokeRect(rx, ry, rw, rh);
+
+      // Room interior background tint
+      roomCtx.fillStyle = isDark ? 'rgba(16, 185, 129, 0.06)' : 'rgba(16, 185, 129, 0.04)';
+      roomCtx.fillRect(rx, ry, rw, rh);
+
+      // Window Crack Infiltration (Left wall)
+      roomCtx.strokeStyle = '#f59e0b';
+      roomCtx.lineWidth = 4;
+      roomCtx.beginPath();
+      roomCtx.moveTo(rx, ry + rh * 0.3);
+      roomCtx.lineTo(rx, ry + rh * 0.7);
+      roomCtx.stroke();
+
+      roomCtx.font = '600 10px system-ui, sans-serif';
+      roomCtx.fillStyle = '#f59e0b';
+      roomCtx.fillText('Window Infiltration (a)', rx + 6, ry + rh * 0.5);
+
+      // HEPA Purifier Chassis (Right side)
+      const px = rx + rw - 70;
+      const py = ry + rh * 0.55;
+      roomCtx.fillStyle = isDark ? '#475569' : '#e2e8f0';
+      roomCtx.fillRect(px, py, 34, 46);
+      roomCtx.fillStyle = '#06b6d4';
+      roomCtx.fillRect(px + 4, py + 2, 26, 6);
+
+      // HEPA Clean Air Cone (Translucent green/emerald)
+      const now = performance.now() * 0.003;
+      const coneScale = 1.0 + Math.sin(now * 3) * 0.06;
+      roomCtx.fillStyle = 'rgba(16, 185, 129, 0.16)';
+      roomCtx.beginPath();
+      roomCtx.moveTo(px + 17, py);
+      roomCtx.lineTo(px - 90 * coneScale, py - 45);
+      roomCtx.lineTo(px - 80 * coneScale, py + 75);
+      roomCtx.closePath();
+      roomCtx.fill();
+
+      roomCtx.font = '700 11px system-ui, sans-serif';
+      roomCtx.fillStyle = '#10b981';
+      roomCtx.fillText('Clean Air Cone (CADR Q_p)', px - 110, py - 20);
+
+      // Animate Air Particles
+      for (let i = 0; i < roomParticles.length; i++) {
+        const pt = roomParticles[i];
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+        pt.life++;
+
+        // Wrap particles
+        if (pt.x > rx + rw - 15) {
+          pt.x = 20;
+          pt.y = ry + 20 + Math.random() * (rh - 40);
+          pt.isClean = false;
+        }
+
+        // Particle enters clean air cone: becomes clean!
+        if (pt.x > px - 90 && pt.x < px + 10 && pt.y > py - 40 && pt.y < py + 60) {
+          pt.isClean = true;
+        }
+
+        roomCtx.beginPath();
+        roomCtx.arc(pt.x, pt.y, pt.isClean ? 2.6 : 3.2, 0, Math.PI * 2);
+        roomCtx.fillStyle = pt.isClean ? '#10b981' : '#f59e0b';
+        roomCtx.fill();
+      }
+
+      roomVentAnimId = requestAnimationFrame(renderRoomVentilation);
+    }
+
+    // 4. Interactive 3D Card Tilt on Cursor Move
+    function init3DCardTilt() {
+      const tiltCards = document.querySelectorAll('.card-interactive-3d, .comp-card');
+      tiltCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -5;
+          const rotateY = ((x - centerX) / centerX) * 5;
+          card.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translate3d(0, -3px, 0)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    }
+
+    // Initialize all animation engines
+    window.addEventListener('DOMContentLoaded', () => {
+      initAQIParticleSystem();
+      initRoomVentilationSimulator();
+      init3DCardTilt();
+    });
+    // Fallback if DOMContentLoaded already fired
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(() => {
+        initAQIParticleSystem();
+        initRoomVentilationSimulator();
+        init3DCardTilt();
+      }, 50);
     }
 
     // ==================== THEME MANAGEMENT (LIGHT & DARK MODE) ====================
