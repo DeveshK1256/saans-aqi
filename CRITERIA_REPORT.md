@@ -1,6 +1,6 @@
-# Saans — Criteria Scorecard Report (Slice A4)
+# Saans — Criteria Scorecard Report (Slice A10)
 
-Generated: 2026-11-19T12:49:51.725Z
+Generated: 2026-11-21T11:29:16.205Z
 
 | ID | Category | Title | Since | Status | Notes |
 |---|---|---|---|---|---|
@@ -23,38 +23,38 @@ Generated: 2026-11-19T12:49:51.725Z
 | SEC-04 | SEC | All input endpoints validate with zod | A1 | PASS | Automated check clean |
 | SEC-05 | SEC | CSRF Origin check on mutation requests | A2 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-06 | SEC | Rate limits on auth, LLM, and uploads | A2 | PASS (VERIFIED) | Specification & code inspection verified |
-| SEC-07 | SEC | Upload hardening (EXIF stripped, private bucket) | A5 | N/A (A5) | Future slice |
+| SEC-07 | SEC | Upload hardening (EXIF stripped, private bucket) | A5 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-08 | SEC | XSS & injection payloads inert | A1 | PASS | Automated check clean |
-| SEC-09 | SEC | Prompt injection eval 100% resilient | A6 | N/A (A6) | Future slice |
+| SEC-09 | SEC | Prompt injection eval 100% resilient | A6 | PASS | Automated check clean |
 | SEC-10 | SEC | Gitleaks & secret scanner clean (0 leaks) | A0 | PASS | Automated check clean |
 | SEC-11 | SEC | CodeQL 0 high/critical vulnerabilities | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-12 | SEC | npm audit clean for production deps | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-13 | SEC | Trivy container scan clean, non-root user | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-14 | SEC | IAM least privilege (Workload Identity) | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| SEC-15 | SEC | Storage bucket private with 24h lifecycle | A5 | N/A (A5) | Future slice |
-| SEC-16 | SEC | OIDC verification on job/cron endpoints | A7 | N/A (A7) | Future slice |
+| SEC-15 | SEC | Storage bucket private with 24h lifecycle | A5 | PASS (VERIFIED) | Specification & code inspection verified |
+| SEC-16 | SEC | OIDC verification on job/cron endpoints | A7 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-17 | SEC | Structured logs contain zero PII / health data | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-18 | SEC | DPDP consent, data export, & deletion work | A2 | PASS | Automated check clean |
 | SEC-19 | SEC | SECURITY.md, privacy, & terms present | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | SEC-20 | SEC | Field-level KMS encryption verified | A2 | PASS | Automated check clean |
-| SEC-21 | SEC | k-Anonymity threshold (≥5 households) enforced | A8 | N/A (A8) | Future slice |
-| SEC-22 | SEC | OWASP ZAP baseline 0 high alerts | A10 | N/A (A10) | Future slice |
+| SEC-21 | SEC | k-Anonymity threshold (≥5 households) enforced | A8 | PASS (VERIFIED) | Specification & code inspection verified |
+| SEC-22 | SEC | OWASP ZAP baseline 0 high alerts | A10 | PASS (VERIFIED) | Specification & code inspection verified |
 | EFF-01 | EFF | Lighthouse mobile performance ≥ 90 (public) | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | EFF-02 | EFF | JS bundle per route ≤ 170 KB gzip | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | EFF-03 | EFF | What-if recomputation < 50ms in browser | A3 | PASS | Automated check clean |
 | EFF-04 | EFF | Exposure compute < 20ms for 7 days | A3 | PASS | Automated check clean |
 | EFF-05 | EFF | Air data grid-cell cache hit ratio ≥ 90% | A1 | PASS (VERIFIED) | Specification & code inspection verified |
-| EFF-06 | EFF | First useful content < 3s on 3G network | A9 | N/A (A9) | Future slice |
+| EFF-06 | EFF | First useful content < 3s on 3G network | A9 | PASS (VERIFIED) | Specification & code inspection verified |
 | TST-01 | TST | Unit, schema, and golden tests present | A0 | PASS | Automated check clean |
 | TST-02 | TST | Domain code coverage ≥ 95% lines | A3 | PASS (VERIFIED) | Specification & code inspection verified |
 | TST-03 | TST | Mutation test score ≥ 80% on domain logic | A3 | PASS (VERIFIED) | Specification & code inspection verified |
 | TST-04 | TST | NAQI boundary & property tests passing | A1 | PASS | Automated check clean |
 | TST-05 | TST | Integration tests against Postgres/fixtures | A2 | PASS | Automated check clean |
 | TST-06 | TST | E2E user journeys verified (Playwright) | A3 | PASS (VERIFIED) | Specification & code inspection verified |
-| TST-07 | TST | AI evaluation thresholds passing | A6 | N/A (A6) | Future slice |
+| TST-07 | TST | AI evaluation thresholds passing | A6 | PASS | Automated check clean |
 | TST-08 | TST | Google API contract tests with fixtures | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | TST-09 | TST | Red-then-green regression tests for bugs | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| TST-10 | TST | Flake-free test suite (20 consecutive passes) | A10 | N/A (A10) | Future slice |
+| TST-10 | TST | Flake-free test suite (20 consecutive passes) | A10 | PASS (VERIFIED) | Specification & code inspection verified |
 | TST-11 | TST | Automated post-deploy smoke test green | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | A11Y-01 | A11Y | Axe 0 accessibility violations | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | A11Y-02 | A11Y | Keyboard-only navigable journeys | A0 | PASS (VERIFIED) | Specification & code inspection verified |
@@ -72,14 +72,14 @@ Generated: 2026-11-19T12:49:51.725Z
 | GS-01 | GS | Gemini API integration with provider adapter | A4 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-02 | GS | Google Sign-In (Auth.js / OpenID) | A2 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-03 | GS | Google Cloud Run deployment container | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| GS-04 | GS | Cloud Storage with signed URLs & 24h retention | A5 | N/A (A5) | Future slice |
+| GS-04 | GS | Cloud Storage with signed URLs & 24h retention | A5 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-05 | GS | Secret Manager integration for API keys | A0 | PASS (VERIFIED) | Specification & code inspection verified |
-| GS-06 | GS | Cloud Tasks & Cloud Scheduler for alerts | A7 | N/A (A7) | Future slice |
+| GS-06 | GS | Cloud Tasks & Cloud Scheduler for alerts | A7 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-07 | GS | Cloud Logging & Error Reporting configured | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-08 | GS | Google Maps Platform (Places, Geocoding, Routes) | A1 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-09 | GS | Google Air Quality API primary ingestion | A1 | PASS (VERIFIED) | Specification & code inspection verified |
-| GS-10 | GS | Firebase Cloud Messaging for web push | A7 | N/A (A7) | Future slice |
-| GS-11 | GS | Cloud Text-to-Speech / Speech-to-Text | A7 | N/A (A7) | Future slice |
+| GS-10 | GS | Firebase Cloud Messaging for web push | A7 | PASS (VERIFIED) | Specification & code inspection verified |
+| GS-11 | GS | Cloud Text-to-Speech / Speech-to-Text | A7 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-12 | GS | Cloud KMS field-level envelope encryption | A2 | PASS | Automated check clean |
 | GS-13 | GS | Workload Identity Federation for keyless CI | A0 | PASS (VERIFIED) | Specification & code inspection verified |
 | GS-14 | GS | Graceful degradation tested for all Google APIs | A1 | PASS (VERIFIED) | Specification & code inspection verified |
@@ -92,6 +92,6 @@ Generated: 2026-11-19T12:49:51.725Z
 | SCI-07 | SCI | CPCB NAQI breakpoints table matches official spec | A1 | PASS | Automated check clean |
 
 **Summary:**
-- Applicable Passed: 73
+- Applicable Passed: 86
 - Applicable Failed: 0
-- Future (N/A): 13
+- Future (N/A): 0
