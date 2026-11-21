@@ -19,8 +19,9 @@ function resolveSession(req: NextRequest): UserSession {
   const authHeader = req.headers.get('authorization');
   const userIdHeader = req.headers.get('x-user-id');
 
-  // Allow test / local authenticated session
-  const userId = userIdHeader || (authHeader?.replace('Bearer ', '')) || 'usr_priya_pune_2026';
+  // Allow test / local authenticated session with strict character sanitization
+  const rawId = userIdHeader || (authHeader?.replace('Bearer ', '')) || 'usr_priya_pune_2026';
+  const userId = rawId.replace(/[^a-zA-Z0-9_\-]/g, '').slice(0, 64) || 'usr_priya_pune_2026';
 
   return {
     userId,

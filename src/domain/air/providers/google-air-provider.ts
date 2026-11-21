@@ -31,10 +31,14 @@ export class GoogleAirQualityProvider implements AirProvider {
     // If live API key is configured and not in offline mock mode, call Google AQ API
     if (this.apiKey && !this.forceMockForTesting) {
       try {
-        const url = `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${this.apiKey}`;
+        // Mitigate CWE-598: Pass Google API key in HTTP header rather than query string
+        const url = 'https://airquality.googleapis.com/v1/currentConditions:lookup';
         const res = await fetch(url, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': this.apiKey,
+          },
           body: JSON.stringify({
             location: { latitude: lat, longitude: lon },
             extraComputations: ['POLLUTANT_CONCENTRATION', 'LOCAL_AQI'],

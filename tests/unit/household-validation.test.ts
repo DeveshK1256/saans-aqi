@@ -86,4 +86,12 @@ describe('Household Profile Validation & Defaults (F2 & SEC-04)', () => {
     };
     expect(() => HouseholdProfileInputSchema.parse(invalidConsent)).toThrowError(/Data processing agreement/);
   });
+
+  it('rejects member name with HTML tags or malicious script injection (CWE-79 defense)', () => {
+    const maliciousMember = {
+      ...validPriyaProfile,
+      members: [{ ...validPriyaProfile.members[0], nameAlias: '<script>alert("xss")</script>' }],
+    };
+    expect(() => HouseholdProfileInputSchema.parse(maliciousMember)).toThrowError(/Name alias must contain only/);
+  });
 });

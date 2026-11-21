@@ -61,9 +61,12 @@ export class GeminiProvider {
 
     // 2. Live Gemini API Call
     try {
+      // Mitigate Prompt Injection (CWE-1426 / OWASP LLM01): strip non-alphanumeric chars and enforce strict boundary
+      const sanitizedMemberName = vulnerableMemberName.replace(/[^\w\s\-'.()]/g, '').trim().slice(0, 50) || 'Household Member';
+
       const prompt = `
 You are Saans (सांस), an evidence-based urban air quality assistant for Indian families.
-Phrase this protective action for a household with vulnerable member: "${vulnerableMemberName}" (${action.whyThis.targetMember.ageGroup}${action.whyThis.targetMember.hasAsthma ? ', asthma' : ''}).
+Phrase this protective action for a household with vulnerable member: "${sanitizedMemberName}" (${action.whyThis.targetMember.ageGroup}${action.whyThis.targetMember.hasAsthma ? ', asthma' : ''}).
 
 CRITICAL CONSTRAINTS:
 1. Do NOT calculate or alter any numbers. You MUST use exact placeholders:
@@ -82,9 +85,13 @@ Rule Triggered: ${action.whyThis.ruleTriggered}
 Ambient PM2.5: ${action.whyThis.ambientPm25} ug/m3
 `;
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${this.modelName}:generateContent?key=${this.apiKey}`, {
+      // Mitigate CWE-598: pass API key via x-goog-api-key header instead of query parameters
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${this.modelName}:generateContent`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': this.apiKey || '',
+        },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {

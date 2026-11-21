@@ -3990,6 +3990,17 @@
   </footer>
 
   <script>
+    // --- Defensive Sanitization & XSS Shield (CWE-79) ---
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     // --- Universal 3D, Particle Simulation & Animation State ---
     var scene3D = null;
     var camera3D = null;
@@ -5184,7 +5195,8 @@
 
       const currentCount = list.querySelectorAll('.member-card').length;
       const newIdx = currentCount;
-      const defaultAlias = data.alias || `Family Member ${newIdx + 1}`;
+      const rawAlias = data.alias || `Family Member ${newIdx + 1}`;
+      const defaultAlias = rawAlias.replace(/[^\w\s\-'.()]/g, '').trim().slice(0, 50) || `Family Member ${newIdx + 1}`;
       const defaultAge = data.age !== undefined ? data.age : (newIdx === 2 ? 68 : 28);
       const defaultRole = data.role || (newIdx === 2 ? 'senior' : 'other');
       const defaultCommute = data.commute || 'metro_train';
@@ -5201,16 +5213,16 @@
 
       card.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-          <span class="member-card-title" style="font-weight: 700; font-size: 0.95rem;">👤 Member ${newIdx + 1} (${roleTitle})</span>
+          <span class="member-card-title" style="font-weight: 700; font-size: 0.95rem;">👤 Member ${newIdx + 1} (${escapeHtml(roleTitle)})</span>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="member-badge-display" style="font-size: 0.8rem; background: var(--surface-card); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--surface-border);">${ageGrp.charAt(0).toUpperCase() + ageGrp.slice(1)} · ${defaultAge} yrs</span>
+            <span class="member-badge-display" style="font-size: 0.8rem; background: var(--surface-card); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--surface-border);">${escapeHtml(ageGrp.charAt(0).toUpperCase() + ageGrp.slice(1))} · ${defaultAge} yrs</span>
             <button type="button" class="btn-remove-member" title="Remove member" onclick="removeHouseholdMember(this)">✕ Remove</button>
           </div>
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
           <div>
             <label class="field-label" style="font-size: 0.82rem;" for="${uniqueId}_alias">Alias</label>
-            <input type="text" id="${uniqueId}_alias" name="alias" class="member-alias-input" value="${defaultAlias}" style="padding: 6px 10px; font-size: 0.88rem;">
+            <input type="text" id="${uniqueId}_alias" name="alias" class="member-alias-input" value="${escapeHtml(defaultAlias)}" style="padding: 6px 10px; font-size: 0.88rem;">
           </div>
           <div>
             <label class="field-label" style="font-size: 0.82rem;" for="${uniqueId}_age">Age (Years)</label>
@@ -5295,7 +5307,19 @@
       };
     })();
 
-    // Pre-registered demo accounts for testing & evaluation
+    const DEMO_PW_HASH = 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f'; // SHA-256 of 'password123'
+    async function hashCredential(pw) {
+      try {
+        if (!window.crypto || !window.crypto.subtle) return pw;
+        const enc = new TextEncoder().encode(pw);
+        const buf = await window.crypto.subtle.digest('SHA-256', enc);
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      } catch (e) {
+        return pw;
+      }
+    }
+
+    // Pre-registered demo accounts for testing & evaluation (CWE-256 / CWE-312 protection)
     function getRegisteredUsers() {
       try {
         const stored = localStorage.getItem('saans_registered_users');
@@ -5304,7 +5328,7 @@
       return {
         'priya.sharma@gmail.com': {
           name: 'Priya Sharma',
-          password: 'password123',
+          passwordHash: DEMO_PW_HASH,
           city: 'Pune',
           locality: 'Shivajinagar / Kothrud',
           isPriya: true,
@@ -5313,7 +5337,7 @@
         },
         'devesh.kumar@gmail.com': {
           name: 'Devesh Kumar',
-          password: 'password123',
+          passwordHash: DEMO_PW_HASH,
           city: 'Delhi',
           locality: 'Anand Vihar',
           avatarInitial: 'D',
@@ -5325,7 +5349,7 @@
         },
         'codextrial0@gmail.com': {
           name: 'Codex',
-          password: 'password123',
+          passwordHash: DEMO_PW_HASH,
           city: 'Delhi',
           locality: 'Dwarka Sector 8',
           avatarInitial: 'C',
@@ -5376,9 +5400,9 @@
           headerWidget.innerHTML = `
             <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--surface-subtle); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--surface-border); font-size: 0.82rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
               <div style="width: 24px; height: 24px; border-radius: 50%; background: ${currentAuthUser.avatarColor || '#0B735F'}; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">
-                ${currentAuthUser.avatarInitial || 'P'}
+                ${escapeHtml(currentAuthUser.avatarInitial || 'P')}
               </div>
-              <span style="font-weight: 600; color: var(--text-main);">${currentAuthUser.name.split(' ')[0]}</span>
+              <span style="font-weight: 600; color: var(--text-main);">${escapeHtml(currentAuthUser.name.split(' ')[0])}</span>
               <button id="header-btn-logout" style="border: none; background: none; color: var(--danger); font-size: 0.78rem; font-weight: 600; cursor: pointer; padding: 0 4px; margin-left: 2px;" title="Sign out of Saans">
                 Log Out
               </button>
@@ -5585,7 +5609,7 @@
     // Form Submit: Log In
     const formLogin = document.getElementById('form-saans-login');
     if (formLogin) {
-      formLogin.addEventListener('submit', (e) => {
+      formLogin.addEventListener('submit', async (e) => {
         e.preventDefault();
         const emailInput = document.getElementById('login-input-email');
         const passInput = document.getElementById('login-input-password');
@@ -5612,7 +5636,9 @@
         let targetUser = users[email];
 
         if (targetUser) {
-          if (targetUser.password && targetUser.password !== pass) {
+          const passHash = await hashCredential(pass);
+          const isMatch = targetUser.passwordHash ? (targetUser.passwordHash === passHash) : (targetUser.password === pass);
+          if (!isMatch) {
             if (alertBox) {
               alertBox.textContent = 'Incorrect password. (For demo accounts, use password123)';
               alertBox.style.display = 'block';
@@ -5620,11 +5646,11 @@
             return;
           }
         } else {
-          // Auto-provision user account so registration is frictionless
+          // Auto-provision user account with hashed password
           const derivedName = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
           targetUser = {
             name: derivedName,
-            password: pass,
+            passwordHash: await hashCredential(pass),
             city: 'Delhi',
             avatarInitial: derivedName.charAt(0).toUpperCase(),
             avatarColor: '#0B735F'
@@ -5654,7 +5680,7 @@
     // Form Submit: Register
     const formRegister = document.getElementById('form-saans-register');
     if (formRegister) {
-      formRegister.addEventListener('submit', (e) => {
+      formRegister.addEventListener('submit', async (e) => {
         e.preventDefault();
         const nameInput = document.getElementById('reg-input-name');
         const emailInput = document.getElementById('reg-input-email');
@@ -5663,7 +5689,8 @@
         const dpdpCheck = document.getElementById('reg-input-dpdp');
         const alertBox = document.getElementById('reg-alert-box');
 
-        const name = nameInput ? nameInput.value.trim() : '';
+        const rawName = nameInput ? nameInput.value.trim() : '';
+        const name = rawName.replace(/[^\w\s\-'.()]/g, '').slice(0, 50);
         const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
         const pass = passInput ? passInput.value : '';
         const city = cityInput ? cityInput.value : 'Delhi';
@@ -5703,7 +5730,7 @@
 
         const newUser = {
           name: name,
-          password: pass,
+          passwordHash: await hashCredential(pass),
           city: city,
           avatarInitial: avatarInitial,
           avatarColor: avatarColor,
@@ -5965,7 +5992,7 @@
         const condLabel = topVuln.healthFlagsDecrypted?.hasAsthma 
           ? 'Asthma / Respiratory Risk' 
           : (topVuln.ageYears >= 60 ? 'Cardiovascular & Geriatric Risk' : (topVuln.ageYears <= 4 ? 'Developing Lung Physiology' : 'Physiological Sensitivity'));
-        recVuln.innerHTML = `<strong>${topVuln.nameAlias} (${topVuln.ageYears}y ${roleLabel} — ${condLabel})</strong>`;
+        recVuln.innerHTML = `<strong>${escapeHtml(topVuln.nameAlias)} (${topVuln.ageYears}y ${escapeHtml(roleLabel)} — ${escapeHtml(condLabel)})</strong>`;
       }
 
       // 2. Dynamically populate Dose & What-If dropdown (#calc-member) with real family members
@@ -5978,7 +6005,7 @@
           const isSelected = (prevVal === val) || (!prevVal.startsWith('hh_mem_') && m === topVuln);
           const roleCap = m.role ? (m.role.charAt(0).toUpperCase() + m.role.slice(1)) : 'Member';
           const condTag = m.healthFlagsDecrypted?.hasAsthma ? '• Asthma' : (m.ageYears >= 60 ? '• Senior Risk' : '');
-          optHtml += `<option value="${val}" ${isSelected ? 'selected' : ''}>${m.nameAlias} (${roleCap}, ${m.ageYears}y) ${condTag} — Inhalation: ~${(m.ageYears <= 10 ? 0.35 : 0.45).toFixed(2)} m³/h</option>`;
+          optHtml += `<option value="${val}" ${isSelected ? 'selected' : ''}>${escapeHtml(m.nameAlias)} (${escapeHtml(roleCap)}, ${m.ageYears}y) ${condTag} — Inhalation: ~${(m.ageYears <= 10 ? 0.35 : 0.45).toFixed(2)} m³/h</option>`;
         });
         optHtml += `</optgroup>
         <optgroup label="Reference Profiles">
@@ -6027,7 +6054,7 @@
         const dailyInhalationM3 = isChild ? 10.5 : (isSenior ? 12.8 : 15.2);
         const baseDose = Math.round(dailyInhalationM3 * (currentPm * 0.45));
         totalDoseUg += baseDose;
-        memberBreakdowns.push(`<strong>${m.nameAlias}</strong> (${m.role}): ~${baseDose} µg/day`);
+        memberBreakdowns.push(`<strong>${escapeHtml(m.nameAlias)}</strong> (${escapeHtml(m.role || 'Member')}): ~${baseDose} µg/day`);
       });
 
       if (familyDose) familyDose.textContent = `~${totalDoseUg} µg/day`;
@@ -7405,9 +7432,9 @@
           <tr style="border-bottom: 1px solid var(--surface-border); ${isCurrent ? 'background: rgba(11, 115, 95, 0.06); font-weight: 600;' : ''}">
             <td style="padding: 10px 12px; font-weight: 700;">${rankMedal}</td>
             <td style="padding: 10px 12px;">
-              ${s.name} ${isCurrent ? '<span style="font-size: 0.72rem; background: var(--accent); color: #fff; padding: 1px 6px; border-radius: 10px; margin-left: 4px;">Your Society</span>' : ''}
+              ${escapeHtml(s.name)} ${isCurrent ? '<span style="font-size: 0.72rem; background: var(--accent); color: #fff; padding: 1px 6px; border-radius: 10px; margin-left: 4px;">Your Society</span>' : ''}
             </td>
-            <td style="padding: 10px 12px; color: var(--text-muted);">${s.locality}</td>
+            <td style="padding: 10px 12px; color: var(--text-muted);">${escapeHtml(s.locality)}</td>
             <td style="padding: 10px 12px;">${s.units} Units</td>
             <td style="padding: 10px 12px; color: var(--accent); font-weight: 700;">${s.co2SavedKg.toFixed(1)} kg</td>
             <td style="padding: 10px 12px; font-weight: 700; color: #8C5503;">${s.avgPerHh.toFixed(2)} kg/unit</td>
@@ -7479,18 +7506,21 @@
       const btnCreate = document.getElementById('btn-open-create-society');
       if (btnCreate) {
         btnCreate.addEventListener('click', () => {
-          const socName = prompt('Enter Housing Society Name (e.g. Silver Crest Heights):');
-          if (socName && socName.trim()) {
-            const locName = prompt('Enter Locality & City (e.g. Baner, Pune):', 'Pune');
+          const rawSocName = prompt('Enter Housing Society Name (e.g. Silver Crest Heights):');
+          if (rawSocName && rawSocName.trim()) {
+            const socName = rawSocName.replace(/[^\w\s\-'.()]/g, '').trim().slice(0, 50);
+            if (!socName) return;
+            const rawLocName = prompt('Enter Locality & City (e.g. Baner, Pune):', 'Pune');
+            const locName = (rawLocName ? rawLocName.replace(/[^\w\s\-'.(),]/g, '').trim() : 'India').slice(0, 50);
             const newKey = `soc_custom_${Date.now()}`;
             const cleanCode = socName.replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase() + '-' + Math.floor(100 + Math.random() * 900);
             SOCIETIES_DATA[newKey] = {
               id: newKey,
-              name: socName.trim(),
-              locality: locName ? locName.trim() : 'India',
+              name: socName,
+              locality: locName || 'India',
               city: 'Pune',
               inviteCode: cleanCode,
-              organizer: currentAuthUser.isLoggedIn ? currentAuthUser.name : 'Self (Organizer)',
+              organizer: currentAuthUser.isLoggedIn ? escapeHtml(currentAuthUser.name) : 'Self (Organizer)',
               units: 1,
               co2SavedKg: 0.0,
               pmSavedKg: 0.0

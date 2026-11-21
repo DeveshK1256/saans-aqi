@@ -14,7 +14,11 @@ export const HealthFlagsSchema = z.object({
 
 export const HouseholdMemberSchema = z.object({
   id: z.string().uuid().optional(),
-  nameAlias: z.string().min(1, 'Name alias is required').max(50, 'Alias max 50 chars'),
+  nameAlias: z
+    .string()
+    .min(1, 'Name alias is required')
+    .max(50, 'Alias max 50 chars')
+    .regex(/^[a-zA-Z0-9\s\-'.()]+$/, 'Name alias must contain only alphanumeric characters, spaces, hyphens, periods, and parentheses'),
   ageGroup: z.enum(['infant', 'toddler', 'child', 'adult', 'elderly']),
   ageYears: z.number().int().min(0).max(120),
   healthFlags: HealthFlagsSchema,
