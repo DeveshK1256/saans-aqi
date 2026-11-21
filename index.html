@@ -2475,11 +2475,13 @@
           </div>
         </div>
 
-        <!-- 24-Hour Routine Plan -->
-        <h3 style="font-size: 1.05rem; margin-bottom: 12px; font-weight: 700;">🕒 24-Hour Air Hygiene Schedule for Today</h3>
-        <div class="timeline">
+        <!-- 24-Hour Routine Plan (Dynamically Generated per Selected City / Geolocation) -->
+        <h3 id="routine-schedule-title" style="font-size: 1.05rem; margin-bottom: 12px; font-weight: 700; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <span>🕒 24-Hour Air Hygiene Schedule for Today</span>
+        </h3>
+        <div class="timeline" id="routine-timeline-container">
           <div class="timeline-item">
-            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--danger); font-weight: 700;">MORNING</span></div>
+            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--danger); font-weight: 700;">MORNING PEAK</span></div>
             <div class="timeline-content">
               <span class="timeline-badge" style="background: var(--danger-light); color: var(--danger);">Ground Inversion Peak</span>
               <p><strong>Keep all windows strictly sealed.</strong> Cold overnight air traps ground emissions. Strictly avoid morning jogs or outdoor exercise. School children must wear airtight N95/FFP2 masks during commute.</p>
@@ -2785,12 +2787,12 @@
       <div class="card" id="card-auth-header">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
           <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.15rem; box-shadow: 0 2px 6px rgba(66, 133, 244, 0.3);" id="auth-avatar">
-              P
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: #e2e8f0; color: #64748b; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.15rem;" id="auth-avatar">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
             <div>
-              <div style="font-size: 1rem; font-weight: 700;" id="auth-user-name">Priya Sharma</div>
-              <div style="font-size: 0.82rem; color: var(--text-muted);" id="auth-user-email">priya.sharma@gmail.com · Saans Verified Account (DPDP 2023)</div>
+              <div style="font-size: 1rem; font-weight: 700;" id="auth-user-name">Guest Household (Not Signed In)</div>
+              <div style="font-size: 0.82rem; color: var(--text-muted);" id="auth-user-email">Local in-browser session · Sign in or register to encrypt & sync across devices</div>
             </div>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
@@ -2802,9 +2804,9 @@
               <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               <span>Load Sample Profile</span>
             </button>
-            <button class="btn btn-secondary" id="btn-auth-action" style="padding: 8px 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
-              <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-              <span>Log Out</span>
+            <button class="btn btn-primary" id="btn-auth-action" style="padding: 8px 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+              <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
+              <span>Log In / Register</span>
             </button>
           </div>
         </div>
@@ -3610,13 +3612,21 @@
         </label>
       </div>
 
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 7px 12px; background: rgba(11, 115, 95, 0.08); border-radius: var(--radius-sm); border: 1px solid rgba(11, 115, 95, 0.18);">
+        <span style="font-size: 0.78rem; color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Alert Preferences Auto-Saved Instantly
+        </span>
+        <span style="font-size: 0.72rem; color: var(--text-muted);">Active in background</span>
+      </div>
+
       <div style="display: flex; gap: 10px;">
-        <button type="button" class="btn btn-secondary" id="btn-trigger-test-toast" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+        <button type="button" class="btn btn-primary" id="btn-trigger-test-toast" style="flex: 2; display: inline-flex; align-items: center; justify-content: center; gap: 6px;" title="Trigger an immediate air hygiene alert with audio chime and browser notification">
           <svg class="saans-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          <span>Send Test Alert</span>
+          <span>🔔 Send Live Alert Now</span>
         </button>
-        <button type="button" class="btn btn-primary" id="btn-save-notif-prefs" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-          <span>Save Preferences</span>
+        <button type="button" class="btn btn-secondary" id="btn-close-notif-footer" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>Done</span>
         </button>
       </div>
     </div>
@@ -4023,6 +4033,120 @@
     const citySelect = document.getElementById('city-select');
     const devSwitch = document.getElementById('dev-switch-outage');
 
+    function renderRoutineTimeline(cityKey) {
+      const container = document.getElementById('routine-timeline-container');
+      const titleEl = document.getElementById('routine-schedule-title');
+      const data = CITIES[cityKey] || CITIES.delhi;
+      const pm25 = data.pollutants ? data.pollutants.pm25 : 100;
+      const subRes = calculateSubIndexClient('pm25', pm25);
+      const category = subRes.cat;
+      const color = subRes.color;
+      const isSevere = pm25 >= 120 || category === 'Very Poor' || category === 'Severe';
+      const isModerate = pm25 >= 50 && pm25 < 120;
+      const cityName = data.name.split(',')[0];
+
+      if (titleEl) {
+        titleEl.innerHTML = `<span>🕒 24-Hour Air Hygiene Schedule for <strong>${data.name}</strong></span> <span style="font-size: 0.8rem; font-weight: 600; padding: 2px 10px; border-radius: 12px; background: ${color}20; color: ${color}; border: 1px solid ${color}40;">${category} • PM2.5: ${pm25} µg/m³</span>`;
+      }
+
+      if (!container) return;
+
+      if (isSevere) {
+        container.innerHTML = `
+          <div class="timeline-item">
+            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--danger); font-weight: 700;">MORNING PEAK</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--danger-light); color: var(--danger);">Ground Inversion Trapping (zi ~220m)</span>
+              <p><strong>Keep all windows strictly sealed in ${cityName}.</strong> Cold surface air traps local diesel soot and combustion smog. Strictly avoid morning jogs, outdoor workouts, or unmasked school commutes. Inhaled particulate intake spikes 4× higher during this window.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">12:30 – 15:00<br><span style="font-size: 0.75rem; color: var(--success); font-weight: 700;">AFTERNOON WINDOW</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">Optimal 20-Min Cross-Ventilation</span>
+              <p><strong>Safest time to ventilate living spaces.</strong> Solar heating expands the planetary boundary layer (~950m) and wind velocity improves dispersal across ${cityName}. Open opposing windows for 15–20 minutes to flush out accumulated indoor CO₂ and cooking VOCs, then tightly reseal before dusk (16:30).</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">18:00 – 21:30<br><span style="font-size: 0.75rem; color: var(--warning); font-weight: 700;">EVENING PEAK</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--warning-light); color: var(--warning);">Evening Traffic Inversion Spike</span>
+              <p><strong>Reseal home completely.</strong> Falling dusk temperatures cause rapid thermal compression while peak commute traffic elevates roadside particulate levels to ~${Math.round(pm25 * 1.2)} µg/m³. Run kitchen exhaust continuously during cooking.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">22:00 – 06:00<br><span style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">NIGHT FILTRATION</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--accent-light); color: var(--accent);">Bedroom HEPA Air Cleaning</span>
+              <p>Keep bedroom door shut. Run DIY or HEPA purifier in the bedroom overnight. You spend ~8 continuous hours breathing here; bedroom filtration in ${cityName} cuts daily inhaled dose by up to 50%.</p>
+            </div>
+          </div>
+        `;
+      } else if (isModerate) {
+        container.innerHTML = `
+          <div class="timeline-item">
+            <div class="timeline-time">06:00 – 09:30<br><span style="font-size: 0.75rem; color: var(--warning); font-weight: 700;">MORNING</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--warning-light); color: var(--warning);">Moderate Surface Haze (zi ~450m)</span>
+              <p>Moderate ambient pollution in ${cityName} (${pm25} µg/m³). Light outdoor walking is acceptable in parks away from major traffic corridors. Vulnerable individuals (asthma / senior citizens) should monitor symptoms.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">11:00 – 16:30<br><span style="font-size: 0.75rem; color: var(--success); font-weight: 700;">EXTENDED VENTILATION</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">Broad Convective Ventilation</span>
+              <p><strong>Optimal airflow across ${cityName}.</strong> Boundary layer exceeds 1,100m. Keep windows open for natural air circulation and fresh air exchange. Indoor air cleaners can run on eco / low speed.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">18:00 – 21:00<br><span style="font-size: 0.75rem; color: var(--warning); font-weight: 700;">EVENING</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--warning-light); color: var(--warning);">Roadside Traffic Advisory</span>
+              <p>Temporary congestion spike along arterial routes. Keep vehicle windows rolled up and switch AC to recirculation mode during commute.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">21:30 – 06:00<br><span style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">NIGHT</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--accent-light); color: var(--accent);">Restful Indoor Environment</span>
+              <p>Air quality overnight in ${cityName} remains manageable. Maintain normal bedroom ventilation or run a quiet air purifier for optimal sleep hygiene.</p>
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="timeline-item">
+            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--success); font-weight: 700;">MORNING</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">Clean Morning Air (${pm25} µg/m³)</span>
+              <p><strong>Excellent outdoor conditions in ${cityName}.</strong> Safe for morning jogs, cycling, and outdoor school assemblies without masks. Ambient PM2.5 meets national clean air standards.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">10:00 – 17:00<br><span style="font-size: 0.75rem; color: var(--success); font-weight: 700;">ALL-DAY AIR EXCHANGE</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">Full Natural Ventilation</span>
+              <p>Keep windows and balconies open for continuous natural ventilation throughout ${cityName}. Ambient air is cleaner than typical unventilated indoor spaces.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">17:00 – 21:00<br><span style="font-size: 0.75rem; color: var(--success); font-weight: 700;">EVENING</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">Mild Traffic Drift</span>
+              <p>Minor localized exhaust near major junctions. General air quality remains satisfactory across residential sectors.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">21:00 – 06:00<br><span style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">NIGHT</span></div>
+            <div class="timeline-content">
+              <span class="timeline-badge" style="background: var(--accent-light); color: var(--accent);">Natural Rest</span>
+              <p>Clean nocturnal air. No emergency air cleaning required. Natural ventilation or standard fans provide healthy, restorative sleep.</p>
+            </div>
+          </div>
+        `;
+      }
+    }
+
     function updateCityAQI() {
       const cityKey = citySelect.value;
       const data = CITIES[cityKey] || CITIES.delhi;
@@ -4162,6 +4286,32 @@
       if (typeof renderDiurnalCurve === 'function') {
         renderDiurnalCurve();
       }
+
+      // Re-render location-tailored 24h routine schedule
+      if (typeof renderRoutineTimeline === 'function') {
+        renderRoutineTimeline(cityKey);
+      }
+
+      // Sync commute corridor dropdown to selected city
+      const corridorSelect = document.getElementById('commute-corridor-select');
+      if (corridorSelect) {
+        const cityCorridorMap = {
+          delhi: 'corridor_1',
+          dwarka: 'corridor_2',
+          noida: 'corridor_3',
+          gurgaon: 'corridor_2',
+          pune: 'corridor_4',
+          mumbai: 'corridor_5',
+          lucknow: 'corridor_1',
+          patna: 'corridor_1',
+          kolkata: 'corridor_5',
+          bengaluru: 'corridor_4'
+        };
+        if (cityCorridorMap[cityKey]) {
+          corridorSelect.value = cityCorridorMap[cityKey];
+          if (typeof calculateCommuteDose === 'function') calculateCommuteDose();
+        }
+      }
     }
 
     citySelect.addEventListener('change', () => {
@@ -4186,7 +4336,6 @@
           (pos) => {
             const userLat = pos.coords.latitude;
             const userLon = pos.coords.longitude;
-            btnLocation.textContent = `📍 Found (${userLat.toFixed(2)}, ${userLon.toFixed(2)})`;
 
             // Find closest city in registry
             let closestKey = 'delhi';
@@ -4198,13 +4347,28 @@
                 closestKey = key;
               }
             }
+            btnLocation.textContent = `📍 ${CITIES[closestKey].name.split(',')[0]} (${userLat.toFixed(2)}°, ${userLon.toFixed(2)}°)`;
             citySelect.value = closestKey;
+            activeStationId = null;
+            if (typeof renderStationPills === 'function') {
+              renderStationPills(closestKey);
+            }
             updateCityAQI();
-            setTimeout(() => { btnLocation.textContent = '📍 Use My Location'; }, 2000);
+            if (window.showSaansToast) {
+              showSaansToast(
+                'Location Detected',
+                `Synced Live AQI, meteorology & 24h routine to ${CITIES[closestKey].name}`,
+                'info'
+              );
+            }
+            setTimeout(() => { btnLocation.innerHTML = `<svg class="saans-btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Use My Location</span>`; }, 4000);
           },
           (err) => {
             btnLocation.textContent = '📍 Location Denied';
-            setTimeout(() => { btnLocation.textContent = '📍 Use My Location'; }, 2000);
+            if (window.showSaansToast) {
+              showSaansToast('Location Permission Denied', 'Select your city manually from the dropdown.', 'warning');
+            }
+            setTimeout(() => { btnLocation.innerHTML = `<svg class="saans-btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Use My Location</span>`; }, 2500);
           },
           { timeout: 8000 }
         );
@@ -4841,14 +5005,23 @@
     }
 
     // ==================== AUTHENTICATION & SESSION MANAGEMENT (SAANS NATIVE REGISTRATION & LOGIN) ====================
-    let currentAuthUser = {
-      isLoggedIn: true,
-      name: 'Priya Sharma',
-      email: 'priya.sharma@gmail.com',
-      avatarInitial: 'P',
-      avatarColor: '#0B735F',
-      provider: 'Saans Account (DPDP 2023)'
-    };
+    let currentAuthUser = (() => {
+      try {
+        const u = localStorage.getItem('saans_auth_user');
+        if (u) {
+          const parsed = JSON.parse(u);
+          if (parsed && parsed.isLoggedIn) return parsed;
+        }
+      } catch (e) {}
+      return {
+        isLoggedIn: false,
+        name: 'Guest User',
+        email: '',
+        avatarInitial: 'G',
+        avatarColor: '#64748b',
+        provider: 'Guest'
+      };
+    })();
 
     // Pre-registered demo accounts for testing & evaluation
     function getRegisteredUsers() {
@@ -6524,12 +6697,56 @@
     }
 
     // ==================== SMART NOTIFICATION CENTER & TOAST ENGINE ====================
+    let notifMonitorInterval = null;
+
+    function triggerLiveAirAlert(force = false) {
+      const cityKey = document.getElementById('city-select')?.value || 'delhi';
+      const cityData = CITIES[cityKey] || CITIES.delhi;
+      const pm25 = cityData.pollutants ? cityData.pollutants.pm25 : 192;
+      const cityName = cityData.name.split(',')[0];
+
+      // Request browser notification permission if not yet decided
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+
+      const alertTitle = `🚨 ${cityName} Air Hygiene Alert (${pm25} µg/m³)`;
+      const alertMsg = pm25 >= 120
+        ? `Ground thermal inversion trapping active across ${cityName}. Boundary layer at ~220m. Seal windows and avoid outdoor exposure.`
+        : `Air hygiene update for ${cityName}. Convective dispersion active. Check afternoon cross-ventilation window.`;
+
+      showSaansToast(alertTitle, alertMsg, pm25 >= 120 ? 'warning' : 'info');
+    }
+
     function initNotificationCenter() {
       const btnNotif = document.getElementById('notif-toggle-btn');
       const dialog = document.getElementById('saans-notif-dialog');
       const btnClose = document.getElementById('btn-close-notif');
+      const btnCloseFooter = document.getElementById('btn-close-notif-footer');
       const btnTest = document.getElementById('btn-trigger-test-toast');
-      const btnSave = document.getElementById('btn-save-notif-prefs');
+
+      function saveNotifPrefs() {
+        try {
+          const prefs = {
+            threshold: document.getElementById('notif-pref-threshold')?.checked,
+            morning: document.getElementById('notif-pref-morning')?.checked,
+            vent: document.getElementById('notif-pref-vent')?.checked,
+            stagnation: document.getElementById('notif-pref-stagnation')?.checked
+          };
+          localStorage.setItem('saans_notif_prefs', JSON.stringify(prefs));
+        } catch (e) {}
+      }
+
+      // Auto-save immediately on any checkbox change (no save button needed)
+      ['notif-pref-threshold', 'notif-pref-morning', 'notif-pref-vent', 'notif-pref-stagnation'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('change', () => {
+            saveNotifPrefs();
+            showSaansToast('Alert Preferences Auto-Saved', 'Air hygiene notifications updated in background.', 'info');
+          });
+        }
+      });
 
       if (btnNotif && dialog) {
         btnNotif.addEventListener('click', () => {
@@ -6538,41 +6755,35 @@
         });
       }
 
-      if (btnClose && dialog) {
-        btnClose.addEventListener('click', () => {
+      function closeDialog() {
+        if (dialog) {
           if (typeof dialog.close === 'function') dialog.close();
           else dialog.removeAttribute('open');
-        });
+        }
       }
+
+      if (btnClose) btnClose.addEventListener('click', closeDialog);
+      if (btnCloseFooter) btnCloseFooter.addEventListener('click', closeDialog);
 
       if (btnTest) {
         btnTest.addEventListener('click', () => {
-          showSaansToast(
-            'Inversion Trapping Alert',
-            'Overnight thermal inversion active. Boundary layer dropping to 240m. Seal windows by 18:00.',
-            'warning'
-          );
+          triggerLiveAirAlert(true);
         });
       }
 
-      if (btnSave && dialog) {
-        btnSave.addEventListener('click', () => {
-          try {
-            const prefs = {
-              threshold: document.getElementById('notif-pref-threshold')?.checked,
-              morning: document.getElementById('notif-pref-morning')?.checked,
-              vent: document.getElementById('notif-pref-vent')?.checked,
-              stagnation: document.getElementById('notif-pref-stagnation')?.checked
-            };
-            localStorage.setItem('saans_notif_prefs', JSON.stringify(prefs));
-          } catch (e) {}
-
-          if (typeof dialog.close === 'function') dialog.close();
-          else dialog.removeAttribute('open');
-
-          showSaansToast('Preferences Saved', 'Air hygiene notifications updated successfully.', 'success');
-        });
-      }
+      // Background notification engine: triggers periodic air quality alerts continuously
+      if (notifMonitorInterval) clearInterval(notifMonitorInterval);
+      notifMonitorInterval = setInterval(() => {
+        const lastAlert = parseInt(sessionStorage.getItem('saans_last_auto_alert') || '0', 10);
+        const now = Date.now();
+        if (now - lastAlert > 240000) { // every 4 minutes
+          const prefThreshold = document.getElementById('notif-pref-threshold')?.checked ?? true;
+          if (prefThreshold) {
+            triggerLiveAirAlert(false);
+            sessionStorage.setItem('saans_last_auto_alert', now.toString());
+          }
+        }
+      }, 60000);
     }
 
     function playAudioChime() {
@@ -6599,6 +6810,16 @@
       if (!container) return;
 
       playAudioChime();
+
+      // Trigger native browser notification if permitted
+      if ('Notification' in window && Notification.permission === 'granted') {
+        try {
+          new Notification(title, {
+            body: message,
+            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%230B735F"/></svg>'
+          });
+        } catch (e) {}
+      }
 
       const toast = document.createElement('div');
       toast.className = 'saans-toast';
@@ -6763,15 +6984,19 @@
         saveHouseholdProfile();
       }
     } else {
-      // First visit: default to Priya demo persona
-      applyPriyaDefaults();
-      saveHouseholdProfile();
+      // First visit: Guest state (do not auto-login as Priya)
+      currentAuthUser = { isLoggedIn: false };
+      clearHouseholdForm();
     }
     updateAuthUI();
 
+    const startCity = document.getElementById('city-select')?.value || 'delhi';
     renderRecommendations();
-    renderForecastPlanner('delhi');
-    renderCleanerRoute('delhi');
+    renderForecastPlanner(startCity);
+    renderCleanerRoute(startCity);
+    if (typeof renderRoutineTimeline === 'function') {
+      renderRoutineTimeline(startCity);
+    }
 
     // ==================== 3D ATMOSPHERIC INVERSION & URBAN CANOPY SIMULATOR ====================
     scene3D = null;
