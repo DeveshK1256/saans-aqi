@@ -1804,6 +1804,43 @@
       border-color: var(--surface-border);
     }
 
+    .member-card {
+      animation: memberFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    @keyframes memberFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-remove-member {
+      background: none;
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-remove-member:hover {
+      color: var(--danger);
+      border-color: #fca5a5;
+      background: #fef2f2;
+    }
+
+    [data-theme="dark"] .btn-remove-member:hover {
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.12);
+    }
+
     [data-theme="dark"] dialog#saans-auth-dialog {
       background: var(--surface-card);
       color: var(--text-main);
@@ -2897,26 +2934,43 @@
             </label>
           </div>
 
-          <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; color: var(--text-main);">👨‍👩‍👧 3. Household Members (Risk Vulnerability)</h3>
-          <div id="members-list" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
-            <!-- Member 1: Priya -->
-            <div class="member-card" style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 16px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span style="font-weight: 700; font-size: 0.95rem;">👤 Member 1 (Primary Earner)</span>
-                <span style="font-size: 0.8rem; background: #FFFFFF; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--surface-border);" id="m1-badge-display">Adult · 34 yrs</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin: 0;">👨‍👩‍👧 3. Household Members (Risk Vulnerability)</h3>
+            <span id="hh-members-count-badge" style="font-size: 0.78rem; font-weight: 600; padding: 2px 10px; border-radius: 12px; background: var(--surface-subtle); border: 1px solid var(--surface-border); color: var(--text-muted);">2 Members</span>
+          </div>
+          <div id="members-list" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
+            <!-- Member 1: Primary Earner -->
+            <div class="member-card" data-member-index="0" style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                <span class="member-card-title" style="font-weight: 700; font-size: 0.95rem;">👤 Member 1 (Primary Earner)</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="member-badge-display" style="font-size: 0.8rem; background: var(--surface-card); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--surface-border);" id="m1-badge-display">Adult · 34 yrs</span>
+                  <button type="button" class="btn-remove-member" title="Remove member" style="display: none;" onclick="removeHouseholdMember(this)">✕ Remove</button>
+                </div>
               </div>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
                 <div>
                   <label class="field-label" style="font-size: 0.82rem;" for="m1-alias">Alias</label>
-                  <input type="text" id="m1-alias" value="Priya" style="padding: 6px 10px; font-size: 0.88rem;">
+                  <input type="text" id="m1-alias" class="member-alias-input" value="Priya" style="padding: 6px 10px; font-size: 0.88rem;">
                 </div>
                 <div>
                   <label class="field-label" style="font-size: 0.82rem;" for="m1-age">Age (Years)</label>
-                  <input type="number" id="m1-age" min="0" max="115" value="34" style="padding: 6px 10px; font-size: 0.88rem;">
+                  <input type="number" id="m1-age" class="member-age-input" min="0" max="115" value="34" style="padding: 6px 10px; font-size: 0.88rem;">
+                </div>
+                <div>
+                  <label class="field-label" style="font-size: 0.82rem;" for="m1-role">Role in Family</label>
+                  <select id="m1-role" class="member-role-select" style="padding: 6px 10px; font-size: 0.88rem;">
+                    <option value="primary" selected>Primary Earner</option>
+                    <option value="spouse">Spouse / Partner</option>
+                    <option value="child">Child</option>
+                    <option value="infant">Infant (< 2 yrs)</option>
+                    <option value="senior">Senior Citizen</option>
+                    <option value="other">Other Relative</option>
+                  </select>
                 </div>
                 <div>
                   <label class="field-label" style="font-size: 0.82rem;" for="m1-commute">Commute Mode</label>
-                  <select id="m1-commute" style="padding: 6px 10px; font-size: 0.88rem;">
+                  <select id="m1-commute" class="member-commute-select" style="padding: 6px 10px; font-size: 0.88rem;">
                     <option value="bike_scooter" selected>Motorcycle / Scooter (30 min)</option>
                     <option value="metro_train">Metro / AC Train</option>
                     <option value="car_ac">Car with AC</option>
@@ -2926,30 +2980,44 @@
               </div>
               <div style="margin-top: 10px; font-size: 0.84rem;">
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                  <input type="checkbox" id="m1-asthma" style="width: auto;">
+                  <input type="checkbox" id="m1-asthma" class="member-asthma-input" style="width: auto;">
                   <span>Respiratory / Asthma Condition</span>
                 </label>
               </div>
             </div>
 
             <!-- Member 2: Child (Asthmatic) -->
-            <div class="member-card child" style="border-radius: var(--radius-md); padding: 14px 16px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span class="member-child-title" style="font-weight: 700; font-size: 0.95rem; color: #8C5503;">🧒 Member 2 (Child — Most Vulnerable)</span>
-                <span style="font-size: 0.8rem; background: var(--surface-card); color: #8C5503; padding: 2px 8px; border-radius: 10px; border: 1px solid #E4CE9E;" id="m2-badge-display">Child · 6 yrs</span>
+            <div class="member-card child" data-member-index="1" style="border-radius: var(--radius-md); padding: 14px 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                <span class="member-card-title member-child-title" style="font-weight: 700; font-size: 0.95rem; color: #8C5503;">🧒 Member 2 (Child — Most Vulnerable)</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="member-badge-display" style="font-size: 0.8rem; background: var(--surface-card); color: #8C5503; padding: 2px 8px; border-radius: 10px; border: 1px solid #E4CE9E;" id="m2-badge-display">Child · 6 yrs</span>
+                  <button type="button" class="btn-remove-member" title="Remove member" onclick="removeHouseholdMember(this)">✕ Remove</button>
+                </div>
               </div>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
                 <div>
                   <label class="field-label" style="font-size: 0.82rem;" for="m2-alias">Alias</label>
-                  <input type="text" id="m2-alias" value="Aarav (Child)" style="padding: 6px 10px; font-size: 0.88rem;">
+                  <input type="text" id="m2-alias" class="member-alias-input" value="Aarav (Child)" style="padding: 6px 10px; font-size: 0.88rem;">
                 </div>
                 <div>
                   <label class="field-label" style="font-size: 0.82rem;" for="m2-age">Age (Years)</label>
-                  <input type="number" id="m2-age" min="0" max="115" value="6" style="padding: 6px 10px; font-size: 0.88rem;">
+                  <input type="number" id="m2-age" class="member-age-input" min="0" max="115" value="6" style="padding: 6px 10px; font-size: 0.88rem;">
+                </div>
+                <div>
+                  <label class="field-label" style="font-size: 0.82rem;" for="m2-role">Role in Family</label>
+                  <select id="m2-role" class="member-role-select" style="padding: 6px 10px; font-size: 0.88rem;">
+                    <option value="child" selected>Child</option>
+                    <option value="primary">Primary Earner</option>
+                    <option value="spouse">Spouse / Partner</option>
+                    <option value="infant">Infant (< 2 yrs)</option>
+                    <option value="senior">Senior Citizen</option>
+                    <option value="other">Other Relative</option>
+                  </select>
                 </div>
                 <div>
                   <label class="field-label" style="font-size: 0.82rem;" for="m2-commute">School Commute</label>
-                  <select id="m2-commute" style="padding: 6px 10px; font-size: 0.88rem;">
+                  <select id="m2-commute" class="member-commute-select" style="padding: 6px 10px; font-size: 0.88rem;">
                     <option value="bike_scooter" selected>Pillion on Bike / Scooter (15 min)</option>
                     <option value="bus">School Bus</option>
                     <option value="walk">Walk</option>
@@ -2959,12 +3027,18 @@
               </div>
               <div class="child-asthma-box" style="margin-top: 10px; font-size: 0.84rem; background: #FFF4E5; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid #FED7AA;">
                 <label class="child-asthma-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #C2410C; font-weight: 600;">
-                  <input type="checkbox" id="m2-asthma" checked style="width: auto;">
+                  <input type="checkbox" id="m2-asthma" class="member-asthma-input" checked style="width: auto;">
                   <span>⚠️ Diagnosed Asthma / Active Wheezing (Encrypted with Cloud KMS)</span>
                 </label>
               </div>
             </div>
           </div>
+
+          <!-- Add Household Member Button -->
+          <button type="button" id="btn-add-member" style="width: 100%; padding: 11px; margin-bottom: 20px; border: 1px dashed var(--accent); border-radius: var(--radius-md); background: rgba(11, 115, 95, 0.05); color: var(--accent); font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease;">
+            <svg class="saans-btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <span>+ Add Household Member (Child, Senior, Spouse, Infant)</span>
+          </button>
 
           <!-- Consent Checkbox -->
           <div style="background: var(--surface-subtle); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--surface-border); margin-bottom: 20px;">
@@ -4598,22 +4672,171 @@
     }
 
     function updateMemberAgeBadges() {
-      const m1AgeInput = document.getElementById('m1-age');
-      const m1Badge = document.getElementById('m1-badge-display');
-      if (m1Badge) {
-        const val = m1AgeInput ? parseInt(m1AgeInput.value, 10) : 34;
-        const age = isNaN(val) ? 34 : val;
-        const grp = getAgeGroup(age);
-        m1Badge.textContent = `${grp.charAt(0).toUpperCase() + grp.slice(1)} · ${age} yrs`;
-      }
+      const cards = document.querySelectorAll('#members-list .member-card');
+      cards.forEach((card) => {
+        const ageInput = card.querySelector('.member-age-input');
+        const badge = card.querySelector('.member-badge-display');
+        if (badge && ageInput) {
+          const val = parseInt(ageInput.value, 10);
+          const age = isNaN(val) ? 30 : val;
+          const grp = getAgeGroup(age);
+          badge.textContent = `${grp.charAt(0).toUpperCase() + grp.slice(1)} · ${age} yrs`;
+        }
+      });
+    }
 
-      const m2AgeInput = document.getElementById('m2-age');
-      const m2Badge = document.getElementById('m2-badge-display');
-      if (m2Badge) {
-        const val = m2AgeInput ? parseInt(m2AgeInput.value, 10) : 6;
-        const age = isNaN(val) ? 6 : val;
-        const grp = getAgeGroup(age);
-        m2Badge.textContent = `${grp.charAt(0).toUpperCase() + grp.slice(1)} · ${age} yrs`;
+    function refreshMemberIndexes() {
+      const list = document.getElementById('members-list');
+      if (!list) return;
+      const cards = list.querySelectorAll('.member-card');
+      const countBadge = document.getElementById('hh-members-count-badge');
+      if (countBadge) countBadge.textContent = `${cards.length} Member${cards.length > 1 ? 's' : ''}`;
+
+      cards.forEach((card, idx) => {
+        card.setAttribute('data-member-index', idx);
+        const titleSpan = card.querySelector('.member-card-title');
+        const roleSelect = card.querySelector('.member-role-select');
+        const role = roleSelect ? (roleSelect.options[roleSelect.selectedIndex]?.text || roleSelect.value) : (idx === 0 ? 'Primary Earner' : 'Member');
+        if (titleSpan) {
+          const roleLower = role.toLowerCase();
+          const emoji = roleLower.includes('child') ? '🧒' : (roleLower.includes('senior') ? '🧓' : (roleLower.includes('infant') ? '👶' : '👤'));
+          titleSpan.textContent = `${emoji} Member ${idx + 1} (${role})`;
+        }
+        const removeBtn = card.querySelector('.btn-remove-member');
+        if (removeBtn) {
+          removeBtn.style.display = cards.length > 1 ? 'inline-flex' : 'none';
+        }
+      });
+    }
+
+    function bindMemberCardListeners(card) {
+      const ageInput = card.querySelector('.member-age-input');
+      if (ageInput) {
+        ageInput.addEventListener('input', () => {
+          updateMemberAgeBadges();
+          saveHouseholdProfile();
+        });
+        ageInput.addEventListener('change', () => {
+          updateMemberAgeBadges();
+          saveHouseholdProfile();
+        });
+      }
+      const roleSelect = card.querySelector('.member-role-select');
+      if (roleSelect) {
+        roleSelect.addEventListener('change', () => {
+          refreshMemberIndexes();
+          saveHouseholdProfile();
+        });
+      }
+      const aliasInput = card.querySelector('.member-alias-input');
+      if (aliasInput) {
+        aliasInput.addEventListener('input', saveHouseholdProfile);
+      }
+      const commuteSelect = card.querySelector('.member-commute-select');
+      if (commuteSelect) {
+        commuteSelect.addEventListener('change', saveHouseholdProfile);
+      }
+      const asthmaInput = card.querySelector('.member-asthma-input');
+      if (asthmaInput) {
+        asthmaInput.addEventListener('change', saveHouseholdProfile);
+      }
+    }
+
+    function addHouseholdMember(data = {}) {
+      const list = document.getElementById('members-list');
+      if (!list) return;
+
+      const currentCount = list.querySelectorAll('.member-card').length;
+      const newIdx = currentCount;
+      const defaultAlias = data.alias || `Family Member ${newIdx + 1}`;
+      const defaultAge = data.age !== undefined ? data.age : (newIdx === 2 ? 68 : 28);
+      const defaultRole = data.role || (newIdx === 2 ? 'senior' : 'other');
+      const defaultCommute = data.commute || 'metro_train';
+      const defaultAsthma = data.asthma || false;
+
+      const card = document.createElement('div');
+      card.className = 'member-card';
+      card.setAttribute('data-member-index', newIdx);
+      card.style.cssText = 'background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 16px;';
+
+      const ageGrp = getAgeGroup(defaultAge);
+      const roleTitle = defaultRole.charAt(0).toUpperCase() + defaultRole.slice(1);
+      const uniqueId = `mem_card_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+          <span class="member-card-title" style="font-weight: 700; font-size: 0.95rem;">👤 Member ${newIdx + 1} (${roleTitle})</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="member-badge-display" style="font-size: 0.8rem; background: var(--surface-card); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--surface-border);">${ageGrp.charAt(0).toUpperCase() + ageGrp.slice(1)} · ${defaultAge} yrs</span>
+            <button type="button" class="btn-remove-member" title="Remove member" onclick="removeHouseholdMember(this)">✕ Remove</button>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
+          <div>
+            <label class="field-label" style="font-size: 0.82rem;" for="${uniqueId}_alias">Alias</label>
+            <input type="text" id="${uniqueId}_alias" name="alias" class="member-alias-input" value="${defaultAlias}" style="padding: 6px 10px; font-size: 0.88rem;">
+          </div>
+          <div>
+            <label class="field-label" style="font-size: 0.82rem;" for="${uniqueId}_age">Age (Years)</label>
+            <input type="number" id="${uniqueId}_age" name="age" class="member-age-input" min="0" max="115" value="${defaultAge}" style="padding: 6px 10px; font-size: 0.88rem;">
+          </div>
+          <div>
+            <label class="field-label" style="font-size: 0.82rem;" for="${uniqueId}_role">Role in Family</label>
+            <select id="${uniqueId}_role" name="role" class="member-role-select" style="padding: 6px 10px; font-size: 0.88rem;">
+              <option value="primary" ${defaultRole === 'primary' ? 'selected' : ''}>Primary Earner</option>
+              <option value="spouse" ${defaultRole === 'spouse' ? 'selected' : ''}>Spouse / Partner</option>
+              <option value="child" ${defaultRole === 'child' ? 'selected' : ''}>Child</option>
+              <option value="infant" ${defaultRole === 'infant' ? 'selected' : ''}>Infant (&lt; 2 yrs)</option>
+              <option value="senior" ${defaultRole === 'senior' ? 'selected' : ''}>Senior Citizen</option>
+              <option value="other" ${defaultRole === 'other' ? 'selected' : ''}>Other Relative</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" style="font-size: 0.82rem;" for="${uniqueId}_commute">Commute Mode</label>
+            <select id="${uniqueId}_commute" name="commute" class="member-commute-select" style="padding: 6px 10px; font-size: 0.88rem;">
+              <option value="bike_scooter" ${defaultCommute === 'bike_scooter' ? 'selected' : ''}>Motorcycle / Scooter (30 min)</option>
+              <option value="metro_train" ${defaultCommute === 'metro_train' ? 'selected' : ''}>Metro / AC Train</option>
+              <option value="car_ac" ${defaultCommute === 'car_ac' ? 'selected' : ''}>Car with AC</option>
+              <option value="walk" ${defaultCommute === 'walk' ? 'selected' : ''}>Walking / Cycling</option>
+              <option value="bus" ${defaultCommute === 'bus' ? 'selected' : ''}>Bus</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.84rem;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;" for="${uniqueId}_asthma">
+            <input type="checkbox" id="${uniqueId}_asthma" name="asthma" class="member-asthma-input" ${defaultAsthma ? 'checked' : ''} style="width: auto;">
+            <span>Respiratory / Asthma / Chronic Condition</span>
+          </label>
+        </div>
+      `;
+
+      list.appendChild(card);
+      bindMemberCardListeners(card);
+      refreshMemberIndexes();
+      updateMemberAgeBadges();
+      saveHouseholdProfile();
+
+      if (window.showSaansToast) {
+        showSaansToast('Household Member Added', `Added ${defaultAlias} to family exposure calculation.`, 'info');
+      }
+    }
+
+    function removeHouseholdMember(btn) {
+      const card = btn.closest('.member-card');
+      if (!card) return;
+      const list = document.getElementById('members-list');
+      if (!list) return;
+      const allCards = list.querySelectorAll('.member-card');
+      if (allCards.length <= 1) {
+        if (window.showSaansToast) showSaansToast('Action Prohibited', 'Household profile must maintain at least 1 member.', 'warning');
+        return;
+      }
+      card.remove();
+      refreshMemberIndexes();
+      updateMemberAgeBadges();
+      saveHouseholdProfile();
+      if (window.showSaansToast) {
+        showSaansToast('Member Removed', 'Updated household vulnerability profile.', 'info');
       }
     }
 
@@ -5156,56 +5379,74 @@
     }
 
     function saveHouseholdProfile() {
-      const consentAgreed = document.getElementById('hh-consent-check').checked;
+      const consentAgreed = document.getElementById('hh-consent-check')?.checked;
       if (!consentAgreed) {
         alert('DPDP Act 2023 explicit consent is required to process household risk data.');
         return;
       }
 
-      const m1Flags = { hasAsthma: document.getElementById('m1-asthma').checked, isPregnant: false, hasCardiovascularCondition: false, hasRespiratoryCondition: false };
-      const m2Flags = { hasAsthma: document.getElementById('m2-asthma').checked, isPregnant: false, hasCardiovascularCondition: false, hasRespiratoryCondition: true };
+      const memberCards = document.querySelectorAll('#members-list .member-card');
+      const membersList = [];
+      const storedMembersForKms = [];
 
-      const m1Encrypted = generateKmsCiphertext(m1Flags);
-      const m2Encrypted = generateKmsCiphertext(m2Flags);
+      memberCards.forEach((card, idx) => {
+        const aliasInput = card.querySelector('.member-alias-input');
+        const ageInput = card.querySelector('.member-age-input');
+        const roleSelect = card.querySelector('.member-role-select');
+        const commuteSelect = card.querySelector('.member-commute-select');
+        const asthmaInput = card.querySelector('.member-asthma-input');
 
-      const m1AgeVal = parseInt(document.getElementById('m1-age')?.value, 10);
-      const m1Age = isNaN(m1AgeVal) ? 34 : m1AgeVal;
-      const m2AgeVal = parseInt(document.getElementById('m2-age')?.value, 10);
-      const m2Age = isNaN(m2AgeVal) ? 6 : m2AgeVal;
+        const alias = aliasInput ? aliasInput.value.trim() : `Member ${idx + 1}`;
+        const ageVal = ageInput ? parseInt(ageInput.value, 10) : (idx === 0 ? 34 : (idx === 1 ? 6 : 30));
+        const age = isNaN(ageVal) ? 30 : ageVal;
+        const role = roleSelect ? (roleSelect.value || 'other') : (idx === 0 ? 'primary' : 'child');
+        const commute = commuteSelect ? commuteSelect.value : 'bike_scooter';
+        const hasAsthma = asthmaInput ? asthmaInput.checked : false;
+
+        const flags = {
+          hasAsthma: hasAsthma,
+          isPregnant: role === 'spouse' && age >= 18 && age <= 45 ? false : false,
+          hasCardiovascularCondition: age >= 60 || role === 'senior',
+          hasRespiratoryCondition: hasAsthma
+        };
+        const encrypted = generateKmsCiphertext(flags);
+
+        membersList.push({
+          id: `mem_${idx + 1}_${Date.now()}`,
+          nameAlias: alias,
+          ageGroup: getAgeGroup(age),
+          ageYears: age,
+          role: role,
+          encryptedHealthFlags: encrypted,
+          healthFlagsDecrypted: flags,
+          commuteMode: commute
+        });
+
+        storedMembersForKms.push({
+          nameAlias: alias,
+          role: role,
+          ageGroup: getAgeGroup(age),
+          encryptedHealthFlags: encrypted
+        });
+      });
+
+      const countBadge = document.getElementById('hh-members-count-badge');
+      if (countBadge) countBadge.textContent = `${membersList.length} Member${membersList.length > 1 ? 's' : ''}`;
 
       savedHouseholdState = {
         id: 'hh_pune_priya_2026',
         userId: 'usr_priya_pune',
-        city: document.getElementById('hh-city').value,
-        locality: document.getElementById('hh-locality').value,
+        city: document.getElementById('hh-city') ? document.getElementById('hh-city').value : 'Pune',
+        locality: document.getElementById('hh-locality') ? document.getElementById('hh-locality').value : 'Shivajinagar / Kothrud',
         gridCell: '18.52,73.86',
-        homeType: document.getElementById('hh-home-type').value,
-        floor: parseInt(document.getElementById('hh-floor').value, 10),
-        windowSealing: document.getElementById('hh-windows').value,
-        kitchenFuel: document.getElementById('hh-kitchen-fuel').value,
-        hasChimney: document.getElementById('hh-chimney').value === 'true',
-        hasIncenseOrCoils: document.getElementById('hh-incense').checked,
-        hasPurifier: document.getElementById('hh-purifier').checked,
-        members: [
-          {
-            id: 'mem_priya_adult',
-            nameAlias: document.getElementById('m1-alias').value,
-            ageGroup: getAgeGroup(m1Age),
-            ageYears: m1Age,
-            encryptedHealthFlags: m1Encrypted,
-            healthFlagsDecrypted: m1Flags,
-            commuteMode: document.getElementById('m1-commute').value
-          },
-          {
-            id: 'mem_child_aarav',
-            nameAlias: document.getElementById('m2-alias').value,
-            ageGroup: getAgeGroup(m2Age),
-            ageYears: m2Age,
-            encryptedHealthFlags: m2Encrypted,
-            healthFlagsDecrypted: m2Flags,
-            commuteMode: document.getElementById('m2-commute').value
-          }
-        ],
+        homeType: document.getElementById('hh-home-type') ? document.getElementById('hh-home-type').value : 'apartment_flat',
+        floor: parseInt(document.getElementById('hh-floor')?.value || '3', 10),
+        windowSealing: document.getElementById('hh-windows') ? document.getElementById('hh-windows').value : 'standard',
+        kitchenFuel: document.getElementById('hh-kitchen-fuel') ? document.getElementById('hh-kitchen-fuel').value : 'lpg',
+        hasChimney: document.getElementById('hh-chimney') ? document.getElementById('hh-chimney').value === 'true' : true,
+        hasIncenseOrCoils: document.getElementById('hh-incense') ? document.getElementById('hh-incense').checked : false,
+        hasPurifier: document.getElementById('hh-purifier') ? document.getElementById('hh-purifier').checked : true,
+        members: membersList,
         consent: {
           grantedAt: new Date().toISOString(),
           dataProcessingAgreed: true,
@@ -5223,16 +5464,7 @@
   "userId": "${savedHouseholdState.userId}",
   "locality": "${savedHouseholdState.locality}, ${savedHouseholdState.city}",
   "floor": ${savedHouseholdState.floor},
-  "storedMembers": [
-    {
-      "nameAlias": "${savedHouseholdState.members[0].nameAlias}",
-      "encryptedHealthFlags": "${m1Encrypted}"
-    },
-    {
-      "nameAlias": "${savedHouseholdState.members[1].nameAlias}",
-      "encryptedHealthFlags": "${m2Encrypted}" // Note: Ciphertext stored, plaintext health flags masked!
-    }
-  ],
+  "storedMembers": ${JSON.stringify(storedMembersForKms, null, 4)},
   "dpdpConsent": { "version": "2023", "status": "EXPLICIT_GRANTED" }
 }`;
       }
@@ -5244,6 +5476,13 @@
         saveHouseholdProfile();
         btnSaveHh.textContent = '✅ Profile Saved & Encrypted with KMS';
         setTimeout(() => { btnSaveHh.textContent = '💾 Save Profile (Encrypt with KMS)'; }, 2000);
+      });
+    }
+
+    const btnAddMember = document.getElementById('btn-add-member');
+    if (btnAddMember) {
+      btnAddMember.addEventListener('click', () => {
+        addHouseholdMember();
       });
     }
 
@@ -5468,7 +5707,17 @@
 
     // Delete Household Data Handler & Clear Form Fields (Right to Erasure)
     function clearHouseholdForm() {
-      // 1. Text and number inputs
+      // 1. Reset members list to 1 single empty card
+      const list = document.getElementById('members-list');
+      if (list) {
+        const cards = list.querySelectorAll('.member-card');
+        for (let i = 1; i < cards.length; i++) {
+          cards[i].remove();
+        }
+        refreshMemberIndexes();
+      }
+
+      // Text and number inputs
       const locality = document.getElementById('hh-locality');
       if (locality) locality.value = '';
 
@@ -5480,12 +5729,6 @@
 
       const m1Age = document.getElementById('m1-age');
       if (m1Age) m1Age.value = '';
-
-      const m2Alias = document.getElementById('m2-alias');
-      if (m2Alias) m2Alias.value = '';
-
-      const m2Age = document.getElementById('m2-age');
-      if (m2Age) m2Age.value = '';
 
       // 2. Select dropdowns (reset to first option)
       const city = document.getElementById('hh-city');
@@ -5506,9 +5749,6 @@
       const m1Commute = document.getElementById('m1-commute');
       if (m1Commute) m1Commute.selectedIndex = 0;
 
-      const m2Commute = document.getElementById('m2-commute');
-      if (m2Commute) m2Commute.selectedIndex = 0;
-
       // 3. Checkboxes (uncheck all)
       const incense = document.getElementById('hh-incense');
       if (incense) incense.checked = false;
@@ -5521,9 +5761,6 @@
 
       const m1Asthma = document.getElementById('m1-asthma');
       if (m1Asthma) m1Asthma.checked = false;
-
-      const m2Asthma = document.getElementById('m2-asthma');
-      if (m2Asthma) m2Asthma.checked = false;
 
       const consent = document.getElementById('hh-consent-check');
       if (consent) consent.checked = false;
@@ -5543,17 +5780,11 @@
       if (recVuln) recVuln.textContent = 'Household Profile Cleared';
     }
 
-    // Attach real-time listeners for member age inputs
-    const m1AgeInput = document.getElementById('m1-age');
-    if (m1AgeInput) {
-      m1AgeInput.addEventListener('input', updateMemberAgeBadges);
-      m1AgeInput.addEventListener('change', updateMemberAgeBadges);
-    }
-    const m2AgeInput = document.getElementById('m2-age');
-    if (m2AgeInput) {
-      m2AgeInput.addEventListener('input', updateMemberAgeBadges);
-      m2AgeInput.addEventListener('change', updateMemberAgeBadges);
-    }
+    // Attach real-time listeners for all member cards in list
+    document.querySelectorAll('#members-list .member-card').forEach(card => {
+      bindMemberCardListeners(card);
+    });
+    refreshMemberIndexes();
 
     const btnDeleteHh = document.getElementById('btn-delete-household');
     if (btnDeleteHh) {
