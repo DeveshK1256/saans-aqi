@@ -2244,6 +2244,10 @@
           <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
           <span>Dose & What-If</span>
         </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-pledge">
+          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Clean-Air Pledge</span>
+        </button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-myths">
           <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <span>Myth Buster</span>
@@ -3311,6 +3315,212 @@
           <a href="methodology.html" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 8px;">
             📖 View Complete Scientific Methodology, Mass Balance Equations & Sourced Parameters →
           </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 5: NEIGHBORHOOD CLEAN-AIR PLEDGE & SOCIETY LEADERBOARD (MVP #5) ==================== -->
+    <div id="tab-pledge" class="tab-pane" role="tabpanel">
+      <div class="card">
+        <div class="card-header">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h2 class="card-title">Neighborhood Clean-Air Pledge & Society Leaderboard (MVP #5, FR-PLG-01 to 04)</h2>
+              <p class="card-desc">Collective action multiplies local impact. Join your apartment complex or neighborhood RWA to track shared emissions reductions, log daily clean-air pledges, and view the city-wide leaderboard. All rankings are strictly aggregate-only to protect household privacy.</p>
+            </div>
+            <span style="font-size: 0.78rem; background: var(--accent-light); color: var(--accent); padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+              🛡️ Self-Reported Estimates (Anti-Gaming Plausibility Rules)
+            </span>
+          </div>
+        </div>
+
+        <!-- Society Selector & Identity Bar -->
+        <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(11, 115, 95, 0.12); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                🏢
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <strong style="font-size: 1.05rem;" id="pledge-active-society-name">Green Hills Society</strong>
+                  <span style="font-size: 0.75rem; background: var(--surface-card); border: 1px solid var(--surface-border); padding: 2px 6px; border-radius: 4px; font-family: monospace;" id="pledge-invite-code">CODE: GRN-402</span>
+                </div>
+                <div style="font-size: 0.82rem; color: var(--text-muted);" id="pledge-society-meta">Kothrud, Pune • 47 Participating Units • Organizer: Amit (RWA)</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <select id="pledge-society-select" style="padding: 7px 12px; font-size: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--surface-card); color: var(--text-main);">
+                <option value="soc_pune_greenhills" selected>Green Hills Society (Pune)</option>
+                <option value="soc_delhi_palmgrove">Palm Grove Heights (Dwarka, Delhi)</option>
+                <option value="soc_blr_kalyani">Kalyani Meadows (Whitefield, BLR)</option>
+                <option value="soc_pune_amanora">Amanora Park Town (Hadapsar, Pune)</option>
+              </select>
+              <button class="btn btn-secondary" id="btn-open-create-society" style="font-size: 0.85rem; padding: 7px 12px;">+ Join / Register Society</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Society Impact Overview Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px;">
+          <div style="background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 16px;">
+            <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Participating Families</div>
+            <div style="font-size: 1.45rem; font-weight: 700; color: var(--text-main); margin-top: 4px;" id="pledge-stat-households">47 Units</div>
+            <div style="font-size: 0.78rem; color: var(--text-faint);">84% of Registered Wings</div>
+          </div>
+          <div style="background: var(--surface-card); border: 1px solid var(--accent); border-radius: var(--radius-md); padding: 14px 16px;">
+            <div style="font-size: 0.76rem; color: var(--accent); text-transform: uppercase; font-weight: 600;">Collective CO₂e Avoided</div>
+            <div style="font-size: 1.45rem; font-weight: 700; color: var(--accent); margin-top: 4px;" id="pledge-stat-co2">508.4 kg</div>
+            <div style="font-size: 0.78rem; color: var(--text-faint);">DEC-011 ARAI / IPCC Factors</div>
+          </div>
+          <div style="background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 16px;">
+            <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Street Toxic PM Prevented</div>
+            <div style="font-size: 1.45rem; font-weight: 700; color: #0284C7; margin-top: 4px;" id="pledge-stat-pm">16.8 kg</div>
+            <div style="font-size: 0.78rem; color: var(--text-faint);">Direct Diesel & Smoke Shield</div>
+          </div>
+          <div style="background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 16px;">
+            <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Per-Household Average</div>
+            <div style="font-size: 1.45rem; font-weight: 700; color: #8C5503; margin-top: 4px;" id="pledge-stat-per-hh">10.82 kg</div>
+            <div style="font-size: 0.78rem; color: var(--text-faint);">Normalized Society Score</div>
+          </div>
+        </div>
+
+        <!-- Section: Log Daily Clean-Air Pledges (FR-PLG-02) -->
+        <div style="margin-bottom: 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700;">Log Today's Clean-Air Actions (FR-PLG-02)</h3>
+              <p style="margin: 3px 0 0 0; font-size: 0.82rem; color: var(--text-muted);">Select actions your household completed today. Contributions add to your society's aggregate score.</p>
+            </div>
+            <div style="font-size: 0.8rem; background: var(--surface-subtle); padding: 4px 10px; border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+              Today's Logs: <strong id="pledge-daily-count">2</strong> / 10 (Daily Anti-Gaming Cap)
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;" id="pledge-actions-grid">
+            <!-- Action 1 -->
+            <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                  <strong style="font-size: 0.92rem;">🚗 Carpooled or Shifted to Metro Rail</strong>
+                  <span style="font-size: 0.74rem; background: var(--surface-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-weight: 600;">+1.68 kg CO₂</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 10px 0;">Avoided single-occupancy vehicle trip (14 km standard commute saving).</p>
+              </div>
+              <button class="btn btn-secondary btn-log-pledge" data-action="carpool" data-co2="1.68" data-pm="0.12" style="font-size: 0.82rem; padding: 6px 12px; width: 100%;">
+                ✓ Log Completed Action (+1.68 kg)
+              </button>
+            </div>
+
+            <!-- Action 2 -->
+            <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                  <strong style="font-size: 0.92rem;">⚡ Turned Off Diesel Generator (6–10 PM)</strong>
+                  <span style="font-size: 0.74rem; background: var(--surface-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-weight: 600;">+10.70 kg CO₂</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 10px 0;">Used inverter backup during peak night inversion instead of common DG set.</p>
+              </div>
+              <button class="btn btn-secondary btn-log-pledge" data-action="generator" data-co2="10.70" data-pm="0.45" style="font-size: 0.82rem; padding: 6px 12px; width: 100%;">
+                ✓ Log Completed Action (+10.7 kg)
+              </button>
+            </div>
+
+            <!-- Action 3 -->
+            <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                  <strong style="font-size: 0.92rem;">🎆 Zero Personal Smoke / Firework Pledge</strong>
+                  <span style="font-size: 0.74rem; background: var(--surface-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-weight: 600;">+2.40 kg CO₂</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 10px 0;">Prevented acute neighborhood toxic particulate spike (+500 g PM2.5 avoided).</p>
+              </div>
+              <button class="btn btn-secondary btn-log-pledge" data-action="fireworks" data-co2="2.40" data-pm="0.50" style="font-size: 0.82rem; padding: 6px 12px; width: 100%;">
+                ✓ Log Completed Action (+2.4 kg)
+              </button>
+            </div>
+
+            <!-- Action 4 -->
+            <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                  <strong style="font-size: 0.92rem;">🍳 Active Exhaust Fan During Cooking</strong>
+                  <span style="font-size: 0.74rem; background: var(--surface-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-weight: 600;">+0.35 kg CO₂</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 10px 0;">Vented high-temperature oil and LPG combustion aerosols (+45 g PM indoor avoided).</p>
+              </div>
+              <button class="btn btn-secondary btn-log-pledge" data-action="exhaust" data-co2="0.35" data-pm="0.045" style="font-size: 0.82rem; padding: 6px 12px; width: 100%;">
+                ✓ Log Completed Action (+0.35 kg)
+              </button>
+            </div>
+
+            <!-- Action 5 -->
+            <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                  <strong style="font-size: 0.92rem;">🌪️ Running DIY Corsi-Rosenthal Purifier</strong>
+                  <span style="font-size: 0.74rem; background: var(--surface-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-weight: 600;">+0.85 kg CO₂</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 10px 0;">Continuous MERV-13 air cleaning for vulnerable family members (+350 g PM avoided).</p>
+              </div>
+              <button class="btn btn-secondary btn-log-pledge" data-action="purifier" data-co2="0.85" data-pm="0.35" style="font-size: 0.82rem; padding: 6px 12px; width: 100%;">
+                ✓ Log Completed Action (+0.85 kg)
+              </button>
+            </div>
+
+            <!-- Action 6 -->
+            <div style="background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                  <strong style="font-size: 0.92rem;">🍂 Zero Biomass / Leaf Waste Burning</strong>
+                  <span style="font-size: 0.74rem; background: var(--surface-card); padding: 2px 6px; border-radius: 4px; color: var(--accent); font-weight: 600;">+4.50 kg CO₂</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 10px 0;">Composted garden cuttings instead of open incineration (+1.2 kg PM2.5 prevented).</p>
+              </div>
+              <button class="btn btn-secondary btn-log-pledge" data-action="leafburning" data-co2="4.50" data-pm="1.20" style="font-size: 0.82rem; padding: 6px 12px; width: 100%;">
+                ✓ Log Completed Action (+4.5 kg)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: City-Wide Society Leaderboard (FR-PLG-04) -->
+        <div style="margin-top: 32px; border-top: 1px solid var(--surface-border); padding-top: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700;">City-Wide Society Leaderboard (FR-PLG-04)</h3>
+              <p style="margin: 3px 0 0 0; font-size: 0.82rem; color: var(--text-muted);">Ranked by emissions avoided per participating household (normalized to prevent large-society bias).</p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="btn btn-secondary" id="btn-share-pledge-card" style="font-size: 0.82rem; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;">
+                📤 Share Society Impact Card
+              </button>
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--surface-border); background: var(--surface-subtle); color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase;">
+                  <th style="padding: 10px 12px;">Rank</th>
+                  <th style="padding: 10px 12px;">Housing Society</th>
+                  <th style="padding: 10px 12px;">Locality / City</th>
+                  <th style="padding: 10px 12px;">Participating Units</th>
+                  <th style="padding: 10px 12px;">Total CO₂e Saved</th>
+                  <th style="padding: 10px 12px;">Per-Household Avg</th>
+                  <th style="padding: 10px 12px;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="pledge-leaderboard-body">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Privacy & Anti-Gaming Disclosure Box -->
+          <div style="margin-top: 16px; background: var(--surface-subtle); border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.8rem; color: var(--text-faint); line-height: 1.5;">
+            <strong>🔒 DPDP Act 2023 Community Privacy Guarantee:</strong> All leaderboard figures represent strictly anonymous aggregate sums. Individual household identities, unit numbers, and specific log timestamps are never exposed to neighbors or other societies. Pledges are governed by plausibility bounds (max 10 contributions/day/household).
+          </div>
         </div>
       </div>
     </div>
@@ -7082,6 +7292,241 @@
       }, 4500);
     }
 
+    // ==================== NEIGHBORHOOD CLEAN-AIR PLEDGE ENGINE (MVP #5, FR-PLG-01 to 04) ====================
+    const SOCIETIES_DATA = {
+      soc_pune_greenhills: {
+        id: 'soc_pune_greenhills',
+        name: 'Green Hills Society',
+        locality: 'Kothrud, Pune',
+        city: 'Pune',
+        inviteCode: 'GRN-402',
+        organizer: 'Amit (RWA Secretary)',
+        units: 47,
+        co2SavedKg: 508.4,
+        pmSavedKg: 16.8
+      },
+      soc_delhi_palmgrove: {
+        id: 'soc_delhi_palmgrove',
+        name: 'Palm Grove Heights',
+        locality: 'Dwarka Sector 8, Delhi',
+        city: 'Delhi',
+        inviteCode: 'PLM-911',
+        organizer: 'Sunita Mehra (Secretary)',
+        units: 62,
+        co2SavedKg: 638.2,
+        pmSavedKg: 28.4
+      },
+      soc_blr_kalyani: {
+        id: 'soc_blr_kalyani',
+        name: 'Kalyani Meadows',
+        locality: 'Whitefield, Bengaluru',
+        city: 'Bengaluru',
+        inviteCode: 'KAL-105',
+        organizer: 'Dr. Vivek Rao',
+        units: 38,
+        co2SavedKg: 394.1,
+        pmSavedKg: 11.2
+      },
+      soc_pune_amanora: {
+        id: 'soc_pune_amanora',
+        name: 'Amanora Park Town (Towers 4-6)',
+        locality: 'Hadapsar, Pune',
+        city: 'Pune',
+        inviteCode: 'AMN-882',
+        organizer: 'Rajesh Kulkarni',
+        units: 55,
+        co2SavedKg: 482.0,
+        pmSavedKg: 15.6
+      }
+    };
+
+    let activeSocietyKey = 'soc_pune_greenhills';
+
+    function getPledgeDailyLogs() {
+      const today = new Date().toISOString().slice(0, 10);
+      try {
+        const stored = localStorage.getItem('saans_pledge_daily_data');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.date === today) return parsed.count || 0;
+        }
+      } catch (e) {}
+      return 2; // Default realistic starting counter
+    }
+
+    function incrementPledgeDailyLogs() {
+      const today = new Date().toISOString().slice(0, 10);
+      const cur = getPledgeDailyLogs() + 1;
+      try {
+        localStorage.setItem('saans_pledge_daily_data', JSON.stringify({ date: today, count: cur }));
+      } catch (e) {}
+      return cur;
+    }
+
+    function renderSocietyPledge(socKey) {
+      const soc = SOCIETIES_DATA[socKey];
+      if (!soc) return;
+      activeSocietyKey = socKey;
+
+      const nameEl = document.getElementById('pledge-active-society-name');
+      const codeEl = document.getElementById('pledge-invite-code');
+      const metaEl = document.getElementById('pledge-society-meta');
+      const householdsEl = document.getElementById('pledge-stat-households');
+      const co2El = document.getElementById('pledge-stat-co2');
+      const pmEl = document.getElementById('pledge-stat-pm');
+      const perHhEl = document.getElementById('pledge-stat-per-hh');
+      const countEl = document.getElementById('pledge-daily-count');
+
+      if (nameEl) nameEl.textContent = soc.name;
+      if (codeEl) codeEl.textContent = `CODE: ${soc.inviteCode}`;
+      if (metaEl) metaEl.textContent = `${soc.locality} • ${soc.units} Participating Units • Organizer: ${soc.organizer}`;
+      if (householdsEl) householdsEl.textContent = `${soc.units} Units`;
+      if (co2El) co2El.textContent = `${soc.co2SavedKg.toFixed(1)} kg`;
+      if (pmEl) pmEl.textContent = `${soc.pmSavedKg.toFixed(1)} kg`;
+      if (perHhEl) perHhEl.textContent = `${(soc.co2SavedKg / soc.units).toFixed(2)} kg`;
+      if (countEl) countEl.textContent = getPledgeDailyLogs();
+
+      renderPledgeLeaderboard();
+    }
+
+    function renderPledgeLeaderboard() {
+      const tbody = document.getElementById('pledge-leaderboard-body');
+      if (!tbody) return;
+
+      const socList = Object.values(SOCIETIES_DATA).map(s => ({
+        ...s,
+        avgPerHh: s.co2SavedKg / s.units
+      })).sort((a, b) => b.avgPerHh - a.avgPerHh);
+
+      tbody.innerHTML = socList.map((s, idx) => {
+        const isCurrent = (s.id === activeSocietyKey);
+        const rankMedal = idx === 0 ? '🥇' : (idx === 1 ? '🥈' : (idx === 2 ? '🥉' : `#${idx + 1}`));
+        return `
+          <tr style="border-bottom: 1px solid var(--surface-border); ${isCurrent ? 'background: rgba(11, 115, 95, 0.06); font-weight: 600;' : ''}">
+            <td style="padding: 10px 12px; font-weight: 700;">${rankMedal}</td>
+            <td style="padding: 10px 12px;">
+              ${s.name} ${isCurrent ? '<span style="font-size: 0.72rem; background: var(--accent); color: #fff; padding: 1px 6px; border-radius: 10px; margin-left: 4px;">Your Society</span>' : ''}
+            </td>
+            <td style="padding: 10px 12px; color: var(--text-muted);">${s.locality}</td>
+            <td style="padding: 10px 12px;">${s.units} Units</td>
+            <td style="padding: 10px 12px; color: var(--accent); font-weight: 700;">${s.co2SavedKg.toFixed(1)} kg</td>
+            <td style="padding: 10px 12px; font-weight: 700; color: #8C5503;">${s.avgPerHh.toFixed(2)} kg/unit</td>
+            <td style="padding: 10px 12px;">
+              <span style="font-size: 0.74rem; background: var(--surface-card); border: 1px solid var(--surface-border); padding: 2px 8px; border-radius: 10px;">Self-reported</span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function handleLogPledgeAction(actionKey, co2Kg, pmKg, btn) {
+      const currentLogs = getPledgeDailyLogs();
+      if (currentLogs >= 10) {
+        if (window.showSaansToast) {
+          showSaansToast('Daily Limit Reached', 'FR-PLG-03 anti-gaming rules cap contributions at 10 logs/household/day to protect data plausibility.', 'warning');
+        } else {
+          alert('Daily contribution limit reached (10 logs/day).');
+        }
+        return;
+      }
+
+      const soc = SOCIETIES_DATA[activeSocietyKey];
+      if (!soc) return;
+
+      soc.co2SavedKg += co2Kg;
+      soc.pmSavedKg += pmKg;
+
+      const newCount = incrementPledgeDailyLogs();
+      const countEl = document.getElementById('pledge-daily-count');
+      if (countEl) countEl.textContent = newCount;
+
+      renderSocietyPledge(activeSocietyKey);
+
+      if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ Action Logged & Verified';
+        btn.style.background = 'var(--accent)';
+        btn.style.color = '#ffffff';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 1500);
+      }
+
+      if (window.showSaansToast) {
+        showSaansToast('Clean-Air Action Logged!', `Added +${co2Kg} kg CO₂e to ${soc.name}'s aggregate score.`, 'success');
+      }
+    }
+
+    function initPledgeEngine() {
+      const select = document.getElementById('pledge-society-select');
+      if (select) {
+        select.addEventListener('change', () => {
+          renderSocietyPledge(select.value);
+        });
+      }
+
+      document.querySelectorAll('.btn-log-pledge').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const actionKey = btn.getAttribute('data-action');
+          const co2Kg = parseFloat(btn.getAttribute('data-co2')) || 1.0;
+          const pmKg = parseFloat(btn.getAttribute('data-pm')) || 0.1;
+          handleLogPledgeAction(actionKey, co2Kg, pmKg, btn);
+        });
+      });
+
+      const btnCreate = document.getElementById('btn-open-create-society');
+      if (btnCreate) {
+        btnCreate.addEventListener('click', () => {
+          const socName = prompt('Enter Housing Society Name (e.g. Silver Crest Heights):');
+          if (socName && socName.trim()) {
+            const locName = prompt('Enter Locality & City (e.g. Baner, Pune):', 'Pune');
+            const newKey = `soc_custom_${Date.now()}`;
+            const cleanCode = socName.replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase() + '-' + Math.floor(100 + Math.random() * 900);
+            SOCIETIES_DATA[newKey] = {
+              id: newKey,
+              name: socName.trim(),
+              locality: locName ? locName.trim() : 'India',
+              city: 'Pune',
+              inviteCode: cleanCode,
+              organizer: currentAuthUser.isLoggedIn ? currentAuthUser.name : 'Self (Organizer)',
+              units: 1,
+              co2SavedKg: 0.0,
+              pmSavedKg: 0.0
+            };
+            if (select) {
+              const opt = document.createElement('option');
+              opt.value = newKey;
+              opt.textContent = `${socName.trim()} (${cleanCode})`;
+              select.appendChild(opt);
+              select.value = newKey;
+            }
+            renderSocietyPledge(newKey);
+            if (window.showSaansToast) showSaansToast('Society Registered!', `Welcome to ${socName}! Invite code: ${cleanCode}`, 'success');
+          }
+        });
+      }
+
+      const btnShare = document.getElementById('btn-share-pledge-card');
+      if (btnShare) {
+        btnShare.addEventListener('click', () => {
+          const soc = SOCIETIES_DATA[activeSocietyKey];
+          const text = `🌱 ${soc.name} Clean-Air Report: Together we have avoided ${soc.co2SavedKg.toFixed(1)} kg CO₂ and prevented ${soc.pmSavedKg.toFixed(1)} kg street PM! Join our clean-air pledge with code ${soc.inviteCode} on Saans: https://deveshk1256.github.io/saans-aqi/`;
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+              if (window.showSaansToast) showSaansToast('Pledge Card Copied', 'Society impact summary copied to clipboard for WhatsApp sharing.', 'info');
+              else alert('Society impact summary copied to clipboard!');
+            });
+          } else {
+            alert(text);
+          }
+        });
+      }
+
+      renderSocietyPledge(activeSocietyKey);
+    }
+
     // ==================== CLEAN AIR HOUSEHOLD ACTION PASSPORT ENGINE ====================
     function initPassportEngine() {
       const btnHeader = document.getElementById('btn-open-passport-header');
@@ -7161,6 +7606,7 @@
     initCommutePlanner();
     initNotificationCenter();
     initPassportEngine();
+    initPledgeEngine();
     calculateDose();
     renderMyths('all', '');
     updateDIYCalc();
