@@ -3042,6 +3042,39 @@
             <span>+ Add Household Member (Child, Senior, Spouse, Infant)</span>
           </button>
 
+          <!-- Live Household Vulnerability & Dosage Impact Matrix -->
+          <div id="hh-impact-summary-card" style="margin-bottom: 20px; background: var(--surface-card); border: 1px solid var(--accent); border-radius: var(--radius-md); padding: 16px; box-shadow: 0 2px 8px rgba(11, 115, 95, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.15rem;">🫁</span>
+                <strong style="font-size: 0.96rem; color: var(--text-main);">Live Household Exposure & Vulnerability Matrix</strong>
+              </div>
+              <span id="hh-impact-vuln-badge" style="font-size: 0.78rem; background: var(--accent-light); color: var(--accent); padding: 3px 8px; border-radius: 12px; font-weight: 600;">Evaluating Members...</span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 12px;">
+              <div style="background: var(--surface-subtle); padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+                <div style="font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Highest Risk Target</div>
+                <div id="hh-matrix-target-name" style="font-size: 0.92rem; font-weight: 700; color: #991B1B; margin-top: 2px;">Child (Asthma)</div>
+                <div id="hh-matrix-target-detail" style="font-size: 0.75rem; color: var(--text-faint);">Priority 1 Protection</div>
+              </div>
+              <div style="background: var(--surface-subtle); padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+                <div style="font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Est. Family Combined Dose</div>
+                <div id="hh-matrix-family-dose" style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">~824 µg PM2.5/day</div>
+                <div id="hh-matrix-family-count" style="font-size: 0.75rem; color: var(--text-faint);">Combined Inhaled Mass</div>
+              </div>
+              <div style="background: var(--surface-subtle); padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+                <div style="font-size: 0.74rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Protection Potential</div>
+                <div id="hh-matrix-avoided-dose" style="font-size: 0.92rem; font-weight: 700; color: var(--accent); margin-top: 2px;">-48% Avoidable</div>
+                <div style="font-size: 0.75rem; color: var(--text-faint);">via HEPA + Routine Shift</div>
+              </div>
+            </div>
+
+            <div id="hh-members-quick-breakdown" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; padding-top: 8px; border-top: 1px dashed var(--surface-border);">
+              <!-- Populated dynamically with each member's specific daily dosage contribution -->
+            </div>
+          </div>
+
           <!-- Consent Checkbox -->
           <div style="background: var(--surface-subtle); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--surface-border); margin-bottom: 20px;">
             <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem; color: var(--text-main);">
@@ -4433,7 +4466,18 @@
     };
 
     function calculateDose() {
-      const member = document.getElementById('calc-member').value;
+      const rawMember = document.getElementById('calc-member') ? document.getElementById('calc-member').value : 'child';
+      let member = rawMember;
+      if (rawMember && rawMember.startsWith('hh_mem_')) {
+        const memIdx = parseInt(rawMember.replace('hh_mem_', ''), 10);
+        if (savedHouseholdState && savedHouseholdState.members && savedHouseholdState.members[memIdx]) {
+          const memObj = savedHouseholdState.members[memIdx];
+          let ag = memObj.ageGroup;
+          if (ag === 'infant') ag = 'toddler';
+          member = (SOURCED_IR[ag]) ? ag : 'adult';
+        }
+      }
+      if (!SOURCED_IR[member]) member = 'child';
       const ambient = parseFloat(document.getElementById('calc-ambient').value) || 180;
       const baseCommute = document.getElementById('calc-base-commute').value;
       const commuteDist = parseFloat(document.getElementById('calc-commute-distance').value) || 20;
@@ -4654,6 +4698,24 @@
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', calculateDose);
     });
+
+    const calcMemberDropdown = document.getElementById('calc-member');
+    if (calcMemberDropdown) {
+      calcMemberDropdown.addEventListener('change', () => {
+        const val = calcMemberDropdown.value;
+        if (val && val.startsWith('hh_mem_')) {
+          const idx = parseInt(val.replace('hh_mem_', ''), 10);
+          if (savedHouseholdState && savedHouseholdState.members && savedHouseholdState.members[idx]) {
+            const m = savedHouseholdState.members[idx];
+            const condEl = document.getElementById('calc-condition');
+            if (condEl) condEl.value = m.healthFlagsDecrypted?.hasAsthma ? 'asthma' : (m.ageYears >= 60 ? 'copd' : 'none');
+            const commEl = document.getElementById('calc-base-commute');
+            if (commEl && m.commuteMode) commEl.value = m.commuteMode;
+          }
+        }
+        calculateDose();
+      });
+    }
 
     const btnResetWhatif = document.getElementById('btn-reset-whatif');
     if (btnResetWhatif) {
@@ -5529,10 +5591,15 @@
       document.getElementById('m1-commute').value = 'bike_scooter';
       document.getElementById('m1-asthma').checked = false;
 
-      document.getElementById('m2-alias').value = 'Aarav (Child)';
+      const list = document.getElementById('members-list');
+      if (list && list.querySelectorAll('.member-card').length < 2) {
+        addHouseholdMember({ alias: 'Aarav (Child)', age: 6, role: 'child', commute: 'bike_scooter', asthma: true });
+      }
+
+      if (document.getElementById('m2-alias')) document.getElementById('m2-alias').value = 'Aarav (Child)';
       if (document.getElementById('m2-age')) document.getElementById('m2-age').value = 6;
-      document.getElementById('m2-commute').value = 'bike_scooter';
-      document.getElementById('m2-asthma').checked = true;
+      if (document.getElementById('m2-commute')) document.getElementById('m2-commute').value = 'bike_scooter';
+      if (document.getElementById('m2-asthma')) document.getElementById('m2-asthma').checked = true;
 
       document.getElementById('hh-consent-check').checked = true;
       updateMemberAgeBadges();
@@ -5641,6 +5708,127 @@
   "dpdpConsent": { "version": "2023", "status": "EXPLICIT_GRANTED" }
 }`;
       }
+
+      // Dynamically sync household members across all tabs & calculation engines
+      syncHouseholdStateToApp();
+    }
+
+    // ==================== HOUSEHOLD SYNC & DYNAMIC ENGINE COUPLING ====================
+
+    function getTopVulnerableMember(members) {
+      if (!members || members.length === 0) return null;
+      let topVuln = members[0];
+      let maxScore = -1;
+      members.forEach(m => {
+        let score = 10;
+        const age = m.ageYears !== undefined ? m.ageYears : (parseInt(m.age, 10) || 30);
+        const isInfant = age <= 2 || m.role === 'infant';
+        const isChild = (age > 2 && age <= 12) || m.role === 'child';
+        const isSenior = age >= 60 || m.role === 'senior';
+        const hasAsthma = m.healthFlagsDecrypted?.hasAsthma || m.hasAsthma;
+        const hasCardio = m.healthFlagsDecrypted?.hasCardiovascularCondition;
+
+        if (isInfant) score += 55;
+        else if (isChild) score += 40;
+        else if (isSenior) score += 35;
+
+        if (hasAsthma) score += 45;
+        if (hasCardio) score += 25;
+
+        if (score > maxScore) {
+          maxScore = score;
+          topVuln = m;
+        }
+      });
+      return topVuln;
+    }
+
+    function syncHouseholdStateToApp() {
+      if (!savedHouseholdState || !savedHouseholdState.members || savedHouseholdState.members.length === 0) return;
+      const members = savedHouseholdState.members;
+      const topVuln = getTopVulnerableMember(members);
+
+      // 1. Update #rec-target-vulnerable across the application
+      const recVuln = document.getElementById('rec-target-vulnerable');
+      if (recVuln && topVuln) {
+        const roleLabel = topVuln.role ? (topVuln.role.charAt(0).toUpperCase() + topVuln.role.slice(1)) : 'Member';
+        const condLabel = topVuln.healthFlagsDecrypted?.hasAsthma 
+          ? 'Asthma / Respiratory Risk' 
+          : (topVuln.ageYears >= 60 ? 'Cardiovascular & Geriatric Risk' : (topVuln.ageYears <= 4 ? 'Developing Lung Physiology' : 'Physiological Sensitivity'));
+        recVuln.innerHTML = `<strong>${topVuln.nameAlias} (${topVuln.ageYears}y ${roleLabel} — ${condLabel})</strong>`;
+      }
+
+      // 2. Dynamically populate Dose & What-If dropdown (#calc-member) with real family members
+      const calcMemberSelect = document.getElementById('calc-member');
+      if (calcMemberSelect) {
+        const prevVal = calcMemberSelect.value;
+        let optHtml = `<optgroup label="Your Household Members (${members.length})">`;
+        members.forEach((m, idx) => {
+          const val = `hh_mem_${idx}`;
+          const isSelected = (prevVal === val) || (!prevVal.startsWith('hh_mem_') && m === topVuln);
+          const roleCap = m.role ? (m.role.charAt(0).toUpperCase() + m.role.slice(1)) : 'Member';
+          const condTag = m.healthFlagsDecrypted?.hasAsthma ? '• Asthma' : (m.ageYears >= 60 ? '• Senior Risk' : '');
+          optHtml += `<option value="${val}" ${isSelected ? 'selected' : ''}>${m.nameAlias} (${roleCap}, ${m.ageYears}y) ${condTag} — Inhalation: ~${(m.ageYears <= 10 ? 0.35 : 0.45).toFixed(2)} m³/h</option>`;
+        });
+        optHtml += `</optgroup>
+        <optgroup label="Reference Profiles">
+          <option value="child" ${prevVal === 'child' ? 'selected' : ''}>School Child (6–10 yrs) — Inhalation: 0.32–1.25 m³/h</option>
+          <option value="toddler" ${prevVal === 'toddler' ? 'selected' : ''}>Toddler (1–5 yrs) — Inhalation: 0.27–0.92 m³/h</option>
+          <option value="adult" ${prevVal === 'adult' ? 'selected' : ''}>Adult (31–50 yrs) — Inhalation: 0.40–1.85 m³/h</option>
+          <option value="elderly" ${prevVal === 'elderly' ? 'selected' : ''}>Elderly (65+ yrs) — Inhalation: 0.36–1.60 m³/h</option>
+        </optgroup>`;
+        calcMemberSelect.innerHTML = optHtml;
+      }
+
+      // 3. Update the Live Household Impact Summary Card in Tab 3
+      updateHouseholdSummaryCard(members, topVuln);
+
+      // 4. Re-render Recommendations tailored to topVuln
+      renderRecommendations(topVuln);
+    }
+
+    function updateHouseholdSummaryCard(members, topVuln) {
+      const card = document.getElementById('hh-impact-summary-card');
+      if (!card) return;
+
+      const targetName = document.getElementById('hh-matrix-target-name');
+      const targetDetail = document.getElementById('hh-matrix-target-detail');
+      const familyDose = document.getElementById('hh-matrix-family-dose');
+      const familyCount = document.getElementById('hh-matrix-family-count');
+      const avoidedDose = document.getElementById('hh-matrix-avoided-dose');
+      const breakdown = document.getElementById('hh-members-quick-breakdown');
+      const vulnBadge = document.getElementById('hh-impact-vuln-badge');
+
+      if (topVuln && targetName) {
+        const cond = topVuln.healthFlagsDecrypted?.hasAsthma ? 'Asthma Risk' : (topVuln.ageYears >= 60 ? 'Cardio/Senior' : 'High Intake');
+        targetName.textContent = `${topVuln.nameAlias} (${topVuln.ageYears}y)`;
+        if (targetDetail) targetDetail.textContent = `Priority 1 (${cond})`;
+        if (vulnBadge) vulnBadge.textContent = `🛡️ Target: ${topVuln.nameAlias}`;
+      }
+
+      const currentPm = (typeof activePollutants !== 'undefined' && activePollutants.pm25) ? activePollutants.pm25 : 160;
+      let totalDoseUg = 0;
+      const memberBreakdowns = [];
+
+      members.forEach(m => {
+        const age = m.ageYears;
+        const isChild = age <= 12;
+        const isSenior = age >= 60;
+        const dailyInhalationM3 = isChild ? 10.5 : (isSenior ? 12.8 : 15.2);
+        const baseDose = Math.round(dailyInhalationM3 * (currentPm * 0.45));
+        totalDoseUg += baseDose;
+        memberBreakdowns.push(`<strong>${m.nameAlias}</strong> (${m.role}): ~${baseDose} µg/day`);
+      });
+
+      if (familyDose) familyDose.textContent = `~${totalDoseUg} µg/day`;
+      if (familyCount) familyCount.textContent = `Across ${members.length} Household Members`;
+      if (avoidedDose) {
+        const avoidableUg = Math.round(totalDoseUg * 0.48);
+        avoidedDose.textContent = `-${avoidableUg} µg (-48%)`;
+      }
+      if (breakdown) {
+        breakdown.innerHTML = `<strong>Per-Member Inhaled PM2.5 (Nazaroff Model):</strong> ` + memberBreakdowns.join(' • ');
+      }
     }
 
     const btnSaveHh = document.getElementById('btn-save-household');
@@ -5682,19 +5870,10 @@
       const purifier = document.getElementById('hh-purifier')?.checked ? 'Yes (HEPA in Bedroom)' : 'None';
       const pets = document.getElementById('hh-pets')?.checked ? 'Yes (Furry Pets)' : 'None';
 
-      const m1Alias = document.getElementById('m1-alias')?.value || 'Priya';
-      const m1Age = document.getElementById('m1-age')?.value || '34';
-      const m1Grp = getAgeGroup(parseInt(m1Age, 10));
-      const m1CommuteElem = document.getElementById('m1-commute');
-      const m1Commute = m1CommuteElem ? (m1CommuteElem.options[m1CommuteElem.selectedIndex]?.text || m1CommuteElem.value) : 'Motorcycle / Scooter';
-      const m1Asthma = document.getElementById('m1-asthma')?.checked ? 'Yes (Asthma / Respiratory)' : 'No Chronic Condition';
-
-      const m2Alias = document.getElementById('m2-alias')?.value || 'Aarav (Child)';
-      const m2Age = document.getElementById('m2-age')?.value || '6';
-      const m2Grp = getAgeGroup(parseInt(m2Age, 10));
-      const m2CommuteElem = document.getElementById('m2-commute');
-      const m2Commute = m2CommuteElem ? (m2CommuteElem.options[m2CommuteElem.selectedIndex]?.text || m2CommuteElem.value) : 'Pillion on Bike';
-      const m2Asthma = document.getElementById('m2-asthma')?.checked ? 'Active Asthma / High Vulnerability' : 'No Chronic Condition';
+      const membersToExport = (hh.members && hh.members.length > 0) ? hh.members : [
+        { nameAlias: 'Primary Earner', role: 'primary', ageYears: 34, commuteMode: 'bike_scooter', healthFlagsDecrypted: { hasAsthma: false } }
+      ];
+      const topVuln = getTopVulnerableMember(membersToExport) || membersToExport[0];
 
       if (window.jspdf && window.jspdf.jsPDF) {
         const { jsPDF } = window.jspdf;
@@ -5714,7 +5893,7 @@
         doc.setFontSize(8.5);
         doc.setTextColor(100, 116, 139);
         const exportDate = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' });
-        doc.text(`Exported: ${exportDate} IST | Statutory DPDP Act 2023 Compliant Export | ID: ${hh.id || 'hh_priya_pune'}`, 14, 34);
+        doc.text(`Exported: ${exportDate} IST | Statutory DPDP Act 2023 Compliant Export | ID: ${hh.id || 'hh_saans_user'}`, 14, 34);
 
         // Line separator
         doc.setDrawColor(226, 232, 240);
@@ -5754,65 +5933,73 @@
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(12);
         doc.setTextColor(15, 23, 42);
-        doc.text('3. Household Members & Physiological Vulnerability', 14, 135);
+        doc.text(`3. Household Members & Physiological Vulnerability (${membersToExport.length} Total)`, 14, 135);
 
-        // Member 1 box
-        doc.setFillColor(248, 250, 252);
-        doc.roundedRect(14, 140, 182, 22, 2, 2, 'F');
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
-        doc.setTextColor(30, 41, 59);
-        doc.text(`Member 1: ${m1Alias} (Adult, 34 yrs)`, 18, 147);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        doc.setTextColor(71, 85, 105);
-        doc.text(`Commute: ${m1Commute} | Chronic Condition: ${m1Asthma}`, 18, 154);
+        let currentY = 142;
+        membersToExport.slice(0, 4).forEach((m, idx) => {
+          const isTopVuln = (m === topVuln);
+          const isAsthma = m.healthFlagsDecrypted?.hasAsthma;
+          const roleStr = m.role ? (m.role.charAt(0).toUpperCase() + m.role.slice(1)) : 'Member';
 
-        // Member 2 box (highlighted for child vulnerability)
-        doc.setFillColor(254, 242, 242);
-        doc.roundedRect(14, 166, 182, 24, 2, 2, 'F');
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
-        doc.setTextColor(153, 27, 27);
-        doc.text(`Member 2: ${m2Alias} (Child, 6 yrs — Highest Vulnerability Priority)`, 18, 173);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        doc.setTextColor(185, 28, 28);
-        doc.text(`Commute: ${m2Commute}`, 18, 180);
-        doc.text(`Health Flag: ${m2Asthma} (Protected at Rest with Cloud KMS AES-256-GCM)`, 18, 185);
+          if (isTopVuln) {
+            doc.setFillColor(254, 242, 242);
+            doc.roundedRect(14, currentY, 182, 19, 2, 2, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9.5);
+            doc.setTextColor(153, 27, 27);
+            doc.text(`Member ${idx + 1}: ${m.nameAlias} (${roleStr}, ${m.ageYears} yrs — Highest Vulnerability Priority)`, 18, currentY + 6);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(185, 28, 28);
+            doc.text(`Commute: ${m.commuteMode} | Health Flag: ${isAsthma ? 'Asthma / Respiratory Risk' : 'High Sensitivity'} (Cloud KMS Encrypted)`, 18, currentY + 13);
+          } else {
+            doc.setFillColor(248, 250, 252);
+            doc.roundedRect(14, currentY, 182, 17, 2, 2, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9.5);
+            doc.setTextColor(30, 41, 59);
+            doc.text(`Member ${idx + 1}: ${m.nameAlias} (${roleStr}, ${m.ageYears} yrs)`, 18, currentY + 6);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(71, 85, 105);
+            doc.text(`Commute: ${m.commuteMode} | Condition: ${isAsthma ? 'Asthma' : 'Standard Health'}`, 18, currentY + 12);
+          }
+          currentY += isTopVuln ? 22 : 20;
+        });
 
         // Section 4: Privacy & Statutory Compliance
+        currentY = Math.max(currentY + 6, 202);
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(12);
+        doc.setFontSize(11);
         doc.setTextColor(15, 23, 42);
-        doc.text('4. DPDP Act 2023 Compliance & Security Attestation', 14, 198);
+        doc.text('4. DPDP Act 2023 Compliance & Security Attestation', 14, currentY);
 
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8.5);
         doc.setTextColor(71, 85, 105);
-        doc.text('• Statutory Framework: Digital Personal Data Protection (DPDP) Act 2023 (Section 6 & 11).', 18, 206);
-        doc.text('• Cryptographic Protection: Health risk flags are encrypted at rest using Google Cloud KMS', 18, 212);
-        doc.text('  envelope encryption (AES-256-GCM). Plaintext medical diagnoses are never stored in databases.', 18, 217);
-        doc.text('• Rights: You retain statutory rights to export or permanently erase this profile at any moment.', 18, 222);
+        doc.text('• Statutory Framework: Digital Personal Data Protection (DPDP) Act 2023 (Section 6 & 11).', 18, currentY + 6);
+        doc.text('• Cryptographic Protection: Health risk flags encrypted with Google Cloud KMS AES-256-GCM envelope encryption.', 18, currentY + 11);
+        doc.text('• Rights: You retain statutory rights to export or permanently erase this profile at any moment.', 18, currentY + 16);
 
         // Section 5: Top Priority Physical Guidance
+        currentY += 24;
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(12);
+        doc.setFontSize(11);
         doc.setTextColor(15, 23, 42);
-        doc.text('5. Key Calculated Interventions for this Profile', 14, 234);
+        doc.text('5. Key Calculated Interventions for this Profile', 14, currentY);
 
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
         doc.setTextColor(51, 65, 85);
-        doc.text('1. Bedroom HEPA Filtration: Avoids ~352.5 ug PM2.5/day (-42.8%) for your asthmatic child.', 18, 242);
-        doc.text('2. Metro Transit Modal Shift: Eliminates -121.3 ug/day inhaled dose and cuts 1,120 g CO2/day.', 18, 248);
-        doc.text('3. Inversion Sealing: Seal windows tightly 06:00-10:00; ventilate only during 12:30-15:00 mixing.', 18, 254);
+        doc.text(`1. Bedroom HEPA Filtration: Avoids ~352.5 ug PM2.5/day (-42.8%) for ${topVuln.nameAlias}.`, 18, currentY + 6);
+        doc.text('2. Transit Modal Shift: Eliminates -121.3 ug/day transit inhaled dose and cuts 1,120 g CO2/day.', 18, currentY + 12);
+        doc.text('3. Inversion Sealing: Seal windows tightly 06:00-10:00; ventilate only during 12:30-15:00 mixing.', 18, currentY + 18);
 
         // Footer
         doc.setFontSize(8);
         doc.setTextColor(148, 163, 184);
         doc.line(14, 275, 196, 275);
-        doc.text('Saans (सांस) — Urban Air Quality & Personal Exposure Assistant | https://promptwars-challenge-6.netlify.app', 14, 281);
+        doc.text('Saans (सांस) — Urban Air Quality & Personal Exposure Assistant | https://deveshk1256.github.io/saans-aqi/', 14, 281);
 
         doc.save(`saans-household-profile-${locality.split('/')[0].trim().toLowerCase().replace(/[^a-z0-9]/g, '_')}.pdf`);
       } else {
@@ -5849,14 +6036,13 @@
                 <li><strong>Cooking Fuel:</strong> ${fuel} | <strong>Exhaust:</strong> ${chimney}</li>
                 <li><strong>Incense / Coils:</strong> ${incense} | <strong>HEPA Purifier:</strong> ${purifier} | <strong>Pets:</strong> ${pets}</li>
               </ul>
-              <h2>3. Household Members & Risk Profile</h2>
-              <div class="card">
-                <strong>Member 1: ${m1Alias}</strong> (Adult, 34y) | Commute: ${m1Commute} | Condition: ${m1Asthma}
-              </div>
-              <div class="card card-vulnerable">
-                <strong>Member 2: ${m2Alias}</strong> (Child, 6y — High Vulnerability) | Commute: ${m2Commute}<br>
-                <span>Condition: ${m2Asthma}</span>
-              </div>
+              <h2>3. Household Members & Risk Profile (${membersToExport.length} Members)</h2>
+              ${membersToExport.map((m, idx) => `
+                <div class="card ${m === topVuln ? 'card-vulnerable' : ''}">
+                  <strong>Member ${idx + 1}: ${m.nameAlias}</strong> (${m.role}, ${m.ageYears}y${m === topVuln ? ' — Highest Vulnerability Priority' : ''}) | Commute: ${m.commuteMode}<br>
+                  <span>Condition: ${m.healthFlagsDecrypted?.hasAsthma ? 'Diagnosed Asthma / Active Wheezing (Cloud KMS Encrypted)' : 'Standard Health'}</span>
+                </div>
+              `).join('')}
               <h2>4. DPDP Act 2023 Compliance</h2>
               <p>Protected under Digital Personal Data Protection Act 2023. De-identified health flags encrypted at rest using Google Cloud KMS AES-256-GCM envelope encryption.</p>
               <script>window.onload = function() { window.print(); };<\/script>
@@ -5951,6 +6137,15 @@
 
       const recVuln = document.getElementById('rec-target-vulnerable');
       if (recVuln) recVuln.textContent = 'Household Profile Cleared';
+
+      const targetName = document.getElementById('hh-matrix-target-name');
+      if (targetName) targetName.textContent = 'None';
+      const familyDose = document.getElementById('hh-matrix-family-dose');
+      if (familyDose) familyDose.textContent = '0 µg/day';
+      const breakdown = document.getElementById('hh-members-quick-breakdown');
+      if (breakdown) breakdown.innerHTML = '<em>Add household members to calculate family inhalation exposure.</em>';
+      const vulnBadge = document.getElementById('hh-impact-vuln-badge');
+      if (vulnBadge) vulnBadge.textContent = 'Awaiting Members';
     }
 
     // Attach real-time listeners for all member cards in list
@@ -5979,19 +6174,55 @@
 
     // ==================== SLICE A4: RECOMMENDATIONS, 72H FORECAST & CLEANER ROUTE ====================
 
-    function renderRecommendations() {
+    function renderRecommendations(overrideVuln) {
       const container = document.getElementById('recommendations-container');
       if (!container) return;
+
+      let vuln = overrideVuln;
+      if (!vuln && savedHouseholdState && savedHouseholdState.members && savedHouseholdState.members.length > 0) {
+        vuln = getTopVulnerableMember(savedHouseholdState.members);
+      }
+      
+      const vulnName = vuln ? vuln.nameAlias : "Aarav (Child)";
+      const vulnAge = vuln ? `${vuln.ageYears}y` : "6y";
+      const hasAsthma = vuln ? (vuln.healthFlagsDecrypted?.hasAsthma || vuln.hasAsthma) : true;
+      const isSenior = vuln ? vuln.ageYears >= 60 : false;
+      const isChildOrInfant = vuln ? vuln.ageYears <= 12 : true;
+      const targetPhrase = vuln ? `${vulnName} (${vulnAge}${hasAsthma ? ', asthmatic' : ''})` : "your 6-year-old asthmatic child";
+
+      const p1Title = isSenior
+        ? `Run HEPA / DIY Purifier in ${vulnName}'s Living Area & Bedroom`
+        : `Run HEPA / DIY Purifier in ${vulnName}'s Bedroom Overnight`;
+
+      const p1Narrative = `Running a HEPA purifier in the bedroom delivers the largest physical protection for ${targetPhrase} (-352.5 µg PM2.5/day). Because ${isChildOrInfant ? 'children inhale more air per kg body mass' : 'vulnerable individuals experience acute airway irritation'} and spend 8–10 continuous hours asleep, bedroom filtration cuts total daily toxic particulate dose nearly in half.`;
+
+      // Check commute modes across household
+      let anyTwoWheeler = false;
+      if (savedHouseholdState && savedHouseholdState.members) {
+        anyTwoWheeler = savedHouseholdState.members.some(m => m.commuteMode === 'bike_scooter');
+      } else {
+        anyTwoWheeler = true;
+      }
+      const cityVal = document.getElementById('city-select') ? document.getElementById('city-select').value : 'pune';
+      const cityTitle = cityVal.charAt(0).toUpperCase() + cityVal.slice(1);
+
+      const p2Title = anyTwoWheeler 
+        ? `Shift Daily Two-Wheeler Commute to ${cityTitle} Metro Corridor`
+        : `Optimize Peak Commute Timing & Route Filtration`;
+
+      const p2Narrative = anyTwoWheeler
+        ? `Switching your daily round-trip commute from an open two-wheeler to the ${cityTitle} Metro cuts transit particulate exposure by -121.3 µg PM2.5/day and eliminates 1,120 g of tailpipe CO₂ emissions daily.`
+        : `Using air-conditioned filtered transit or sealed cabin filtration during peak morning smog avoids direct tailpipe particulate intake (-121.3 µg PM2.5/day) across ${cityTitle} transit corridors.`;
 
       const recs = [
         {
           id: 'bedroom_purifier',
           priority: 1,
           badgeClass: 'badge-p1',
-          badgeText: 'Priority 1 • High Vulnerability Protection',
-          title: 'Run HEPA / DIY Purifier in Child\'s Bedroom Overnight',
+          badgeText: `Priority 1 • High Vulnerability Protection (${vuln ? vuln.nameAlias : 'Aarav'})`,
+          title: p1Title,
           impactTag: '⚡ -352.5 µg/day (-42.8%)',
-          narrative: 'Running a HEPA purifier in the bedroom delivers the largest physical protection for your 6-year-old asthmatic child (-352.5 µg PM2.5/day). Because children inhale more air per kg body mass and spend 8–10 continuous hours asleep, bedroom filtration cuts total daily toxic particulate dose nearly in half.',
+          narrative: p1Narrative,
           rule: 'Nazaroff (2004) mass-balance: lambda = a + k + Qp/V. CADR 250 m³/h in 40 m³ bedroom gives clean air delivery rate of 6.25 ACH.',
           citations: ['EPA Exposure Factors Handbook (2011) Table 6-1', 'Nazaroff Indoor Air (2004) DOI:10.1111/j.1600-0668.2004.00288.x'],
           verified: true,
@@ -6002,9 +6233,9 @@
           priority: 2,
           badgeClass: 'badge-p2',
           badgeText: 'Priority 2 • Transit & Community Co-Benefit',
-          title: 'Shift Daily Bike Commute to Metro Rail Corridor',
+          title: p2Title,
           impactTag: '⚡ -121.3 µg/day • 🌿 1,120 g CO₂ avoided',
-          narrative: 'Switching your 20 km daily round-trip commute from a two-wheeler to Pune Metro cuts transit particulate exposure by -121.3 µg PM2.5/day and eliminates 1,120 g of tailpipe CO₂ emissions every single day.',
+          narrative: p2Narrative,
           rule: 'Transit ratio shift from 1.8x (open two-wheeler behind diesel exhaust) to 0.35x (air-conditioned filtered metro coaches). Emission factors: 72 g CO₂/km (petrol 2W) vs 16 g CO₂/passenger-km (Metro).',
           citations: ['ARAI Emission Factors for Indian In-Use Vehicles (2020)', 'CPCB/Sameer Transit Microenvironment Exposure Guidelines (2022)'],
           verified: true,
@@ -6996,6 +7227,9 @@
     renderCleanerRoute(startCity);
     if (typeof renderRoutineTimeline === 'function') {
       renderRoutineTimeline(startCity);
+    }
+    if (typeof syncHouseholdStateToApp === 'function') {
+      syncHouseholdStateToApp();
     }
 
     // ==================== 3D ATMOSPHERIC INVERSION & URBAN CANOPY SIMULATOR ====================
