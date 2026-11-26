@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="saans-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B735F"/>
+      <stop offset="100%" stop-color="#085A4A"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#saans-bg)"/>
+  <path d="M14 48c10-3 22-3 36-10" fill="none" stroke="#A7F3D0" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <text x="32" y="39" text-anchor="middle" font-family="'Noto Sans Devanagari', 'Outfit', system-ui, sans-serif" font-weight="700" font-size="28" fill="#FFFFFF">सां</text>
+</svg>

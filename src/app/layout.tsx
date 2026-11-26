@@ -4,6 +4,9 @@ import React from 'react';
 export const metadata: Metadata = {
   title: 'Saans (सांस) — Evidence-Based Air Quality & Exposure Toolkit',
   description: 'Your family’s personal air shield. Calculate personal PM2.5 dose, find optimal ventilation windows, and build low-cost DIY air purifiers.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
