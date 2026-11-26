@@ -393,7 +393,7 @@
       <!-- SECTION 1 -->
       <section class="scroll-reveal">
         <h2>1. National Air Quality Index (NAQI) — India CPCB Standard</h2>
-        <p>Calculated in strict compliance with the Central Pollution Control Board (CPCB) and Ministry of Environment, Forest and Climate Change (MoEFCC) 2014 standard by linear interpolation within each criteria pollutant breakpoint band:</p>
+        <p>We compute AQI using the official 2014 CPCB and MoEFCC standard. Each pollutant value maps smoothly within its breakpoint band:</p>
         
         <div class="formula-card">
           <div class="formula-header">Equation 1: CPCB Linear Sub-Index Interpolation</div>
@@ -443,7 +443,7 @@
             </span>
           </div>
           <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;">
-            Drag the altitude scrubber or hover the column to inspect the thermal inversion lid, vertical temperature gradient, and trapped particulate density.
+            Drag the height slider or hover over the column to see the warm air lid, temperature shift, and trapped dust levels.
           </p>
 
           <div style="position: relative; width: 100%; height: 260px; background: var(--surface-bg); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); overflow: hidden;">
@@ -501,7 +501,7 @@
             $$C_{\text{in}}(t + \Delta t) = C_{ss} + \big(C_{\text{in}}(t) - C_{ss}\big) \cdot e^{-\lambda \Delta t}$$
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">
-            This differential solution accurately tracks rapid particulate decay when an air purifier is switched on, or concentration surges during unvented cooking.
+            This formula tracks how fast indoor dust drops when you turn on a purifier, or rises when you cook without a fan.
           </p>
         </div>
       </section>
@@ -509,7 +509,7 @@
       <!-- SECTION 4 -->
       <section class="scroll-reveal">
         <h2>4. Personal Daily Inhaled Dose Model</h2>
-        <p>Physical particulate mass deposited in human airways is computed by integrating microenvironmental concentrations with activity-specific volumetric inhalation rates (US EPA Exposure Factors Handbook, 2011, Chapter 6):</p>
+        <p>We calculate how much dust enters your lungs by combining room air levels with your breathing rate (US EPA, 2011, Chapter 6):</p>
         
         <div class="formula-card">
           <div class="formula-header">Equation 6: 24-Hour Cumulative Inhaled Dose</div>
@@ -565,7 +565,7 @@
       <!-- SECTION 6 -->
       <section class="scroll-reveal">
         <h2>6. Parameter Registry & Authoritative Citations</h2>
-        <p>All constants are externally sourced from peer-reviewed literature or official regulatory bodies. Zero hardcoded numbers in business logic.</p>
+        <p>All numbers come from published science or official agencies. No constants are guessed or hidden in code.</p>
         <table>
           <thead>
             <tr>
@@ -656,7 +656,7 @@
         <h2>7. Relatable Communication Units & Mandatory Caveat</h2>
         <div class="caveat-box">
           <strong>Mandatory Scientific Caveat (Part 3.4 & SCI-06):</strong><br>
-          Cigarette equivalence is derived using Berkeley Earth's empirical conversion rule (22 µg/m³ 24h average PM2.5 ≈ 1 cigarette). This comparison is deployed strictly as an intuitive risk communication metaphor for the public. Ambient urban air pollution differs fundamentally from directly inhaled cigarette smoke in chemical speciation, absence of heavy tobacco pyrolysis products, particle morphology, and physiological deposition mechanics. <em>It must never be presented as a medical diagnosis or clinical prognosis.</em>
+          22 µg/m³ of daily PM2.5 equals roughly 1 cigarette (Berkeley Earth). We use this as a simple visual guide for families. Outdoor air pollution differs from tobacco smoke in chemistry and how it settles in lungs. <em>Never treat this number as a medical diagnosis.</em>
         </div>
       </section>
     </main>

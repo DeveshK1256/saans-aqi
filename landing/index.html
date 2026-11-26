@@ -36,13 +36,13 @@
       --surface-border: #E2DFD7;
       --text-main: #1D1E1C;
       --text-muted: #595752;
-      --text-faint: #807E78;
+      --text-faint: #575550;
       --accent: #0B735F;
       --accent-hover: #085A4A;
       --accent-light: #E6F3F0;
       --danger: #BA2D1F;
       --danger-light: #FBECEB;
-      --warning: #B87309;
+      --warning: #8A5300;
       --warning-light: #FDF4E6;
       --success: #1B7837;
       --success-light: #EAF4EE;
@@ -60,7 +60,7 @@
       --surface-border: #303A36;
       --text-main: #F4F6F5;
       --text-muted: #A3ACA7;
-      --text-faint: #747E7A;
+      --text-faint: #9AA39F;
       --accent: #14B89A;
       --accent-hover: #0D9488;
       --accent-light: #12332A;
@@ -196,7 +196,7 @@
       scrollbar-width: thin;
     }
 
-    .tab-btn {
+    .tab-btn, .tab-link {
       background: var(--surface-subtle);
       border: 1px solid transparent;
       color: var(--text-muted);
@@ -889,8 +889,8 @@
     }
 
     .badge-p1 { background: #E6F4F0; color: var(--accent); }
-    .badge-p2 { background: #E0F2FE; color: #0284C7; }
-    .badge-p3 { background: #FEF3C7; color: #D97706; }
+    .badge-p2 { background: #E0F2FE; color: #0369A1; }
+    .badge-p3 { background: #FEF3C7; color: #92400E; }
 
     .rec-impact-tag {
       font-size: 0.88rem;
@@ -1264,11 +1264,9 @@
       gap: 6px;
     }
     .control-label {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-main);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
     }
     .preset-pills {
       display: flex;
@@ -1391,13 +1389,12 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      background: rgba(14, 18, 16, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #0E1210;
+      border: 1px solid rgba(255, 255, 255, 0.16);
       border-radius: var(--radius-md);
       padding: 8px 12px;
-      font-size: 0.76rem;
-      color: #E2E8F0;
+      font-size: 0.75rem;
+      color: #F4F6F5;
       z-index: 10;
       pointer-events: none;
     }
@@ -1420,15 +1417,14 @@
       position: absolute;
       bottom: 14px;
       right: 14px;
-      background: rgba(14, 18, 16, 0.8);
-      backdrop-filter: blur(8px);
+      background: #0E1210;
       border-radius: 20px;
       padding: 5px 12px;
-      font-size: 0.74rem;
-      color: #94A3B8;
+      font-size: 0.75rem;
+      color: #E2E8F0;
       z-index: 10;
       pointer-events: none;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
     }
     .info-card {
       background: var(--surface-card);
@@ -2058,7 +2054,7 @@
     }
 
     .badge-diurnal-live {
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 700;
       background: #EAF4EE;
       color: #1B7837;
@@ -2230,40 +2226,42 @@
       </div>
 
       <!-- Main Navigation Tabs -->
-      <nav class="nav-tabs" role="tablist" aria-label="Feature Tabs">
-        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="tab-aqi">
-          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
-          <span>Live AQI & Routine</span>
-        </button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-3d" id="btn-nav-3d">
-          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-          <span>3D Atmosphere & Canopy</span>
-        </button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-household">
-          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span>Household Profile</span>
-        </button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-dose">
-          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
-          <span>Dose & What-If</span>
-        </button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-pledge">
-          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span>Clean-Air Pledge</span>
-        </button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-myths">
-          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <span>Myth Buster</span>
-        </button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-diy">
-          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-          <span>DIY Purifier</span>
-        </button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-emergency">
-          <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
-          <span>Health Guardrail</span>
-        </button>
-        <a href="methodology.html" class="tab-btn" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center;" title="View Scientific Methodology & Param Citations">
+      <nav class="nav-tabs" aria-label="Feature Navigation">
+        <div role="tablist" aria-label="Feature Tabs" style="display: contents;">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="tab-aqi">
+            <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+            <span>Live AQI & Routine</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-3d" id="btn-nav-3d">
+            <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            <span>3D Atmosphere & Canopy</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-household">
+            <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Household Profile</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-dose">
+            <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+            <span>Dose & What-If</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-pledge">
+            <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Clean-Air Pledge</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-myths">
+            <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Myth Buster</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-diy">
+            <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            <span>DIY Purifier</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-emergency">
+            <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+            <span>Health Guardrail</span>
+          </button>
+        </div>
+        <a href="methodology.html" class="tab-link" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center;" title="View Scientific Methodology & Param Citations">
           <svg class="saans-tab-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
           <span>Science Methodology</span>
         </a>
@@ -2278,7 +2276,7 @@
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">Live Hyperlocal Air Quality & Optimal Ventilation Window</h2>
-          <p class="card-desc">Select your city or neighborhood to see real CPCB AQI, particulate concentrations, and scientific window timings.</p>
+          <p class="card-desc">Pick your city or area to see live AQI, pollutant levels, and safe open-window times.</p>
         </div>
 
         <div class="grid-2" style="margin-bottom: 16px;">
@@ -2431,8 +2429,8 @@
                 <span>📈 24-Hour Diurnal Pollution & Inversion Scrubber</span>
                 <span class="badge-diurnal-live" id="diurnal-active-badge">Active Diurnal Curve</span>
               </h3>
-              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 3px 0 0 0;">
-                Drag the time scrubber to inspect solar convective mixing, nocturnal boundary layer collapse, and optimal ventilation windows.
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin: 3px 0 0 0;">
+                Drag the time slider to see how daytime heat clears smog and when night air traps it.
               </p>
             </div>
             <!-- Quick Time Presets -->
@@ -2530,7 +2528,7 @@
               </p>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 0.78rem; font-weight: 700; background: #E0F2FE; color: #0284C7; padding: 4px 10px; border-radius: 20px;">
+              <span style="font-size: 0.78rem; font-weight: 700; background: #E0F2FE; color: #0369A1; padding: 4px 10px; border-radius: 20px;">
                 ✨ Phrased via Google Gemini 1.5 Pro (GS-01)
               </span>
             </div>
@@ -2550,7 +2548,7 @@
                 Multi-day meteorology forecast with early inversion alerts and action shopping list.
               </p>
             </div>
-            <span style="font-size: 0.78rem; font-weight: 700; background: #FEE2E2; color: #DC2626; padding: 4px 10px; border-radius: 20px;" id="stagnation-status-badge">
+            <span style="font-size: 0.78rem; font-weight: 700; background: #FEE2E2; color: #B91C1C; padding: 4px 10px; border-radius: 20px;" id="stagnation-status-badge">
               ⚠️ Inversion Alert Active
             </span>
           </div>
@@ -2583,7 +2581,7 @@
           <div style="margin-top: 16px; background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 14px 18px;">
             <div style="font-size: 0.92rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
               <span>🛒 Urgent Smog-Prep Shopping Checklist</span>
-              <span style="font-size: 0.75rem; background: #FEF3C7; color: #D97706; padding: 2px 8px; border-radius: 10px; font-weight: 600;">Action Required Tonight</span>
+              <span style="font-size: 0.75rem; background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 10px; font-weight: 600;">Action Required Tonight</span>
             </div>
             <div id="shopping-list-container">
               <!-- Populated dynamically by JS -->
@@ -2655,7 +2653,7 @@
           <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
             <div>
               <h2 class="card-title">3D Atmospheric Boundary Layer & Urban Inversion Simulator</h2>
-              <p class="card-desc">Interactive 3D physical model of planetary boundary layer (PBL) thermal trapping, urban street canyons, and building indoor-outdoor air exchange.</p>
+              <p class="card-desc">See how warm and cold air layers trap smog in city streets, and how indoor filters keep your home clean.</p>
             </div>
             <a href="methodology.html" class="btn-reset" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="View Boundary Layer & Mass Balance Equations">
               <svg class="saans-btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
@@ -2683,7 +2681,7 @@
               <span>Hour Scrubber: <strong id="val-3d-time-label">07:00 AM (Morning Ground Inversion Peak)</strong></span>
               <span id="val-3d-mixing-status" style="font-weight: 700; color: var(--danger);">Severe Thermal Trapping</span>
             </div>
-            <input type="range" id="slider-3d-hour" min="0" max="23" value="7" step="1" style="width: 100%;">
+            <input type="range" id="slider-3d-hour" min="0" max="23" value="7" step="1" aria-label="Time of day for boundary layer simulation" style="width: 100%;">
           </div>
 
           <!-- Layer Toggles & Camera Angle Buttons -->
@@ -3086,7 +3084,7 @@
           <div style="background: var(--surface-subtle); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--surface-border); margin-bottom: 20px;">
             <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem; color: var(--text-main);">
               <input type="checkbox" id="hh-consent-check" checked style="width: auto; margin-top: 3px;">
-              <span><strong>Explicit DPDP Act 2023 Consent:</strong> I agree to the processing of de-identified household category flags for personal exposure dose calculations and air hygiene planning. I can export or delete this data at any time.</span>
+              <span><strong>Explicit DPDP Act 2023 Consent:</strong> I agree to use anonymous family risk flags to calculate air intake and daily plans. I can export or delete my data anytime.</span>
             </label>
           </div>
 
@@ -3112,7 +3110,7 @@
           <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
             <div>
               <h2 class="card-title">Personal Inhaled PM2.5 Dose & What-If Simulator (F3, F4, F5)</h2>
-              <p class="card-desc">City AQI alone does not reflect physical lung exposure. Pure mathematical calculation using the <strong>Nazaroff (2004)</strong> mass-balance differential equation and <strong>US EPA Exposure Factors Handbook (2011)</strong>. Explore what happens to your family's inhaled dose and community emissions when choices change.</p>
+              <p class="card-desc">City AQI does not show what enters your lungs. We use the <strong>Nazaroff (2004)</strong> indoor air model and <strong>US EPA (2011)</strong> breathing rates. Test how daily choices cut your family's risk.</p>
             </div>
             <a href="methodology.html" class="btn-reset" style="text-decoration: none;" title="Open Methodology Documentation">
               📖 Science Formulas (F24)
@@ -3122,7 +3120,7 @@
 
         <!-- Persona Quick Selector -->
         <div style="margin-bottom: 16px;">
-          <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Load Demo Persona:</span>
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Load sample persona:</span>
           <div class="persona-bar" style="margin-top: 6px;">
             <button type="button" class="persona-btn active" id="btn-persona-priya">Priya's Child (6y Asthma, Pune, Bike Commute)</button>
             <button type="button" class="persona-btn" id="btn-persona-dadaji">Dadaji (72y Elderly, LPG Cooking, Morning Walk)</button>
@@ -3329,7 +3327,7 @@
           <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
             <div>
               <h2 class="card-title">Neighborhood Clean-Air Pledge & Society Leaderboard (MVP #5, FR-PLG-01 to 04)</h2>
-              <p class="card-desc">Collective action multiplies local impact. Join your apartment complex or neighborhood RWA to track shared emissions reductions, log daily clean-air pledges, and view the city-wide leaderboard. All rankings are strictly aggregate-only to protect household privacy.</p>
+              <p class="card-desc">Team up with neighbors in your apartment or RWA to cut local smoke. Log daily clean-air habits and view the city leaderboard. Only group totals are shown to protect your privacy.</p>
             </div>
             <span style="font-size: 0.78rem; background: var(--accent-light); color: var(--accent); padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
               🛡️ Self-Reported Estimates (Anti-Gaming Plausibility Rules)
@@ -3353,7 +3351,7 @@
               </div>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <select id="pledge-society-select" style="padding: 7px 12px; font-size: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--surface-card); color: var(--text-main);">
+              <select id="pledge-society-select" aria-label="Select Housing Society" style="padding: 7px 12px; font-size: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--surface-card); color: var(--text-main);">
                 <option value="soc_pune_greenhills" selected>Green Hills Society (Pune)</option>
                 <option value="soc_delhi_palmgrove">Palm Grove Heights (Dwarka, Delhi)</option>
                 <option value="soc_blr_kalyani">Kalyani Meadows (Whitefield, BLR)</option>
@@ -3533,7 +3531,7 @@
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">WhatsApp Forward Myth Buster & Fact Checker</h2>
-          <p class="card-desc">Every winter, Indian family WhatsApp groups circulate dangerous unproven remedies. Check scientific medical evidence before spending money or risking lung health.</p>
+          <p class="card-desc">Every winter, viral messages share unproven smog cures. Check the real science before you spend money or risk your health.</p>
         </div>
 
         <div class="search-box">
@@ -3559,7 +3557,7 @@
       <div class="card">
         <div class="card-header">
           <h2 class="card-title">Corsi-Rosenthal Box — Build an Air Purifier for ₹2,000</h2>
-          <p class="card-desc">Commercial air purifiers cost ₹18,000 to ₹35,000. Peer-reviewed studies (UC Davis, EPA) show a DIY Corsi-Rosenthal box built with a standard box fan and MERV-13 filters delivers equal or higher Clean Air Delivery Rate (CADR).</p>
+          <p class="card-desc">Store-bought air purifiers cost ₹18,000 to ₹35,000. Lab tests (UC Davis, EPA) show a DIY box fan with MERV-13 filters cleans room air just as fast for much less.</p>
         </div>
 
         <!-- Room Size Slider -->
@@ -3571,14 +3569,14 @@
         <!-- Price Comparison -->
         <div class="diy-comparison">
           <div class="price-card diy">
-            <span style="font-size: 0.82rem; font-weight: 700; color: var(--accent); text-transform: uppercase;">DIY Corsi-Rosenthal Box</span>
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent);">DIY Corsi-Rosenthal Box</span>
             <div class="price" id="diy-calc-price">₹2,150</div>
             <div style="font-size: 0.88rem; color: var(--text-main); font-weight: 600;" id="diy-calc-cadr">Clean Air Delivery: 320 m³/h</div>
             <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Delivers 5.2 Air Changes / hr (Superior Clean)</div>
           </div>
 
           <div class="price-card commercial">
-            <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-faint); text-transform: uppercase;">Branded Commercial Purifier</span>
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-faint);">Branded Commercial Purifier</span>
             <div class="price">₹19,990</div>
             <div style="font-size: 0.88rem; color: var(--text-muted); font-weight: 600;">Clean Air Delivery: ~280 m³/h</div>
             <div style="font-size: 0.82rem; color: var(--danger); margin-top: 4px;">You save over ₹17,800 (89% savings)</div>
@@ -3640,7 +3638,7 @@
           <span>🚨 Critical Respiratory Symptom Escalation</span>
         </div>
         <p class="emergency-desc">
-          Saans is an environmental exposure calculator, <strong>never a doctor or medical emergency device</strong>. If you, your child, or an elderly family member experience any of the following acute symptoms, seek immediate emergency medical care:
+          Saans is an air-risk calculator, <strong>never a doctor or medical device</strong>. If anyone in your home has these urgent symptoms, get medical help right away:
         </p>
 
         <ul class="emergency-list">
@@ -3964,9 +3962,9 @@
   <footer>
     <div class="container">
       <p>
-        <strong>Saans (सांस)</strong> — Open-Access Urban Air Quality Toolkit.<br>
-        Formulas based on US EPA Exposure Factors Handbook (2011) & CPCB NAQI Breakpoints (2014).<br>
-        All exposure metrics are modeled estimates, not clinical diagnostic measurements.
+        <strong>Saans (सांस)</strong> — Free Urban Air Quality Toolkit.<br>
+        Uses US EPA (2011) & CPCB (2014) air standards.<br>
+        Numbers are modeled estimates, not medical diagnoses.
       </p>
     </div>
   </footer>
@@ -4146,70 +4144,70 @@
       }
     };
 
-    // --- CPCB NAQI Breakpoint Calculation in Client ---
+    // --- CPCB NAQI Breakpoint Calculation in Client (WCAG AA Accessible Colors) ---
     const NAQI_BREAKPOINTS_TABLE = {
       pm25: [
-        { bLow: 0, bHigh: 30, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
-        { bLow: 31, bHigh: 60, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
-        { bLow: 61, bHigh: 90, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
-        { bLow: 91, bHigh: 120, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
-        { bLow: 121, bHigh: 250, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
-        { bLow: 251, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+        { bLow: 0, bHigh: 30, iLow: 0, iHigh: 50, cat: "Good", color: "#0B735F" },
+        { bLow: 31, bHigh: 60, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#1B7837" },
+        { bLow: 61, bHigh: 90, iLow: 101, iHigh: 200, cat: "Moderate", color: "#854D0E" },
+        { bLow: 91, bHigh: 120, iLow: 201, iHigh: 300, cat: "Poor", color: "#9A4D00" },
+        { bLow: 121, bHigh: 250, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#B91C1C" },
+        { bLow: 251, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#6B21A8" }
       ],
       pm10: [
-        { bLow: 0, bHigh: 50, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
-        { bLow: 51, bHigh: 100, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
-        { bLow: 101, bHigh: 250, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
-        { bLow: 251, bHigh: 350, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
-        { bLow: 351, bHigh: 430, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
-        { bLow: 431, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+        { bLow: 0, bHigh: 50, iLow: 0, iHigh: 50, cat: "Good", color: "#0B735F" },
+        { bLow: 51, bHigh: 100, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#1B7837" },
+        { bLow: 101, bHigh: 250, iLow: 101, iHigh: 200, cat: "Moderate", color: "#854D0E" },
+        { bLow: 251, bHigh: 350, iLow: 201, iHigh: 300, cat: "Poor", color: "#9A4D00" },
+        { bLow: 351, bHigh: 430, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#B91C1C" },
+        { bLow: 431, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#6B21A8" }
       ],
       no2: [
-        { bLow: 0, bHigh: 40, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
-        { bLow: 41, bHigh: 80, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
-        { bLow: 81, bHigh: 180, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
-        { bLow: 181, bHigh: 280, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
-        { bLow: 281, bHigh: 400, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
-        { bLow: 401, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+        { bLow: 0, bHigh: 40, iLow: 0, iHigh: 50, cat: "Good", color: "#0B735F" },
+        { bLow: 41, bHigh: 80, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#1B7837" },
+        { bLow: 81, bHigh: 180, iLow: 101, iHigh: 200, cat: "Moderate", color: "#854D0E" },
+        { bLow: 181, bHigh: 280, iLow: 201, iHigh: 300, cat: "Poor", color: "#9A4D00" },
+        { bLow: 281, bHigh: 400, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#B91C1C" },
+        { bLow: 401, bHigh: 500, iLow: 401, iHigh: 500, cat: "Severe", color: "#6B21A8" }
       ],
       so2: [
-        { bLow: 0, bHigh: 40, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
-        { bLow: 41, bHigh: 80, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
-        { bLow: 81, bHigh: 380, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
-        { bLow: 381, bHigh: 800, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
-        { bLow: 801, bHigh: 1600, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
-        { bLow: 1601, bHigh: 2000, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+        { bLow: 0, bHigh: 40, iLow: 0, iHigh: 50, cat: "Good", color: "#0B735F" },
+        { bLow: 41, bHigh: 80, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#1B7837" },
+        { bLow: 81, bHigh: 380, iLow: 101, iHigh: 200, cat: "Moderate", color: "#854D0E" },
+        { bLow: 381, bHigh: 800, iLow: 201, iHigh: 300, cat: "Poor", color: "#9A4D00" },
+        { bLow: 801, bHigh: 1600, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#B91C1C" },
+        { bLow: 1601, bHigh: 2000, iLow: 401, iHigh: 500, cat: "Severe", color: "#6B21A8" }
       ],
       co: [
-        { bLow: 0.0, bHigh: 1.0, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
-        { bLow: 1.1, bHigh: 2.0, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
-        { bLow: 2.1, bHigh: 10.0, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
-        { bLow: 10.1, bHigh: 17.0, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
-        { bLow: 17.1, bHigh: 34.0, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
-        { bLow: 34.1, bHigh: 50.0, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+        { bLow: 0.0, bHigh: 1.0, iLow: 0, iHigh: 50, cat: "Good", color: "#0B735F" },
+        { bLow: 1.1, bHigh: 2.0, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#1B7837" },
+        { bLow: 2.1, bHigh: 10.0, iLow: 101, iHigh: 200, cat: "Moderate", color: "#854D0E" },
+        { bLow: 10.1, bHigh: 17.0, iLow: 201, iHigh: 300, cat: "Poor", color: "#9A4D00" },
+        { bLow: 17.1, bHigh: 34.0, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#B91C1C" },
+        { bLow: 34.1, bHigh: 50.0, iLow: 401, iHigh: 500, cat: "Severe", color: "#6B21A8" }
       ],
       o3: [
-        { bLow: 0, bHigh: 50, iLow: 0, iHigh: 50, cat: "Good", color: "#009966" },
-        { bLow: 51, bHigh: 100, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#58B453" },
-        { bLow: 101, bHigh: 168, iLow: 101, iHigh: 200, cat: "Moderate", color: "#FFDD44" },
-        { bLow: 169, bHigh: 208, iLow: 201, iHigh: 300, cat: "Poor", color: "#FF8800" },
-        { bLow: 209, bHigh: 748, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#CC0033" },
-        { bLow: 749, bHigh: 1000, iLow: 401, iHigh: 500, cat: "Severe", color: "#660099" }
+        { bLow: 0, bHigh: 50, iLow: 0, iHigh: 50, cat: "Good", color: "#0B735F" },
+        { bLow: 51, bHigh: 100, iLow: 51, iHigh: 100, cat: "Satisfactory", color: "#1B7837" },
+        { bLow: 101, bHigh: 168, iLow: 101, iHigh: 200, cat: "Moderate", color: "#854D0E" },
+        { bLow: 169, bHigh: 208, iLow: 201, iHigh: 300, cat: "Poor", color: "#9A4D00" },
+        { bLow: 209, bHigh: 748, iLow: 301, iHigh: 400, cat: "Very Poor", color: "#B91C1C" },
+        { bLow: 749, bHigh: 1000, iLow: 401, iHigh: 500, cat: "Severe", color: "#6B21A8" }
       ]
     };
 
     function calculateSubIndexClient(pollutant, conc) {
       const table = NAQI_BREAKPOINTS_TABLE[pollutant];
-      if (!table || conc < 0) return { subIndex: 0, cat: 'Good', color: '#009966' };
+      if (!table || conc < 0) return { subIndex: 0, cat: 'Good', color: '#0B735F' };
       const maxBp = table[table.length - 1];
-      if (conc >= maxBp.bHigh) return { subIndex: 500, cat: 'Severe', color: '#660099' };
+      if (conc >= maxBp.bHigh) return { subIndex: 500, cat: 'Severe', color: '#6B21A8' };
       for (const bp of table) {
         if (conc >= bp.bLow && conc <= bp.bHigh) {
           const idx = Math.round(((bp.iHigh - bp.iLow) / (bp.bHigh - bp.bLow)) * (conc - bp.bLow) + bp.iLow);
           return { subIndex: Math.min(500, Math.max(0, idx)), cat: bp.cat, color: bp.color };
         }
       }
-      return { subIndex: 500, cat: 'Severe', color: '#660099' };
+      return { subIndex: 500, cat: 'Severe', color: '#6B21A8' };
     }
 
     // --- Tab Switching Logic ---
@@ -4290,28 +4288,28 @@
       if (isSevere) {
         container.innerHTML = `
           <div class="timeline-item">
-            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--danger); font-weight: 700;">MORNING PEAK</span></div>
+            <div class="timeline-time">06:00 – 10:00<br><span style="font-size: 0.75rem; color: var(--danger); font-weight: 700;">Morning Peak</span></div>
             <div class="timeline-content">
               <span class="timeline-badge" style="background: var(--danger-light); color: var(--danger);">Ground Inversion Trapping (zi ~220m)</span>
-              <p><strong>Keep all windows strictly sealed in ${cityName}.</strong> Cold surface air traps local diesel soot and combustion smog. Strictly avoid morning jogs, outdoor workouts, or unmasked school commutes. Inhaled particulate intake spikes 4× higher during this window.</p>
+              <p><strong>Keep all windows shut in ${cityName}.</strong> Cold morning air traps car smoke near the ground. Skip morning jogs and wear a mask outside. You breathe in 4× more dust during these hours.</p>
             </div>
           </div>
           <div class="timeline-item">
-            <div class="timeline-time">12:30 – 15:00<br><span style="font-size: 0.75rem; color: var(--success); font-weight: 700;">AFTERNOON WINDOW</span></div>
+            <div class="timeline-time">12:30 – 15:00<br><span style="font-size: 0.75rem; color: var(--success); font-weight: 700;">Afternoon Window</span></div>
             <div class="timeline-content">
-              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">Optimal 20-Min Cross-Ventilation</span>
-              <p><strong>Safest time to ventilate living spaces.</strong> Solar heating expands the planetary boundary layer (~950m) and wind velocity improves dispersal across ${cityName}. Open opposing windows for 15–20 minutes to flush out accumulated indoor CO₂ and cooking VOCs, then tightly reseal before dusk (16:30).</p>
+              <span class="timeline-badge" style="background: var(--success-light); color: var(--success);">Best 20-Min Cross-Ventilation</span>
+              <p><strong>Best time to air out your home.</strong> Warm afternoon air lifts smog (~950m) and wind clears streets across ${cityName}. Open two opposite windows for 15–20 minutes, then close them by 16:30.</p>
             </div>
           </div>
           <div class="timeline-item">
-            <div class="timeline-time">18:00 – 21:30<br><span style="font-size: 0.75rem; color: var(--warning); font-weight: 700;">EVENING PEAK</span></div>
+            <div class="timeline-time">18:00 – 21:30<br><span style="font-size: 0.75rem; color: var(--warning); font-weight: 700;">Evening Peak</span></div>
             <div class="timeline-content">
-              <span class="timeline-badge" style="background: var(--warning-light); color: var(--warning);">Evening Traffic Inversion Spike</span>
-              <p><strong>Reseal home completely.</strong> Falling dusk temperatures cause rapid thermal compression while peak commute traffic elevates roadside particulate levels to ~${Math.round(pm25 * 1.2)} µg/m³. Run kitchen exhaust continuously during cooking.</p>
+              <span class="timeline-badge" style="background: var(--warning-light); color: var(--warning);">Evening Traffic Smog Spike</span>
+              <p><strong>Shut all windows tightly.</strong> Cooling evening air traps rush-hour smoke up to ~${Math.round(pm25 * 1.2)} µg/m³. Keep your kitchen exhaust fan on while cooking.</p>
             </div>
           </div>
           <div class="timeline-item">
-            <div class="timeline-time">22:00 – 06:00<br><span style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">NIGHT FILTRATION</span></div>
+            <div class="timeline-time">22:00 – 06:00<br><span style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">Night Filtration</span></div>
             <div class="timeline-content">
               <span class="timeline-badge" style="background: var(--accent-light); color: var(--accent);">Bedroom HEPA Air Cleaning</span>
               <p>Keep bedroom door shut. Run DIY or HEPA purifier in the bedroom overnight. You spend ~8 continuous hours breathing here; bedroom filtration in ${cityName} cuts daily inhaled dose by up to 50%.</p>
@@ -5500,6 +5498,7 @@
         if (avatarEl) {
           avatarEl.textContent = currentAuthUser.avatarInitial || currentAuthUser.name.charAt(0).toUpperCase();
           avatarEl.style.background = currentAuthUser.avatarColor || '#0B735F';
+          avatarEl.style.color = '#FFFFFF';
           avatarEl.style.boxShadow = '0 2px 6px rgba(11, 115, 95, 0.3)';
         }
         if (actionBtn) {
@@ -6649,7 +6648,7 @@
       grid.innerHTML = days.map(d => `
         <div class="forecast-card ${d.cat === 'Severe' ? 'severe' : ''}">
           <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">${d.label}</div>
-          <div style="font-size: 1.5rem; font-weight: 800; margin: 4px 0; color: ${d.cat === 'Severe' ? '#DC2626' : '#D97706'};">
+          <div style="font-size: 1.5rem; font-weight: 800; margin: 4px 0; color: ${d.cat === 'Severe' ? '#B91C1C' : '#9A4D00'};">
             ${d.pm25} <span style="font-size: 0.8rem; font-weight: 500;">µg/m³ PM2.5</span>
           </div>
           <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;">NAQI ~${d.aqi} (${d.cat})</div>
@@ -6677,7 +6676,7 @@
           </div>
           <div style="text-align: right; white-space: nowrap;">
             <div style="font-weight: 700; font-size: 0.95rem; color: var(--accent);">${item.price}</div>
-            <span style="font-size: 0.72rem; color: ${item.urgent ? '#DC2626' : 'var(--text-muted)'}; font-weight: 600;">
+            <span style="font-size: 0.75rem; color: ${item.urgent ? '#B91C1C' : 'var(--text-muted)'}; font-weight: 600;">
               ${item.urgent ? 'Buy Tonight' : 'Standard Delivery'}
             </span>
           </div>

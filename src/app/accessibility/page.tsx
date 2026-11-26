@@ -16,7 +16,7 @@ export default function AccessibilityPage() {
         <h2>Implemented Accessibility Measures</h2>
         <ul>
           <li><strong>Never Color-Alone:</strong> AQI danger levels are accompanied by high-contrast text labels, numerical values, and iconography so color-blind users can interpret risk accurately.</li>
-          <li><strong>Screen Reader Support:</strong> Sliders and live data updates use ARIA live regions (<code>aria-live="polite"</code>) and accessible labels.</li>
+          <li><strong>Screen Reader Support:</strong> Sliders and live data updates use ARIA live regions (<code>aria-live=&quot;polite&quot;</code>) and accessible labels.</li>
           <li><strong>Keyboard Navigation:</strong> All interactive controls, tabs, and toggles have visible focus indicators (<code>:focus-visible</code>) and 44px+ minimum touch targets.</li>
           <li><strong>Multilingual Typography:</strong> High-legibility Devanagari fonts (Noto Sans Devanagari) paired with Outfit ensure crisp rendering at all zoom levels (supports 200%+ zoom without text truncation).</li>
           <li><strong>Reduced Motion:</strong> Fully respects <code>prefers-reduced-motion</code> operating system settings by disabling non-essential transitions.</li>

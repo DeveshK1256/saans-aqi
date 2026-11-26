@@ -9,7 +9,7 @@ export default function PrivacyPage() {
 
       <section style={{ marginTop: 24 }}>
         <h2>1. Data Minimization & Sensitivity</h2>
-        <p>Saans collects the absolute minimum data required to calculate your household's air pollution exposure. We never ask for child names, government IDs, or raw medical history.</p>
+        <p>Saans collects the absolute minimum data required to calculate your household&apos;s air pollution exposure. We never ask for child names, government IDs, or raw medical history.</p>
         <ul>
           <li><strong>Location:</strong> Stored only as coarse ~1 km grid cells. Precise GPS coordinates are processed transiently in memory and never stored.</li>
           <li><strong>Health Flags:</strong> Asthmatic, pregnant, or elderly status is stored as boolean enum flags protected by field-level encryption (Cloud KMS envelope encryption).</li>
