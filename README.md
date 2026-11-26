@@ -1,10 +1,14 @@
 # Saans (सांस) — Breathe Smarter, Together.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-0B735F?style=for-the-badge&logo=github)](https://deveshk1256.github.io/saans-aqi/)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/DeveshK1256/saans-aqi)
 
 A GenAI-powered urban air quality assistant that helps Indian families understand, reduce, and collectively act on air pollution exposure.
 
-> **Status:** Planning complete. M0 (Foundation) build starting.
+> **Built for the PromptWars Challenge:** Created using an autonomous AI coding agent (**Antigravity**) from specification through deterministic exposure modeling, 3D WebGL visualization, security auditing, and live deployment.
+>
+> **Live App:** [https://deveshk1256.github.io/saans-aqi/](https://deveshk1256.github.io/saans-aqi/)  
+> **Status:** All 5 MVP features + 3D Atmospheric Simulation deployed and verified (`192/192` Vitest tests passing, `86/86` criteria checks passing).
 
 ## What is Saans?
 
