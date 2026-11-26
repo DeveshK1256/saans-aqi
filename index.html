@@ -3723,36 +3723,6 @@
         </button>
       </form>
 
-      <!-- 1-Click Quick Demo Accounts -->
-      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--surface-border);">
-        <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
-          ⚡ Or 1-Click Quick Demo Sign-In:
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          <button type="button" class="auth-quick-btn" id="btn-quick-devesh">
-            <div style="width: 32px; height: 32px; border-radius: 50%; background: #059669; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">D</div>
-            <div>
-              <div style="font-size: 0.88rem; font-weight: 600;">Devesh Kumar</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">devesh.kumar@gmail.com · Delhi NCR</div>
-            </div>
-          </button>
-          <button type="button" class="auth-quick-btn" id="btn-quick-priya">
-            <div style="width: 32px; height: 32px; border-radius: 50%; background: #0B735F; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">P</div>
-            <div>
-              <div style="font-size: 0.88rem; font-weight: 600;">Priya Sharma</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">priya.sharma@gmail.com · Pune (Asthmatic Child)</div>
-            </div>
-          </button>
-          <button type="button" class="auth-quick-btn" id="btn-quick-codex">
-            <div style="width: 32px; height: 32px; border-radius: 50%; background: #7c3aed; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">C</div>
-            <div>
-              <div style="font-size: 0.88rem; font-weight: 600;">Codex</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">codextrial0@gmail.com · Dwarka</div>
-            </div>
-          </button>
-        </div>
-      </div>
-
       <div style="text-align: center; margin-top: 16px; font-size: 0.84rem; color: var(--text-muted);">
         Don't have an account? <a href="#" id="link-switch-to-register" style="color: var(--accent); font-weight: 600; text-decoration: none;">Register here</a>
       </div>
@@ -5643,7 +5613,7 @@
           const isMatch = targetUser.passwordHash ? (targetUser.passwordHash === passHash) : (targetUser.password === pass);
           if (!isMatch) {
             if (alertBox) {
-              alertBox.textContent = 'Incorrect password. (For demo accounts, use password123)';
+              alertBox.textContent = 'Incorrect email or password. Please try again.';
               alertBox.style.display = 'block';
             }
             return;
@@ -5757,48 +5727,6 @@
         if (alertBox) alertBox.style.display = 'none';
       });
     }
-
-    // 1-Click Quick Demo Sign-Ins
-    document.getElementById('btn-quick-devesh')?.addEventListener('click', () => {
-      loginAsUser({
-        name: 'Devesh Kumar',
-        email: 'devesh.kumar@gmail.com',
-        avatarInitial: 'D',
-        avatarColor: '#059669',
-        city: 'Delhi',
-        locality: 'Anand Vihar',
-        m1Alias: 'Devesh',
-        m1Age: 32,
-        m2Alias: 'Family Member',
-        m2Age: 28
-      });
-      closeSaansAuthModal();
-    });
-
-    document.getElementById('btn-quick-priya')?.addEventListener('click', () => {
-      loginAsUser({
-        name: 'Priya Sharma',
-        email: 'priya.sharma@gmail.com',
-        avatarInitial: 'P',
-        avatarColor: '#0B735F',
-        isPriya: true
-      });
-      closeSaansAuthModal();
-    });
-
-    document.getElementById('btn-quick-codex')?.addEventListener('click', () => {
-      loginAsUser({
-        name: 'Codex',
-        email: 'codextrial0@gmail.com',
-        avatarInitial: 'C',
-        avatarColor: '#7c3aed',
-        city: 'Delhi',
-        locality: 'Dwarka Sector 8',
-        m1Alias: 'Codex',
-        m1Age: 27
-      });
-      closeSaansAuthModal();
-    });
 
     const btnAuthAction = document.getElementById('btn-auth-action');
     if (btnAuthAction) {
