@@ -3828,6 +3828,15 @@
         </label>
       </div>
 
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;">
+          Live Real-Time Alert Feed
+        </div>
+        <div id="notif-live-feed" style="max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: 8px; background: var(--surface-subtle); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); font-size: 0.8rem;">
+          <div style="color: var(--text-muted);">Monitoring live air quality &amp; boundary layer telemetry...</div>
+        </div>
+      </div>
+
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 7px 12px; background: rgba(11, 115, 95, 0.08); border-radius: var(--radius-sm); border: 1px solid rgba(11, 115, 95, 0.18);">
         <span style="font-size: 0.78rem; color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -4382,8 +4391,8 @@
       // Select active provider & pollutants based on dev switch
       const activePollutants = isOutage ? data.fallbackPollutants : data.pollutants;
       const providerName = isOutage ? data.fallbackStation : data.primaryStation;
-      const stationDist = isOutage ? 16.4 : 1.8;
-      const dataAgeMins = isOutage ? 115 : 14;
+      const stationDist = isOutage ? 16.4 : (data.stationDistKm || 1.8);
+      const dataAgeMins = isOutage ? 115 : (data.liveUpdatedAt ? Math.max(0, Math.round((Date.now() - data.liveUpdatedAt) / 60000)) : 14);
 
       // Calculate Sub-indices and Overall NAQI
       const subIndices = [];
@@ -4541,16 +4550,126 @@
       }
     }
 
+    const liveFetchCache = {};
+
+    function degreesToCompass(deg) {
+      const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+      return dirs[Math.round(((deg % 360) + 360) % 360 / 22.5) % 16];
+    }
+
+    async function fetchLiveCityAirAndWeather(cityKey, forceRefresh = false) {
+      const data = CITIES[cityKey];
+      if (!data) return false;
+
+      const now = Date.now();
+      const cached = liveFetchCache[cityKey];
+      if (!forceRefresh && cached && (now - cached < 60000)) {
+        return true;
+      }
+
+      const lat = data.lat;
+      const lon = data.lon;
+
+      try {
+        const aqUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm2_5,pm10,nitrogen_dioxide,sulphur_dioxide,carbon_monoxide,ozone&hourly=pm2_5&timezone=auto`;
+        const wxUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m&hourly=boundary_layer_height,wind_speed_10m&wind_speed_unit=ms&timezone=auto`;
+
+        const [aqRes, wxRes] = await Promise.all([fetch(aqUrl), fetch(wxUrl)]);
+        if (!aqRes.ok) throw new Error(`AQ HTTP ${aqRes.status}`);
+
+        const aqJson = await aqRes.json();
+        const wxJson = wxRes.ok ? await wxRes.json() : null;
+
+        const curAq = aqJson.current || {};
+        const pm25 = typeof curAq.pm2_5 === 'number' ? Math.round(curAq.pm2_5 * 10) / 10 : data.pollutants.pm25;
+        const pm10 = typeof curAq.pm10 === 'number' ? Math.round(curAq.pm10 * 10) / 10 : data.pollutants.pm10;
+        const no2 = typeof curAq.nitrogen_dioxide === 'number' ? Math.round(curAq.nitrogen_dioxide * 10) / 10 : data.pollutants.no2;
+        const so2 = typeof curAq.sulphur_dioxide === 'number' ? Math.round(curAq.sulphur_dioxide * 10) / 10 : data.pollutants.so2;
+        // Open-Meteo returns CO in µg/m³; CPCB NAQI uses mg/m³
+        const co = typeof curAq.carbon_monoxide === 'number' ? Math.round((curAq.carbon_monoxide / 1000) * 100) / 100 : data.pollutants.co;
+        const o3 = typeof curAq.ozone === 'number' ? Math.round(curAq.ozone * 10) / 10 : data.pollutants.o3;
+
+        data.pollutants = { pm25, pm10, no2, so2, co, o3 };
+        data.cigs = parseFloat((pm25 / 22.0).toFixed(1));
+        data.liveUpdatedAt = Date.now();
+        data.isLiveData = true;
+        data.primaryStation = cityKey === 'current_location'
+          ? `Open-Meteo Live GPS Grid (${lat.toFixed(2)}°, ${lon.toFixed(2)}°)`
+          : `Open-Meteo Live CAMS & Copernicus Grid (${lat.toFixed(2)}°, ${lon.toFixed(2)}°)`;
+
+        // Store 24-hour real hourly PM2.5 & PBL forecast
+        if (aqJson.hourly && Array.isArray(aqJson.hourly.pm2_5)) {
+          data.hourlyPm25 = aqJson.hourly.pm2_5.slice(0, 24).map(v => (typeof v === 'number' ? Math.round(v) : pm25));
+        }
+
+        // Calculate dominant NAQI for sameerAqi baseline
+        const liveSub = calculateSubIndexClient('pm25', pm25);
+        data.sameerAqi = liveSub.subIndex;
+
+        // Update meteorology & station entry
+        const curWx = wxJson && wxJson.current ? wxJson.current : {};
+        const windSpeed = typeof curWx.wind_speed_10m === 'number' ? curWx.wind_speed_10m : 1.8;
+        const windDir = typeof curWx.wind_direction_10m === 'number' ? Math.round(curWx.wind_direction_10m) : 280;
+        const temp = typeof curWx.temperature_2m === 'number' ? curWx.temperature_2m : 24;
+        const rh = typeof curWx.relative_humidity_2m === 'number' ? curWx.relative_humidity_2m : 60;
+
+        let pbl = 420;
+        if (wxJson && wxJson.hourly && Array.isArray(wxJson.hourly.boundary_layer_height)) {
+          const curHr = new Date().getHours();
+          const hrPbl = wxJson.hourly.boundary_layer_height[curHr];
+          if (typeof hrPbl === 'number') pbl = Math.round(hrPbl);
+          data.hourlyPbl = wxJson.hourly.boundary_layer_height.slice(0, 24).map(v => (typeof v === 'number' ? Math.round(v) : pbl));
+        }
+
+        if (!CITY_STATIONS[cityKey]) {
+          CITY_STATIONS[cityKey] = [{
+            id: `${cityKey}_live`,
+            name: data.name.split(',')[0],
+            agency: 'Open-Meteo Live',
+            aqi: liveSub.subIndex,
+            pm25, pm10, no2, so2, co, o3,
+            windSpeed, windDir, windDirText: degreesToCompass(windDir), pbl, temp, rh
+          }];
+        } else {
+          const st0 = CITY_STATIONS[cityKey][0];
+          st0.aqi = liveSub.subIndex;
+          st0.pm25 = pm25; st0.pm10 = pm10; st0.no2 = no2; st0.so2 = so2; st0.co = co; st0.o3 = o3;
+          st0.windSpeed = windSpeed;
+          st0.windDir = windDir;
+          st0.windDirText = degreesToCompass(windDir);
+          st0.pbl = pbl;
+          st0.temp = temp;
+          st0.rh = rh;
+        }
+
+        liveFetchCache[cityKey] = now;
+
+        // Only re-render if this city is still the active selection
+        if (citySelect && citySelect.value === cityKey) {
+          if (typeof renderStationPills === 'function') renderStationPills(cityKey);
+          updateCityAQI();
+          if (typeof evaluateRealTimeAlerts === 'function') {
+            evaluateRealTimeAlerts(cityKey, { aqi: liveSub.subIndex, pm25, windSpeed, pbl });
+          }
+        }
+        return true;
+      } catch (err) {
+        console.warn('Live air quality fetch fallback active:', err);
+        return false;
+      }
+    }
+
     citySelect.addEventListener('change', () => {
       activeStationId = null;
       if (typeof renderStationPills === 'function') {
         renderStationPills(citySelect.value);
       }
       updateCityAQI();
+      fetchLiveCityAirAndWeather(citySelect.value, false);
     });
     if (devSwitch) devSwitch.addEventListener('change', updateCityAQI);
 
-    // Geolocation "Use My Location" Handler
+    // Geolocation "Use My Location" Handler (Real GPS + Reverse Geocoding + Live API)
     const btnLocation = document.getElementById('btn-use-location');
     if (btnLocation) {
       btnLocation.addEventListener('click', () => {
@@ -4560,31 +4679,58 @@
         }
         btnLocation.textContent = '📍 Locating...';
         navigator.geolocation.getCurrentPosition(
-          (pos) => {
+          async (pos) => {
             const userLat = pos.coords.latitude;
             const userLon = pos.coords.longitude;
 
-            // Find closest city in registry
-            let closestKey = 'delhi';
-            let minDist = Infinity;
-            for (const [key, c] of Object.entries(CITIES)) {
-              const d = Math.hypot(c.lat - userLat, c.lon - userLon);
-              if (d < minDist) {
-                minDist = d;
-                closestKey = key;
+            let locLabel = `My Location (${userLat.toFixed(2)}°, ${userLon.toFixed(2)}°)`;
+            let fallbackStation = 'Regional Open-Meteo Fallback';
+            try {
+              const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${userLat}&lon=${userLon}`);
+              if (geoRes.ok) {
+                const geoJson = await geoRes.json();
+                const addr = geoJson.address || {};
+                const area = addr.suburb || addr.neighbourhood || addr.city_district || addr.town || addr.village || '';
+                const city = addr.city || addr.state_district || addr.state || '';
+                if (area && city && area !== city) locLabel = `${area}, ${city}`;
+                else if (city || area) locLabel = city || area;
+                fallbackStation = `Nearest Regional Grid (${city || 'India'})`;
               }
+            } catch (e) {}
+
+            // Register exact current GPS location in CITIES and select it
+            CITIES.current_location = {
+              name: locLabel,
+              lat: userLat,
+              lon: userLon,
+              sameerAqi: 120,
+              stationDistKm: 1.0,
+              primaryStation: `Open-Meteo Live GPS Grid (${userLat.toFixed(2)}°, ${userLon.toFixed(2)}°)`,
+              fallbackStation,
+              camsStation: 'Open-Meteo / ECMWF CAMS Real-Time',
+              pollutants: { pm25: 45, pm10: 80, no2: 28, so2: 10, co: 0.8, o3: 32 },
+              fallbackPollutants: { pm25: 45, pm10: 80, no2: 28 },
+              cigs: 2.0
+            };
+            delete CITY_STATIONS.current_location;
+
+            let locOpt = citySelect.querySelector('option[value="current_location"]');
+            if (!locOpt) {
+              locOpt = document.createElement('option');
+              locOpt.value = 'current_location';
+              citySelect.insertBefore(locOpt, citySelect.firstChild);
             }
-            btnLocation.textContent = `📍 ${CITIES[closestKey].name.split(',')[0]} (${userLat.toFixed(2)}°, ${userLon.toFixed(2)}°)`;
-            citySelect.value = closestKey;
+            locOpt.textContent = `📍 Current Location — ${locLabel}`;
+            citySelect.value = 'current_location';
             activeStationId = null;
-            if (typeof renderStationPills === 'function') {
-              renderStationPills(closestKey);
-            }
-            updateCityAQI();
+
+            btnLocation.textContent = `📍 ${locLabel.split(',')[0]} (Live)`;
+            await fetchLiveCityAirAndWeather('current_location', true);
+
             if (window.showSaansToast) {
               showSaansToast(
-                'Location Detected',
-                `Synced Live AQI, meteorology & 24h routine to ${CITIES[closestKey].name}`,
+                'Live Location Synced',
+                `Real-time AQI, meteorology, 24h routine & alerts active for ${locLabel}`,
                 'info'
               );
             }
@@ -4597,19 +4743,17 @@
             }
             setTimeout(() => { btnLocation.innerHTML = `<svg class="saans-btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Use My Location</span>`; }, 2500);
           },
-          { timeout: 8000 }
+          { enableHighAccuracy: true, timeout: 10000 }
         );
       });
     }
 
-    document.getElementById('btn-refresh-aqi').addEventListener('click', () => {
+    document.getElementById('btn-refresh-aqi').addEventListener('click', async () => {
       const btn = document.getElementById('btn-refresh-aqi');
-      btn.textContent = '⏳ Fetching stream...';
-      setTimeout(() => {
-        updateCityAQI();
-        btn.textContent = '✅ Updated (Live)';
-        setTimeout(() => { btn.textContent = '🔄 Refresh Data'; }, 1500);
-      }, 350);
+      btn.textContent = '⏳ Fetching live...';
+      const ok = await fetchLiveCityAirAndWeather(citySelect.value, true);
+      btn.textContent = ok ? '✅ Updated (Live)' : '⚠️ Cached Fallback';
+      setTimeout(() => { btn.textContent = '🔄 Refresh Data'; }, 1800);
     });
 
     // --- Tab 2: Exposure Engine Calculation ---
@@ -6919,16 +7063,32 @@
         ctx.fillText(`${(hr < 10 ? '0' : '') + hr}:00`, x, padT + plotH + 18);
       }
 
-      // Draw PM2.5 Diurnal Curve
-      const maxPM = 280;
-      const minPM = 40;
+      // Draw PM2.5 Diurnal Curve (Uses live 24h Open-Meteo hourly forecast when available)
+      const activeCityKey = citySelect ? citySelect.value : 'delhi';
+      const liveHourlyPm = CITIES[activeCityKey]?.hourlyPm25;
+      const hasLiveCurve = Array.isArray(liveHourlyPm) && liveHourlyPm.length >= 24;
+
+      const getPmForHour = (hr) => {
+        const hInt = Math.floor(hr % 24);
+        if (hasLiveCurve) return liveHourlyPm[hInt] ?? liveHourlyPm[0];
+        const d = DIURNAL_PBL_DATA[hInt] || DIURNAL_PBL_DATA[7];
+        return d.pm;
+      };
+
+      let maxPM = 280;
+      let minPM = 40;
+      if (hasLiveCurve) {
+        const minVal = Math.min(...liveHourlyPm);
+        const maxVal = Math.max(...liveHourlyPm);
+        minPM = Math.max(0, Math.floor(minVal * 0.85));
+        maxPM = Math.max(minPM + 40, Math.ceil(maxVal * 1.15));
+      }
 
       ctx.beginPath();
       for (let hr = 0; hr <= 24; hr += 0.5) {
-        const hInt = Math.floor(hr % 24);
-        const data = DIURNAL_PBL_DATA[hInt] || DIURNAL_PBL_DATA[7];
+        const pmVal = getPmForHour(hr);
         const x = padL + (hr / 24) * plotW;
-        const normY = (data.pm - minPM) / (maxPM - minPM);
+        const normY = Math.max(0, Math.min(1, (pmVal - minPM) / (maxPM - minPM)));
         const y = padT + plotH - (normY * plotH);
 
         if (hr === 0) ctx.moveTo(x, y);
@@ -6952,10 +7112,9 @@
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       for (let hr = 0; hr <= 24; hr += 0.5) {
-        const hInt = Math.floor(hr % 24);
-        const data = DIURNAL_PBL_DATA[hInt] || DIURNAL_PBL_DATA[7];
+        const pmVal = getPmForHour(hr);
         const x = padL + (hr / 24) * plotW;
-        const normY = (data.pm - minPM) / (maxPM - minPM);
+        const normY = Math.max(0, Math.min(1, (pmVal - minPM) / (maxPM - minPM)));
         const y = padT + plotH - (normY * plotH);
 
         if (hr === 0) ctx.moveTo(x, y);
@@ -7095,13 +7254,107 @@
       `;
     }
 
-    // ==================== SMART NOTIFICATION CENTER & TOAST ENGINE ====================
+    // ==================== SMART NOTIFICATION CENTER & REAL-TIME ALERT ENGINE ====================
     let notifMonitorInterval = null;
+    const liveAlertHistory = [];
+    const lastKnownCityAqi = {};
+    const lastAlertedCityKey = {};
 
-    function triggerLiveAirAlert(force = false) {
+    function recordLiveAlert(title, message, severity = 'info', cityName = '') {
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      liveAlertHistory.unshift({ title, message, severity, cityName, timeStr });
+      if (liveAlertHistory.length > 20) liveAlertHistory.pop();
+
+      const badge = document.getElementById('notif-badge');
+      if (badge) {
+        badge.textContent = String(liveAlertHistory.length);
+        badge.style.display = 'inline-flex';
+      }
+
+      const feed = document.getElementById('notif-live-feed');
+      if (feed) {
+        feed.innerHTML = liveAlertHistory.map(item => `
+          <div style="padding: 6px 8px; border-radius: 6px; background: var(--surface-card); border-left: 3px solid ${item.severity === 'danger' ? 'var(--danger)' : (item.severity === 'warning' ? 'var(--warning)' : 'var(--accent)')};">
+            <div style="display: flex; justify-content: space-between; gap: 8px; font-weight: 700; color: var(--text-main);">
+              <span>${escapeHtml(item.title)}</span>
+              <span style="font-size: 0.72rem; color: var(--text-faint); white-space: nowrap;">${escapeHtml(item.timeStr)}</span>
+            </div>
+            <div style="font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(item.message)}</div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function evaluateRealTimeAlerts(cityKey, liveMetrics = null) {
+      const cityData = CITIES[cityKey] || CITIES.delhi;
+      const cityName = cityData.name.split(',')[0];
+      const pm25 = liveMetrics?.pm25 ?? cityData.pollutants?.pm25 ?? 100;
+      const aqi = liveMetrics?.aqi ?? calculateSubIndexClient('pm25', pm25).subIndex;
+      const st = (CITY_STATIONS[cityKey] || [])[0];
+      const windSpeed = liveMetrics?.windSpeed ?? st?.windSpeed ?? 1.8;
+      const pbl = liveMetrics?.pbl ?? st?.pbl ?? 420;
+
+      const prefThreshold = document.getElementById('notif-pref-threshold')?.checked ?? true;
+      const prefStagnation = document.getElementById('notif-pref-stagnation')?.checked ?? true;
+      const prefVent = document.getElementById('notif-pref-vent')?.checked ?? true;
+
+      const prevAqi = lastKnownCityAqi[cityKey];
+      const deltaAqi = typeof prevAqi === 'number' ? aqi - prevAqi : 0;
+      lastKnownCityAqi[cityKey] = aqi;
+
+      const now = Date.now();
+      const lastCityAlertTime = lastAlertedCityKey[cityKey] || 0;
+      const shouldNotifyToast = (now - lastCityAlertTime > 45000) || Math.abs(deltaAqi) >= 15;
+
+      if (deltaAqi >= 15 && prefThreshold) {
+        const title = `📈 Live AQI Spike in ${cityName}: ${aqi} (+${deltaAqi})`;
+        const msg = `Real-time PM2.5 rose to ${pm25} µg/m³. Seal windows and run indoor filtration.`;
+        recordLiveAlert(title, msg, 'danger', cityName);
+        if (shouldNotifyToast) {
+          showSaansToast(title, msg, 'danger');
+          lastAlertedCityKey[cityKey] = now;
+        }
+        return;
+      }
+
+      if (aqi >= 201 && prefThreshold) {
+        const title = `🚨 ${cityName} Real-Time AQI Alert (${aqi})`;
+        const msg = `Live PM2.5 is ${pm25} µg/m³ (${aqi >= 301 ? 'Very Poor/Severe' : 'Poor'}). Boundary layer at ${pbl}m, wind ${windSpeed.toFixed(1)} m/s. Keep windows sealed.`;
+        recordLiveAlert(title, msg, aqi >= 301 ? 'danger' : 'warning', cityName);
+        if (shouldNotifyToast) {
+          showSaansToast(title, msg, aqi >= 301 ? 'danger' : 'warning');
+          lastAlertedCityKey[cityKey] = now;
+        }
+      } else if (windSpeed < 1.5 && pbl < 350 && prefStagnation) {
+        const title = `⚠️ ${cityName} Stagnation Warning`;
+        const msg = `Wind dropped to ${windSpeed.toFixed(1)} m/s with ${pbl}m boundary layer (AQI ${aqi}, PM2.5 ${pm25} µg/m³). Avoid outdoor exertion.`;
+        recordLiveAlert(title, msg, 'warning', cityName);
+        if (shouldNotifyToast) {
+          showSaansToast(title, msg, 'warning');
+          lastAlertedCityKey[cityKey] = now;
+        }
+      } else if ((aqi <= 150 || pbl >= 1000) && prefVent) {
+        const title = `🌿 ${cityName} Real-Time Air Update (AQI ${aqi})`;
+        const msg = `Live PM2.5 is ${pm25} µg/m³ with ${pbl}m mixing height and ${windSpeed.toFixed(1)} m/s wind. Safe for brief cross-ventilation.`;
+        recordLiveAlert(title, msg, 'info', cityName);
+        if (shouldNotifyToast) {
+          showSaansToast(title, msg, 'info');
+          lastAlertedCityKey[cityKey] = now;
+        }
+      }
+    }
+
+    async function triggerLiveAirAlert(force = false) {
       const cityKey = document.getElementById('city-select')?.value || 'delhi';
+      if (force) {
+        await fetchLiveCityAirAndWeather(cityKey, true);
+      }
+
       const cityData = CITIES[cityKey] || CITIES.delhi;
       const pm25 = cityData.pollutants ? cityData.pollutants.pm25 : 192;
+      const aqi = calculateSubIndexClient('pm25', pm25).subIndex;
+      const st = (CITY_STATIONS[cityKey] || [])[0];
+      const pbl = st?.pbl ?? 350;
       const cityName = cityData.name.split(',')[0];
 
       // Request browser notification permission if not yet decided
@@ -7109,12 +7362,13 @@
         Notification.requestPermission();
       }
 
-      const alertTitle = `🚨 ${cityName} Air Hygiene Alert (${pm25} µg/m³)`;
-      const alertMsg = pm25 >= 120
-        ? `Ground thermal inversion trapping active across ${cityName}. Boundary layer at ~220m. Seal windows and avoid outdoor exposure.`
-        : `Air hygiene update for ${cityName}. Convective dispersion active. Check afternoon cross-ventilation window.`;
+      const alertTitle = `🚨 ${cityName} Live Air Alert (AQI ${aqi} · ${pm25} µg/m³)`;
+      const alertMsg = pm25 >= 90
+        ? `Live reading across ${cityName}: PM2.5 at ${pm25} µg/m³, boundary layer at ${pbl}m. Seal windows and run indoor filtration.`
+        : `Live reading for ${cityName}: PM2.5 at ${pm25} µg/m³ (AQI ${aqi}), boundary layer ${pbl}m. Dispersion conditions favorable.`;
 
-      showSaansToast(alertTitle, alertMsg, pm25 >= 120 ? 'warning' : 'info');
+      recordLiveAlert(alertTitle, alertMsg, pm25 >= 90 ? 'warning' : 'info', cityName);
+      showSaansToast(alertTitle, alertMsg, pm25 >= 90 ? 'warning' : 'info');
     }
 
     function initNotificationCenter() {
@@ -7142,7 +7396,7 @@
         if (el) {
           el.addEventListener('change', () => {
             saveNotifPrefs();
-            showSaansToast('Alert Preferences Auto-Saved', 'Air hygiene notifications updated in background.', 'info');
+            showSaansToast('Alert Preferences Auto-Saved', 'Real-time air hygiene monitoring updated.', 'info');
           });
         }
       });
@@ -7170,18 +7424,11 @@
         });
       }
 
-      // Background notification engine: triggers periodic air quality alerts continuously
+      // Real-time background polling engine: fetches live city/GPS air quality every 60s
       if (notifMonitorInterval) clearInterval(notifMonitorInterval);
       notifMonitorInterval = setInterval(() => {
-        const lastAlert = parseInt(sessionStorage.getItem('saans_last_auto_alert') || '0', 10);
-        const now = Date.now();
-        if (now - lastAlert > 240000) { // every 4 minutes
-          const prefThreshold = document.getElementById('notif-pref-threshold')?.checked ?? true;
-          if (prefThreshold) {
-            triggerLiveAirAlert(false);
-            sessionStorage.setItem('saans_last_auto_alert', now.toString());
-          }
-        }
+        const activeKey = document.getElementById('city-select')?.value || 'delhi';
+        fetchLiveCityAirAndWeather(activeKey, true);
       }, 60000);
     }
 
@@ -7559,7 +7806,7 @@
       if (st) drawWindCompass(st.windDir, st.windSpeed);
     }
 
-    // Initial renders
+    // Initial renders + immediate live Open-Meteo real-time sync
     updateCityAQI();
     renderStationPills('delhi');
     initWindCompass();
@@ -7571,6 +7818,7 @@
     calculateDose();
     renderMyths('all', '');
     updateDIYCalc();
+    fetchLiveCityAirAndWeather(citySelect ? citySelect.value : 'delhi', true);
 
     // Check for Google OAuth redirect success callback
     const urlParams = new URLSearchParams(window.location.search);
